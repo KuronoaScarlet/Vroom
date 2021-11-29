@@ -30,7 +30,7 @@ public:
 	float nearPlaneDistance = 0.1f;
 	float farPlaneDistance = 5000.f;
 	float cameraSensitivity = .5f; 
-	float cameraSpeed = 60.f;
+	float cameraSpeed = 30.f;
 	bool projectionIsDirty = false;
 
 private:

@@ -482,13 +482,23 @@ void ModuleEditor::UpdateWindowStatus() {
 
 
         ImGui::Begin("Hierarchy", &showHierarchyWindow);
-
+        if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+        {
+            for (int i = 0; i < App->scene->root->children.size(); i++)
+            {
+                if (App->scene->root->children.at(i) == gameobjectSelected)
+                {
+                    App->scene->root->children.pop_back();
+                }
+            }
+        }
         //Just cleaning gameObjects(not textures,buffers...)
         if (ImGui::Button("Clear", { 60,20 })) 
         {
             LOG("GameObject selected name: %s", gameobjectSelected->name.c_str());
-            App->scene->CleanUp(); //Clean GameObjects 
+            App->scene->CleanUp(); //Clean GameObjects
             App->editor->gameobjectSelected = nullptr;
+
         }
         ImGui::SameLine();
         if (ImGui::Button("New", { 60,20 }))
