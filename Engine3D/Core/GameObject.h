@@ -41,6 +41,7 @@ public:
 	void AttachChild(GameObject* child);
 	void RemoveChild(GameObject* child);
 	void PropagateTransform();
+	void EraseGameObject();
 
 	std::string name;
 	GameObject* parent = nullptr;

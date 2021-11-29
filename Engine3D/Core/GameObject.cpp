@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
 #include "ComponentTransform.h"
 #include "ImGui/imgui.h"
@@ -74,6 +75,30 @@ void GameObject::DeleteComponent(Component* component) {
 void GameObject::AddComponent(Component* component)
 {
 	components.push_back(component);
+}
+
+void GameObject::EraseGameObject()
+{
+	for (int i = 0; i < App->scene->root->children.size(); i++)
+	{
+		if (App->scene->root->children.at(i) == App->editor->gameobjectSelected)
+		{
+			std::vector<GameObject*> L;
+			for (int i = 0; i < App->scene->root->children.size(); i++)
+			{
+				if (App->scene->root->children.at(i) != App->editor->gameobjectSelected)
+				{
+					L.push_back(App->scene->root->children.at(i));
+				}
+			}
+			App->editor->gameobjectSelected = nullptr;
+			App->scene->root->children.clear();
+			for (int i = 0; i < L.size(); i++)
+			{
+				App->scene->root->children.push_back(L.at(i));
+			}
+		}
+	}
 }
 
 void GameObject::AttachChild(GameObject* child)

@@ -484,14 +484,10 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::Begin("Hierarchy", &showHierarchyWindow);
         if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
         {
-            for (int i = 0; i < App->scene->root->children.size(); i++)
-            {
-                if (App->scene->root->children.at(i) == gameobjectSelected)
-                {
-                    App->scene->root->children.pop_back();
-                }
-            }
+            LOG("GameObject deleted name: %s", App->editor->gameobjectSelected->name.c_str());
+            App->scene->root->EraseGameObject();
         }
+
         //Just cleaning gameObjects(not textures,buffers...)
         if (ImGui::Button("Clear", { 60,20 })) 
         {
