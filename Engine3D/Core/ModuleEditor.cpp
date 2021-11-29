@@ -37,7 +37,9 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     showInspectorWindow = true;
     showGameWindow = true;
     showSceneWindow = true;
-    showTextures = true;
+    showTextures = false;
+    showResourcesHierarchy = true;
+    showResourcesTab = true;
 
     currentColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -139,7 +141,6 @@ update_status ModuleEditor::PostUpdate(float dt) {
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
-
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
@@ -393,6 +394,10 @@ void ModuleEditor::MenuBar() {
                 showConsoleWindow = !showConsoleWindow;
             if (ImGui::MenuItem("Textures")) 
                 showTextures = !showTextures;
+            if (ImGui::MenuItem("Resources Hierarchy"))
+                showResourcesHierarchy = !showResourcesHierarchy;
+            if (ImGui::MenuItem("Resources Tab"))
+                showResourcesTab = !showResourcesTab;
 
             ImGui::Separator();
             if (ImGui::MenuItem("Configuration")) 
@@ -425,13 +430,16 @@ void ModuleEditor::UpdateWindowStatus() {
         About_Window();
 
     //Config
-    if (showConfWindow) {
+    if (showConfWindow) 
+    {
 
         ImGui::Begin("Configuration", &showConfWindow);        
         App->OnGui();
         ImGui::End();
 
     }
+
+    //Textures
     if (showTextures)
     {
         ImGui::Begin("Textures", &showTextures);
@@ -455,9 +463,24 @@ void ModuleEditor::UpdateWindowStatus() {
         }
         ImGui::End();
     }
-        
+
+    //Resource Hierarchy
+    if (showResourcesHierarchy)
+    {
+        ImGui::Begin("Resource Hierarchy", &showResourcesHierarchy);
+        ImGui::End();
+    }
+
+    //Resource Tab
+    if (showResourcesTab)
+    {
+        ImGui::Begin("Resource Tab", &showResourcesTab);
+        ImGui::End();
+    }
+
     //Console
-    if (showConsoleWindow) {
+    if (showConsoleWindow) 
+    {
 
         ImGui::Begin("Console", &showConsoleWindow);
         ImGui::TextUnformatted(consoleText.begin(), consoleText.end());
@@ -466,7 +489,8 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     //Inspector
-    if (showInspectorWindow) {
+    if (showInspectorWindow) 
+    {
 
         ImGui::Begin("Inspector", &showInspectorWindow);
         //Only shows info if any gameobject selected
@@ -478,9 +502,8 @@ void ModuleEditor::UpdateWindowStatus() {
     }
 
     //Hierarchy
-    if (showHierarchyWindow) {
-
-
+    if (showHierarchyWindow) 
+    {
         ImGui::Begin("Hierarchy", &showHierarchyWindow);
         if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
         {

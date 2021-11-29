@@ -61,6 +61,8 @@ public:
 	bool showGameWindow;
 	bool showTextures;
 	bool showConsoleWindow;
+	bool showResourcesHierarchy;
+	bool showResourcesTab;
 
 	ImGuiTextBuffer consoleText;
 
