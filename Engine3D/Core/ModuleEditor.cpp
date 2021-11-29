@@ -493,15 +493,15 @@ void ModuleEditor::UpdateWindowStatus()
 
         App->fileSystem->DiscoverFiles("Assets", fList, dList); // 0 Files 2 Dirs (as expected).
 
-        fList.clear();
-
         for (uint i = 0; i < dList.size(); i++)
         {
             LOG("%s", dList.at(i).c_str());
 
             std::vector<std::string> d;
             std::vector<std::string> f;
+
             App->fileSystem->DiscoverFiles(dList.at(i).c_str(), f, d);
+
             for (uint i = 0; i < f.size(); i++)
             {
                 LOG("%s", f.at(i).c_str());
