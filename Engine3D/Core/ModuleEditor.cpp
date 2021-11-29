@@ -52,7 +52,8 @@ ModuleEditor::~ModuleEditor()
 {
 }
 
-bool ModuleEditor::Init() {
+bool ModuleEditor::Init() 
+{
     bool ret = true;
 
     return ret;
@@ -85,7 +86,8 @@ bool ModuleEditor::Start()
     return ret;
 }
 
-update_status ModuleEditor::PreUpdate(float dt) {
+update_status ModuleEditor::PreUpdate(float dt) 
+{
 
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
@@ -101,18 +103,19 @@ update_status ModuleEditor::Update(float dt)
 {
     DrawGrid();
     //Creating MenuBar item as a root for docking windows
-    if (DockingRootItem("Viewport", ImGuiWindowFlags_MenuBar)) {
+    if (DockingRootItem("Viewport", ImGuiWindowFlags_MenuBar))
+    {
         MenuBar();
         ImGui::End();
     }
-
     //Update status of each window and shows ImGui elements
     UpdateWindowStatus();
 
     return UPDATE_CONTINUE;
 }
 
-update_status ModuleEditor::PostUpdate(float dt) {
+update_status ModuleEditor::PostUpdate(float dt) 
+{
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
@@ -240,7 +243,8 @@ void ModuleEditor::DrawGrid()
 
 }
 
-void ModuleEditor::About_Window() {
+void ModuleEditor::About_Window() 
+{
 
     ImGui::Begin("About 3D Engine", &showAboutWindow);
 
@@ -281,7 +285,8 @@ void ModuleEditor::About_Window() {
 
 }
 
-void ModuleEditor::UpdateText(const char* text) {
+void ModuleEditor::UpdateText(const char* text) 
+{
     consoleText.appendf(text);
 }
 
@@ -315,19 +320,23 @@ void ModuleEditor::BeginDock(char* dockSpaceId, ImGuiDockNodeFlags dockFlags, Im
 {
     // DockSpace
     ImGuiIO& io = ImGui::GetIO();
-    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) 
+    {
         ImGuiID dock = ImGui::GetID(dockSpaceId);
         ImGui::DockSpace(dock, size, dockFlags);
     }
 }
 
-void ModuleEditor::MenuBar() {
+void ModuleEditor::MenuBar() 
+{
 
     /* ---- MAIN MENU BAR DOCKED ----*/
-    if (ImGui::BeginMainMenuBar()) {
+    if (ImGui::BeginMainMenuBar()) 
+    {
 
         /* ---- FILE ---- */
-        if (ImGui::BeginMenu("File")) {
+        if (ImGui::BeginMenu("File")) 
+        {
             if (ImGui::MenuItem("Save", "Ctrl + S")) //DO SOMETHING
             {
 
@@ -338,22 +347,28 @@ void ModuleEditor::MenuBar() {
         }
 
         /* ---- GAMEOBJECTS ---- */
-        if (ImGui::BeginMenu("GameObject")) {
+        if (ImGui::BeginMenu("GameObject")) 
+        {
 
-            if (ImGui::MenuItem("Create empty GameObject")) {
+            if (ImGui::MenuItem("Create empty GameObject")) 
+            {
                 App->scene->CreateGameObject();
             }
 
-            if (ImGui::BeginMenu("3D Objects")) {
-                if (ImGui::MenuItem("Cube")) {
+            if (ImGui::BeginMenu("3D Objects")) 
+            {
+                if (ImGui::MenuItem("Cube")) 
+                {
                     GameObject* newGameObject = App->scene->CreateGameObject("Cube");
                     ComponentMesh* newMesh = new ComponentMesh(newGameObject, ComponentMesh::Shape::CUBE);
                 }
-                if (ImGui::MenuItem("Sphere")) {
+                if (ImGui::MenuItem("Sphere")) 
+                {
                     GameObject* newGameObject = App->scene->CreateGameObject("Sphere");
                     ComponentMesh* newMesh = new ComponentMesh(newGameObject, ComponentMesh::Shape::SPHERE);
                 }
-                if (ImGui::MenuItem("Cylinder")) {
+                if (ImGui::MenuItem("Cylinder")) 
+                {
                     GameObject* newGameObject = App->scene->CreateGameObject("Cylinder");
                     ComponentMesh* newMesh = new ComponentMesh(newGameObject, ComponentMesh::Shape::CYLINDER);
                 }
@@ -364,12 +379,14 @@ void ModuleEditor::MenuBar() {
 
 
         /* ---- WINDOW ----*/
-        if (ImGui::BeginMenu("Window")) {
+        if (ImGui::BeginMenu("Window")) 
+        {
 
             if (ImGui::MenuItem("Examples")) showDemoWindow = !showDemoWindow;
             ImGui::Separator();
 
-            if (ImGui::BeginMenu("Workspace Style")) {
+            if (ImGui::BeginMenu("Workspace Style")) 
+            {
                 if (ImGui::MenuItem("Dark")) 
                     ImGui::StyleColorsDark();
                 if (ImGui::MenuItem("Classic")) 
@@ -408,7 +425,8 @@ void ModuleEditor::MenuBar() {
         }
 
         /* ---- HELP ----*/
-        if (ImGui::BeginMenu("Help")) {
+        if (ImGui::BeginMenu("Help")) 
+        {
             if (ImGui::MenuItem("About")) 
                 showAboutWindow = !showAboutWindow;
             ImGui::EndMenu();
@@ -419,7 +437,8 @@ void ModuleEditor::MenuBar() {
     ImGui::EndMainMenuBar();
 }
 
-void ModuleEditor::UpdateWindowStatus() {
+void ModuleEditor::UpdateWindowStatus() 
+{
 
     //Demo
     if (showDemoWindow) 
@@ -468,6 +487,8 @@ void ModuleEditor::UpdateWindowStatus() {
     if (showResourcesHierarchy)
     {
         ImGui::Begin("Resource Hierarchy", &showResourcesHierarchy);
+
+
         ImGui::End();
     }
 
@@ -475,6 +496,8 @@ void ModuleEditor::UpdateWindowStatus() {
     if (showResourcesTab)
     {
         ImGui::Begin("Resource Tab", &showResourcesTab);
+
+
         ImGui::End();
     }
 
@@ -491,20 +514,18 @@ void ModuleEditor::UpdateWindowStatus() {
     //Inspector
     if (showInspectorWindow) 
     {
-
         ImGui::Begin("Inspector", &showInspectorWindow);
         //Only shows info if any gameobject selected
         if (gameobjectSelected != nullptr) 
             InspectorGameObject(); 
 
         ImGui::End();
-
     }
 
     //Hierarchy
     if (showHierarchyWindow) 
     {
-        ImGui::Begin("Hierarchy", &showHierarchyWindow);
+        ImGui::Begin("GameObjects Hierarchy", &showHierarchyWindow);
         if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
         {
             LOG("GameObject deleted name: %s", App->editor->gameobjectSelected->name.c_str());
@@ -599,12 +620,14 @@ void ModuleEditor::UpdateWindowStatus() {
         ImGui::End();
     }
 
-    if (showGameWindow) {
+    if (showGameWindow) 
+    {
         ImGui::Begin("Game", &showGameWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
         ImGui::End();
     }
 
-    if (showSceneWindow) {
+    if (showSceneWindow) 
+    {
 
         ImGui::Begin("Scene", &showSceneWindow, ImGuiWindowFlags_NoScrollbar);
 

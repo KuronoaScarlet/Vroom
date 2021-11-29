@@ -206,6 +206,7 @@ void ModuleFileSystem::GetAllFilesWithExtension(const char* directory, const cha
 			file_list.push_back(files[i]);
 	}
 }
+
 /*
 PathNode ModuleFileSystem::GetAllFiles(const char* directory, std::vector<std::string>* filter_ext, std::vector<std::string>* ignore_ext) const
 {
@@ -253,6 +254,7 @@ PathNode ModuleFileSystem::GetAllFiles(const char* directory, std::vector<std::s
 	return root;
 }
 */
+
 void ModuleFileSystem::GetRealDir(std::string path, std::string& output) const
 {	
 	uint i = 0;
