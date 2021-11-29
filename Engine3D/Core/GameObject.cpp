@@ -23,7 +23,6 @@ GameObject::GameObject(const std::string name) : name(name)
 	active = true;
 }
 
-
 GameObject::~GameObject() {
 
 	for (size_t i = 0; i < components.size(); i++) {
