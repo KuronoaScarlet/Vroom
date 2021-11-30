@@ -6,6 +6,7 @@
 #include "ModuleImport.h"
 
 #include "GameObject.h"
+#include "ModuleFileSystem.h"
 class ModuleScene : public Module
 {
 public:
@@ -21,4 +22,5 @@ public:
 public:
 	
 	GameObject* root;
+	File* assets;
 };

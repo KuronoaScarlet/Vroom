@@ -14,6 +14,27 @@ struct aiFileIO;
 class Config;
 struct PathNode;
 
+class File
+{
+public:
+	File() {}
+	File(const std::string name) : name(name) {}
+
+	~File() {}
+
+	void AttachChild(File* child) {}
+	void RemoveChild(File* child) {}
+	void AttachFiles(std::vector<std::string> d, std::vector<std::string> f);
+
+public:
+	std::string name;
+	File* parent = nullptr;
+	std::vector<File*> dirs;
+	std::vector<File*> files;
+
+	bool isSelected = false;
+};
+
 class ModuleFileSystem : public Module
 {
 public:
