@@ -503,7 +503,6 @@ uint64 ModuleFileSystem::GetLastModTime(const char* filename)
 	return PHYSFS_getLastModTime(filename);
 }
 */
-
 std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) const
 {
 	//TODO: modify to distinguix files and dirs?
@@ -539,42 +538,23 @@ std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) 
 	return finalName;
 }
 
-std::string ModuleFileSystem::SetNormalName(const char* path) 
-{
+std::string ModuleFileSystem::SetNormalName(const char* path) {
 
 	std::string name(path);
 	std::string new_name;
 	bool found = false;
 	for (size_t i = 0; i < name.size(); i++)
 	{
-		if (name.at(i) == 0x5c) 
-		{
+		if (name.at(i) == 0x5c) {
 			found = true;
 		}
 	}
 
-	if (found) 
-	{
+	if (found) {
 		new_name = name.substr(name.find_last_of(0x5c) + 1);
 	}
-	else 
-	{
+	else {
 		new_name = name.substr(name.find_last_of('/') + 1);
 	}
-
 	return new_name;
-}
-
-void File::AttachFiles(std::vector<std::string> d, std::vector<std::string> f)
-{
-		for (uint i = 0; i < d.size(); i++)
-		{
-			File* c = new File(d.at(i));
-			this->dirs.push_back(c);
-		}
-		for (uint i = 0; i < f.size(); i++)
-		{
-			File* c = new File(f.at(i));
-			this->files.push_back(c);
-		}
 }
