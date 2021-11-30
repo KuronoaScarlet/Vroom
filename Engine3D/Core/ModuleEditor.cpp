@@ -41,6 +41,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     showTextures = false;
     showResourcesHierarchy = true;
     showResourcesTab = true;
+    newFolderPopUp = false;
 
     currentColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -499,15 +500,51 @@ void ModuleEditor::UpdateWindowStatus()
         ImGui::End();
     }
 
+    if (newFolderPopUp)
+    {
+        ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
+
+        ImGui::End();
+    }
+
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+    
+
     //Resource Hierarchy
     if (showResourcesHierarchy)
     {
         ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
 
-        if (ImGui::Button("Update All", { 100,20 }))
+        if (ImGui::Button("Create Folder", { 100,20 })) ImGui::OpenPopup("CreateFolder");
+
+        if (ImGui::BeginPopupModal("CreateFolder", NULL, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            App->scene->assets->children.clear();
-            App->scene->assets->ReadFiles();
+            ImGui::Text("Folder name: ");
+            ImGui::SameLine();
+            static char buf[64] = ""; ImGui::InputText(" ", buf, 64);
+
+            if (ImGui::Button("Create", ImVec2(120, 0)))
+            {
+                std::string newPath;
+                if (fileSelected != nullptr)
+                {
+                    newPath = fileSelected->path.c_str() + std::string("/") + std::string(buf);
+                    App->fileSystem->CreateDir(newPath.c_str());
+                }
+                else
+                {
+                    newPath = App->scene->assets->path.c_str() + std::string("/") + std::string(buf);
+                    App->fileSystem->CreateDir(newPath.c_str());
+                }
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SetItemDefaultFocus();
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            ImGui::EndPopup();
         }
 
         std::stack<File*> S;
@@ -566,7 +603,6 @@ void ModuleEditor::UpdateWindowStatus()
                 ImGui::TreePop();
             }
         }
-
         ImGui::End();
     }
 

@@ -68,6 +68,8 @@ public:
 	bool showConsoleWindow;
 	bool showResourcesHierarchy;
 	bool showResourcesTab;
+	bool newFolderPopUp;
+
 	TextureObject folder;
 	uint folderID;
 	ImGuiTextBuffer consoleText;
