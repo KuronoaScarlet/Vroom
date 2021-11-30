@@ -499,31 +499,36 @@ void ModuleEditor::UpdateWindowStatus()
 
         std::stack<File*> S;
         std::stack<uint> indents;
+
         S.push(App->scene->assets);
         indents.push(0);
+
         while (!S.empty())
         {
-            File* go = S.top();
+            f = S.top();
             uint indentsAmount = indents.top();
             S.pop();
             indents.pop();
 
             ImGuiTreeNodeFlags nodeFlags = 0;
-            if (go->isSelected)
+            if (f->isSelected)
                 nodeFlags |= ImGuiTreeNodeFlags_Selected;
-            if (go->children.size() == 0)
+            if (f->children.size() == 0)
                 nodeFlags |= ImGuiTreeNodeFlags_Leaf;
+
             for (uint i = 0; i < indentsAmount; ++i)
             {
                 ImGui::Indent();
             }
 
-            if (ImGui::TreeNodeEx(go->name.c_str(), nodeFlags))
+            if (ImGui::TreeNodeEx(f->name.c_str(), nodeFlags))
             {
-                if (ImGui::IsItemClicked()) {
+                if (ImGui::IsItemClicked()) 
+                {
                     fileSelected ? fileSelected->isSelected = !fileSelected->isSelected : 0;
-                    fileSelected = go;
+                    fileSelected = f;
                     fileSelected->isSelected = !fileSelected->isSelected;
+
                     if (fileSelected->isSelected)
                     {
                         LOG("File selected name: %s", fileSelected->name.c_str());
@@ -533,7 +538,8 @@ void ModuleEditor::UpdateWindowStatus()
                         LOG("File unselected name: %s", fileSelected->name.c_str());
                     }
                 }
-                for (File* child : go->children)
+
+                for (File* child : f->children)
                 {
                     S.push(child);
                     indents.push(indentsAmount + 1);
@@ -556,53 +562,50 @@ void ModuleEditor::UpdateWindowStatus()
     {
         ImGui::Begin("Resource Tab", &showResourcesTab);
 
-        std::stack<File*> S;
-        S.push(App->scene->assets);
-        while (!S.empty())
+        if (fileSelected != nullptr)
         {
-            File* go = S.top();
-            S.pop();
+            std::stack<File*> S;
+            S.push(fileSelected);
 
-            ImGuiTreeNodeFlags nodeFlags = 0;
-            if (go->isSelected)
-                nodeFlags |= ImGuiTreeNodeFlags_Selected;
-            if (go->children.size() == 0)
-                nodeFlags |= ImGuiTreeNodeFlags_Leaf;
-            if (go->isSelected == 1)
-                nodeFlags |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
-
-
-            if (go->isSelected)
+            while (!S.empty())
             {
-                if (ImGui::TreeNodeEx(go->name.c_str(), nodeFlags))
+
+                f = S.top();
+                S.pop();
+                ImGuiTreeNodeFlags nodeFlags = 0;
+
+                if (f->isSelected && fileSelected)
+                    nodeFlags |= ImGuiTreeNodeFlags_Selected;
+                if (f->children.size() == 0)
+                    nodeFlags |= ImGuiTreeNodeFlags_Leaf;
+
+                if (f->isSelected && fileSelected)
                 {
-                    for (File* child : go->children)
-                    {
-                        S.push(child);
-                        //DrawImageAndText(folderID, child->name.c_str());
-                        ImGui::Text(child->name.c_str());
-                        for (std::string file : go->files)
-                        {
-                            S.push(&File(file));
-                            //DrawImageAndText(folderID, child->name.c_str());
-                            //ImGui::Text(file.c_str());
-                        }
-                    }
+                    // Update de carpetas
                     
-                    ImGui::TreePop();
+                    // Si no tienes carpeta seleccionada y metes un archivo, crear carpeta Library, updatear, y mostrar.
 
+                    if (ImGui::TreeNodeEx(f->name.c_str(), nodeFlags))
+                    {
+                        // Crear vector con nombres dirs y archivos.
+                            // Usar el HasExtension para poner un png u otro en el button.
+                            // Tener en cuenta el update directory bajo los create directories.
+                        for (int i = 0; i < f->files.size(); i++)
+                        {
+                            ImGui::Text(f->files.at(i).c_str());
+                        }
+                        ImGui::TreePop();
+                    }
                 }
-            }
-            
-        }
 
+            }
+        }
         ImGui::End();
     }
 
     //Console
     if (showConsoleWindow) 
     {
-
         ImGui::Begin("Console", &showConsoleWindow);
         ImGui::TextUnformatted(consoleText.begin(), consoleText.end());
         ImGui::SetScrollHere(1.0f);

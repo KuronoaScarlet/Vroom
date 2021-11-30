@@ -81,4 +81,5 @@ public:
 
 	ImVec2 lastViewportSize;
 
+	File* f;
 };
