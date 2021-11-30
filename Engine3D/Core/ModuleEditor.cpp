@@ -65,6 +65,8 @@ bool ModuleEditor::Init()
 bool ModuleEditor::Start()
 {
 	bool ret = true;
+
+    freq = 0.0f;
 	
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -84,10 +86,6 @@ bool ModuleEditor::Start()
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
     
     CreateGridBuffer();
-
-    folder = App->textures->Load("folder.png");
-
-    folderID = folder.id;
 
     return ret;
 }
@@ -114,6 +112,16 @@ update_status ModuleEditor::Update(float dt)
         MenuBar();
         ImGui::End();
     }
+
+    freq += 1.0f * dt;
+    if (freq >= 1.0f)
+    {
+        App->scene->assets->children.clear();
+        App->scene->assets->children.shrink_to_fit();
+        App->scene->assets->ReadFiles();
+        freq = 0.0f;
+    }
+
     //Update status of each window and shows ImGui elements
     UpdateWindowStatus();
 
@@ -122,7 +130,6 @@ update_status ModuleEditor::Update(float dt)
 
 update_status ModuleEditor::PostUpdate(float dt) 
 {
-
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     // Rendering
@@ -496,6 +503,12 @@ void ModuleEditor::UpdateWindowStatus()
     if (showResourcesHierarchy)
     {
         ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
+
+        if (ImGui::Button("Update All", { 100,20 }))
+        {
+            App->scene->assets->children.clear();
+            App->scene->assets->ReadFiles();
+        }
 
         std::stack<File*> S;
         std::stack<uint> indents;

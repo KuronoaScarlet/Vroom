@@ -570,10 +570,6 @@ void File::ReadFiles()
 	std::vector<std::string> dirs;
 	App->fileSystem->DiscoverFiles(this->path.c_str(), this->files, dirs);
 
-	for (uint i = 0; i < this->files.size(); i++)
-	{
-		LOG("\t--%s", this->files.at(i).c_str());
-	}
 	if (dirs.size() > 0)
 	{
 		for (uint i = 0; i < dirs.size(); i++)
@@ -583,7 +579,6 @@ void File::ReadFiles()
 			App->fileSystem->f->path = tempPath;
 			this->children.push_back(App->fileSystem->f);
 			App->fileSystem->f->parent = this;
-			LOG("|%s|", App->fileSystem->f->name.c_str());
 			App->fileSystem->f->ReadFiles();
 		}
 	}

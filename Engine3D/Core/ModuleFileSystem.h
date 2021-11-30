@@ -23,6 +23,7 @@ public:
 	~File() {}
 
 	void ReadFiles();
+	void DeleteFiles();
 
 public:
 	std::string name;
