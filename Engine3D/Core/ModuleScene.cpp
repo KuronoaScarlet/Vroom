@@ -21,6 +21,8 @@ bool ModuleScene::Start()
 	
 	root = new GameObject("Root");
 	assets = new File("Assets");
+	assets->path = assets->name;
+	assets->ReadFiles();
 
 	//Loading house and textures since beginning
 	App->import->LoadGeometry("Assets/Models/BakerHouse.fbx");

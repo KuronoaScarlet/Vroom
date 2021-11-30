@@ -24,13 +24,15 @@ public:
 
 	void AttachChild(File* child) {}
 	void RemoveChild(File* child) {}
-	void AttachFiles(std::vector<std::string> d, std::vector<std::string> f);
+	void ReadFiles();
 
 public:
 	std::string name;
+	std::string path;
 	File* parent = nullptr;
-	std::vector<File*> dirs;
-	std::vector<File*> files;
+
+	std::vector<File*> children;
+	std::vector<std::string> files;
 
 	bool isSelected = false;
 };

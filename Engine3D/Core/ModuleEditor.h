@@ -50,6 +50,10 @@ public:
 	void About_Window();	//Can be done better
 	void InspectorGameObject();
 
+	// Files StartUp and Update
+	std::vector<std::string> fList;
+	std::vector<std::string> dList;
+
 	//Window status control
 	bool showDemoWindow;
 	bool showAnotherWindow;

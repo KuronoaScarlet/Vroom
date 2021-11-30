@@ -489,28 +489,7 @@ void ModuleEditor::UpdateWindowStatus()
     {
         ImGui::Begin("Resource Hierarchy", &showResourcesHierarchy);
 
-        std::vector<std::string> fList;
-        std::vector<std::string> dList;
-
-        App->fileSystem->DiscoverFiles(App->scene->assets->name.c_str(), fList, dList); // 0 Files 2 Dirs (as expected).
-        App->scene->assets->AttachFiles(dList, fList);
-
-        for (uint i = 0; i < App->scene->assets->dirs.size(); i++)
-        {
-            LOG("%s", App->scene->assets->dirs.at(i)->name.c_str());
-            
-            std::vector<std::string> d;
-            std::vector<std::string> f;
-
-            App->fileSystem->DiscoverFiles(App->scene->assets->dirs.at(i)->name.c_str(), f, d);
-            App->scene->assets->dirs.at(i)->AttachFiles(d, f);
-            File* child = App->scene->assets->dirs.at(i);
-
-            for (uint i = 0; i < child->files.size(); i++)
-            {
-                LOG("%s", child->files.at(i)->name.c_str());
-            }
-        }
+        
 
 
         ImGui::End();

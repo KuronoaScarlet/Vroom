@@ -565,16 +565,27 @@ std::string ModuleFileSystem::SetNormalName(const char* path)
 	return new_name;
 }
 
-void File::AttachFiles(std::vector<std::string> d, std::vector<std::string> f)
+void File::ReadFiles()
 {
-		for (uint i = 0; i < d.size(); i++)
+	std::vector<std::string> dirs;
+	App->fileSystem->DiscoverFiles(this->path.c_str(), this->files, dirs);
+
+	for (uint i = 0; i < this->files.size(); i++)
+	{
+		LOG("\t--%s", this->files.at(i).c_str());
+	}
+	if (dirs.size() > 0)
+	{
+		for (uint i = 0; i < dirs.size(); i++)
 		{
-			File* c = new File(d.at(i));
-			this->dirs.push_back(c);
+			std::string tempPath = this->path + std::string("/") + dirs.at(i);
+			File* f = new File(dirs.at(i).c_str());
+			f->path = tempPath;
+			this->children.push_back(f);
+			f->parent = this;
+			LOG("|%s|", f->name.c_str());
+			f->ReadFiles();
 		}
-		for (uint i = 0; i < f.size(); i++)
-		{
-			File* c = new File(f.at(i));
-			this->files.push_back(c);
-		}
+	}
+
 }
