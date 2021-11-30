@@ -587,5 +587,4 @@ void File::ReadFiles()
 			f->ReadFiles();
 		}
 	}
-
 }

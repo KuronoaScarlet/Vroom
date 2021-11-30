@@ -7,6 +7,7 @@
 
 //Forward declaration
 class GameObject;
+class File;
 class ComponentTransform;
 
 class ModuleEditor : public Module
@@ -75,6 +76,7 @@ public:
 	ImGuiWindowFlags sceneWindow = 0;
 
 	GameObject* gameobjectSelected;
+	File* fileSelected;
 
 	ImVec2 lastViewportSize;
 

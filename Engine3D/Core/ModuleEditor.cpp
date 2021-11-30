@@ -45,6 +45,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     currentColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     
     gameobjectSelected = nullptr;
+    fileSelected = nullptr;
 }
 
 
@@ -489,8 +490,43 @@ void ModuleEditor::UpdateWindowStatus()
     {
         ImGui::Begin("Resource Hierarchy", &showResourcesHierarchy);
 
-        
+        std::stack<File*> S;
+        std::stack<uint> indents;
+        S.push(App->scene->assets);
+        indents.push(0);
+        while (!S.empty())
+        {
+            File* go = S.top();
+            uint indentsAmount = indents.top();
+            S.pop();
+            indents.pop();
 
+            ImGuiTreeNodeFlags nodeFlags = 0;
+            if (go->isSelected)
+                nodeFlags |= ImGuiTreeNodeFlags_Selected;
+            if (go->children.size() == 0)
+                nodeFlags |= ImGuiTreeNodeFlags_Leaf;
+            for (uint i = 0; i < indentsAmount; ++i)
+            {
+                ImGui::Indent();
+            }
+
+            if (ImGui::TreeNodeEx(go->name.c_str(), nodeFlags))
+            {
+                for (File* child : go->children)
+                {
+                    S.push(child);
+                    indents.push(indentsAmount + 1);
+                }
+
+                for (uint i = 0; i < indentsAmount; ++i)
+                {
+                    ImGui::Unindent();
+                }
+
+                ImGui::TreePop();
+            }
+        }
 
         ImGui::End();
     }

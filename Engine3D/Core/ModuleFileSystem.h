@@ -22,8 +22,6 @@ public:
 
 	~File() {}
 
-	void AttachChild(File* child) {}
-	void RemoveChild(File* child) {}
 	void ReadFiles();
 
 public:
