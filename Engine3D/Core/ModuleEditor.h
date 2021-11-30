@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-
+#include "ModuleTextures.h"
 #include "ImGui/imgui.h"
 #include <string>
 
@@ -44,7 +44,7 @@ public:
 	//Core Update functions to show and manage windows
 	void MenuBar();
 	void UpdateWindowStatus();
-
+	void DrawImageAndText(uint id, const char* text);
 	//Console Text Pushback
 	void UpdateText(const char* consoleText);
 
@@ -68,7 +68,8 @@ public:
 	bool showConsoleWindow;
 	bool showResourcesHierarchy;
 	bool showResourcesTab;
-
+	TextureObject folder;
+	uint folderID;
 	ImGuiTextBuffer consoleText;
 
 	ImVec4 currentColor;

@@ -579,12 +579,12 @@ void File::ReadFiles()
 		for (uint i = 0; i < dirs.size(); i++)
 		{
 			std::string tempPath = this->path + std::string("/") + dirs.at(i);
-			File* f = new File(dirs.at(i).c_str());
-			f->path = tempPath;
-			this->children.push_back(f);
-			f->parent = this;
-			LOG("|%s|", f->name.c_str());
-			f->ReadFiles();
+            App->fileSystem->f = new File(dirs.at(i).c_str());
+			App->fileSystem->f->path = tempPath;
+			this->children.push_back(App->fileSystem->f);
+			App->fileSystem->f->parent = this;
+			LOG("|%s|", App->fileSystem->f->name.c_str());
+			App->fileSystem->f->ReadFiles();
 		}
 	}
 }

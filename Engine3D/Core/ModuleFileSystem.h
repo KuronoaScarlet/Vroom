@@ -38,7 +38,7 @@ public:
 class ModuleFileSystem : public Module
 {
 public:
-
+	File* f = nullptr;
 	ModuleFileSystem(Application* app, bool start_enabled = true);// const char* game_path = nullptr);
 
 	// Destructor

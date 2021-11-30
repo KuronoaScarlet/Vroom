@@ -85,6 +85,10 @@ bool ModuleEditor::Start()
     
     CreateGridBuffer();
 
+    folder = App->textures->Load("folder.png");
+
+    folderID = folder.id;
+
     return ret;
 }
 
@@ -438,7 +442,11 @@ void ModuleEditor::MenuBar()
 
     ImGui::EndMainMenuBar();
 }
-
+void ModuleEditor::DrawImageAndText(uint id, const char* text)
+{
+    ImGui::Text(text);
+    ImGui::ImageButton((ImTextureID)id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+}
 void ModuleEditor::UpdateWindowStatus() 
 {
 
@@ -453,7 +461,6 @@ void ModuleEditor::UpdateWindowStatus()
     //Config
     if (showConfWindow) 
     {
-
         ImGui::Begin("Configuration", &showConfWindow);        
         App->OnGui();
         ImGui::End();
@@ -488,7 +495,7 @@ void ModuleEditor::UpdateWindowStatus()
     //Resource Hierarchy
     if (showResourcesHierarchy)
     {
-        ImGui::Begin("Resource Hierarchy", &showResourcesHierarchy);
+        ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
 
         std::stack<File*> S;
         std::stack<uint> indents;
@@ -513,6 +520,19 @@ void ModuleEditor::UpdateWindowStatus()
 
             if (ImGui::TreeNodeEx(go->name.c_str(), nodeFlags))
             {
+                if (ImGui::IsItemClicked()) {
+                    fileSelected ? fileSelected->isSelected = !fileSelected->isSelected : 0;
+                    fileSelected = go;
+                    fileSelected->isSelected = !fileSelected->isSelected;
+                    if (fileSelected->isSelected)
+                    {
+                        LOG("File selected name: %s", fileSelected->name.c_str());
+                    }
+                    else
+                    {
+                        LOG("File unselected name: %s", fileSelected->name.c_str());
+                    }
+                }
                 for (File* child : go->children)
                 {
                     S.push(child);
@@ -536,6 +556,45 @@ void ModuleEditor::UpdateWindowStatus()
     {
         ImGui::Begin("Resource Tab", &showResourcesTab);
 
+        std::stack<File*> S;
+        S.push(App->scene->assets);
+        while (!S.empty())
+        {
+            File* go = S.top();
+            S.pop();
+
+            ImGuiTreeNodeFlags nodeFlags = 0;
+            if (go->isSelected)
+                nodeFlags |= ImGuiTreeNodeFlags_Selected;
+            if (go->children.size() == 0)
+                nodeFlags |= ImGuiTreeNodeFlags_Leaf;
+            if (go->isSelected == 1)
+                nodeFlags |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+
+            if (go->isSelected)
+            {
+                if (ImGui::TreeNodeEx(go->name.c_str(), nodeFlags))
+                {
+                    for (File* child : go->children)
+                    {
+                        S.push(child);
+                        //DrawImageAndText(folderID, child->name.c_str());
+                        ImGui::Text(child->name.c_str());
+                        for (std::string file : go->files)
+                        {
+                            S.push(&File(file));
+                            //DrawImageAndText(folderID, child->name.c_str());
+                            //ImGui::Text(file.c_str());
+                        }
+                    }
+                    
+                    ImGui::TreePop();
+
+                }
+            }
+            
+        }
 
         ImGui::End();
     }
@@ -565,7 +624,7 @@ void ModuleEditor::UpdateWindowStatus()
     if (showHierarchyWindow) 
     {
         ImGui::Begin("GameObjects Hierarchy", &showHierarchyWindow);
-        if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+        if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN && gameobjectSelected!=nullptr)
         {
             LOG("GameObject deleted name: %s", App->editor->gameobjectSelected->name.c_str());
             App->scene->root->EraseGameObject();
