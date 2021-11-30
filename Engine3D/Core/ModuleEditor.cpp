@@ -665,8 +665,6 @@ void ModuleEditor::UpdateWindowStatus()
 
                 if (f->isSelected && fileSelected)
                 {
-                    // Update de carpetas
-                    
                     // Si no tienes carpeta seleccionada y metes un archivo, crear carpeta Library, updatear, y mostrar.
 
                     if (ImGui::TreeNodeEx(f->name.c_str(), nodeFlags))
