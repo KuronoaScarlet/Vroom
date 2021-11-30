@@ -42,6 +42,7 @@ ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, s
     showResourcesHierarchy = true;
     showResourcesTab = true;
     newFolderPopUp = false;
+    delFolderPopUp = false;
 
     currentColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -502,22 +503,7 @@ void ModuleEditor::UpdateWindowStatus()
 
     if (newFolderPopUp)
     {
-        ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
-
-        ImGui::End();
-    }
-
-    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-
-    
-
-    //Resource Hierarchy
-    if (showResourcesHierarchy)
-    {
-        ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
-
-        if (ImGui::Button("Create Folder", { 100,20 })) ImGui::OpenPopup("CreateFolder");
+        ImGui::OpenPopup("CreateFolder");
 
         if (ImGui::BeginPopupModal("CreateFolder", NULL, ImGuiWindowFlags_AlwaysAutoResize))
         {
@@ -538,14 +524,63 @@ void ModuleEditor::UpdateWindowStatus()
                     newPath = App->scene->assets->path.c_str() + std::string("/") + std::string(buf);
                     App->fileSystem->CreateDir(newPath.c_str());
                 }
+                newFolderPopUp = false;
                 ImGui::CloseCurrentPopup();
             }
 
             ImGui::SetItemDefaultFocus();
             ImGui::SameLine();
-            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) 
+            { 
+                newFolderPopUp = false;
+                ImGui::CloseCurrentPopup(); 
+            }
             ImGui::EndPopup();
         }
+    }
+
+    if (delFolderPopUp)
+    {
+        ImGui::OpenPopup("DeleteFolder");
+
+        if (ImGui::BeginPopupModal("DeleteFolder", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::Text("Delete folder %s?", fileSelected->name.c_str());
+
+            if (ImGui::Button("Delete", ImVec2(120, 0)))
+            {
+                App->fileSystem->DeleteDir(fileSelected->path.c_str());
+                delFolderPopUp = false;
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SetItemDefaultFocus();
+            ImGui::SameLine();
+
+            if (ImGui::Button("Cancel", ImVec2(120, 0)))
+            {
+                delFolderPopUp = false;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+    }
+
+
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+    //Resource Hierarchy
+    if (showResourcesHierarchy)
+    {
+        ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
+        if (ImGui::Button("Create Folder", { 100,20 })) newFolderPopUp = !newFolderPopUp;
+        ImGui::SameLine();
+        if (ImGui::Button("Delete Folder", { 100,20 })) delFolderPopUp = !delFolderPopUp;
+
+
+
+        ImGui::Separator();
 
         std::stack<File*> S;
         std::stack<uint> indents;

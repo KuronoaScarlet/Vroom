@@ -57,6 +57,7 @@ public:
 	bool AddPath(const char* path_or_zip);
 	bool Exists(const char* file) const;
 	bool CreateDir(const char* dir);
+	bool DeleteDir(const char* dir);
 	bool IsDirectory(const char* file) const;
 	const char* GetWriteDir() const;
 	void DiscoverFiles(const char* directory, std::vector<std::string>& file_list, std::vector<std::string>& dir_list) const;

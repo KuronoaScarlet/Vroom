@@ -69,6 +69,7 @@ public:
 	bool showResourcesHierarchy;
 	bool showResourcesTab;
 	bool newFolderPopUp;
+	bool delFolderPopUp;
 
 	TextureObject folder;
 	uint folderID;

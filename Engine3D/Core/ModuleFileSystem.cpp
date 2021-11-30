@@ -157,6 +157,18 @@ bool ModuleFileSystem::CreateDir(const char* dir)
 	{
 		PHYSFS_mkdir(dir);
 		AddPath(dir);
+		LOG("Directory created: %s", dir);
+		return true;
+	}
+	return false;
+}
+
+bool ModuleFileSystem::DeleteDir(const char* dir)
+{
+	if (IsDirectory(dir) == true)
+	{
+		PHYSFS_delete(dir);
+		LOG("Directory deleted: %s", dir);
 		return true;
 	}
 	return false;
