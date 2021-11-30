@@ -488,23 +488,27 @@ void ModuleEditor::UpdateWindowStatus()
     if (showResourcesHierarchy)
     {
         ImGui::Begin("Resource Hierarchy", &showResourcesHierarchy);
+
         std::vector<std::string> fList;
         std::vector<std::string> dList;
 
-        App->fileSystem->DiscoverFiles("Assets", fList, dList); // 0 Files 2 Dirs (as expected).
+        App->fileSystem->DiscoverFiles(App->scene->assets->name.c_str(), fList, dList); // 0 Files 2 Dirs (as expected).
+        App->scene->assets->AttachFiles(dList, fList);
 
-        for (uint i = 0; i < dList.size(); i++)
+        for (uint i = 0; i < App->scene->assets->dirs.size(); i++)
         {
-            LOG("%s", dList.at(i).c_str());
-
+            LOG("%s", App->scene->assets->dirs.at(i)->name.c_str());
+            
             std::vector<std::string> d;
             std::vector<std::string> f;
 
-            App->fileSystem->DiscoverFiles(dList.at(i).c_str(), f, d);
+            App->fileSystem->DiscoverFiles(App->scene->assets->dirs.at(i)->name.c_str(), f, d);
+            App->scene->assets->dirs.at(i)->AttachFiles(d, f);
+            File* child = App->scene->assets->dirs.at(i);
 
-            for (uint i = 0; i < f.size(); i++)
+            for (uint i = 0; i < child->files.size(); i++)
             {
-                LOG("%s", f.at(i).c_str());
+                LOG("%s", child->files.at(i)->name.c_str());
             }
         }
 
