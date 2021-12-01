@@ -36,6 +36,8 @@ public:
 	
 	void CreateGridBuffer();
 	void DrawGrid();
+	void FillResourceArray();
+	std::string KnowFileExtension(std::string file);
 
 	//Docking Helper functions
 	bool DockingRootItem(char* id, ImGuiWindowFlags winFlags);
@@ -71,9 +73,16 @@ public:
 	bool newFolderPopUp;
 	bool delFolderPopUp;
 
+	TextureObject png;
+	TextureObject fbx;
 	TextureObject folder;
+	uint pngID;
 	uint folderID;
+	uint fbxID;
 	ImGuiTextBuffer consoleText;
+
+	int resourceCount = 0;
+	std::vector<std::string> resourceArray;
 
 	ImVec4 currentColor;
 

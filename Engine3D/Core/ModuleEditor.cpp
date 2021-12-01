@@ -83,6 +83,13 @@ bool ModuleEditor::Start()
     // Setup ImGui style by default
     ImGui::StyleColorsDark();
 
+    png = App->textures->Load("png.png");
+    fbx = App->textures->Load("fbx.png");
+    folder = App->textures->Load("folder.png");
+    pngID = png.id;
+    fbxID = fbx.id;
+    folderID = folder.id;
+
     // Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
@@ -156,6 +163,11 @@ update_status ModuleEditor::PostUpdate(float dt)
     return UPDATE_CONTINUE;
 }
 
+
+std::string ModuleEditor::KnowFileExtension(std::string input)
+{
+       return input.substr(input.size() - 3);
+}
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
@@ -352,37 +364,37 @@ void ModuleEditor::MenuBar()
         /* ---- FILE ---- */
         if (ImGui::BeginMenu("File")) 
         {
-            if (ImGui::MenuItem("Save", "Ctrl + S")) //DO SOMETHING
-            {
+if (ImGui::MenuItem("Save", "Ctrl + S")) //DO SOMETHING
+{
 
-            }
-            ImGui::Separator();
-            if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
-            ImGui::EndMenu();
+}
+ImGui::Separator();
+if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
+ImGui::EndMenu();
         }
 
         /* ---- GAMEOBJECTS ---- */
-        if (ImGui::BeginMenu("GameObject")) 
+        if (ImGui::BeginMenu("GameObject"))
         {
 
-            if (ImGui::MenuItem("Create empty GameObject")) 
+            if (ImGui::MenuItem("Create empty GameObject"))
             {
                 App->scene->CreateGameObject();
             }
 
-            if (ImGui::BeginMenu("3D Objects")) 
+            if (ImGui::BeginMenu("3D Objects"))
             {
-                if (ImGui::MenuItem("Cube")) 
+                if (ImGui::MenuItem("Cube"))
                 {
                     GameObject* newGameObject = App->scene->CreateGameObject("Cube");
                     ComponentMesh* newMesh = new ComponentMesh(newGameObject, ComponentMesh::Shape::CUBE);
                 }
-                if (ImGui::MenuItem("Sphere")) 
+                if (ImGui::MenuItem("Sphere"))
                 {
                     GameObject* newGameObject = App->scene->CreateGameObject("Sphere");
                     ComponentMesh* newMesh = new ComponentMesh(newGameObject, ComponentMesh::Shape::SPHERE);
                 }
-                if (ImGui::MenuItem("Cylinder")) 
+                if (ImGui::MenuItem("Cylinder"))
                 {
                     GameObject* newGameObject = App->scene->CreateGameObject("Cylinder");
                     ComponentMesh* newMesh = new ComponentMesh(newGameObject, ComponentMesh::Shape::CYLINDER);
@@ -394,37 +406,37 @@ void ModuleEditor::MenuBar()
 
 
         /* ---- WINDOW ----*/
-        if (ImGui::BeginMenu("Window")) 
+        if (ImGui::BeginMenu("Window"))
         {
 
             if (ImGui::MenuItem("Examples")) showDemoWindow = !showDemoWindow;
             ImGui::Separator();
 
-            if (ImGui::BeginMenu("Workspace Style")) 
+            if (ImGui::BeginMenu("Workspace Style"))
             {
-                if (ImGui::MenuItem("Dark")) 
+                if (ImGui::MenuItem("Dark"))
                     ImGui::StyleColorsDark();
-                if (ImGui::MenuItem("Classic")) 
+                if (ImGui::MenuItem("Classic"))
                     ImGui::StyleColorsClassic();
-                if (ImGui::MenuItem("Light")) 
+                if (ImGui::MenuItem("Light"))
                     ImGui::StyleColorsLight();
-                if (ImGui::MenuItem("Custom")) 
+                if (ImGui::MenuItem("Custom"))
                     ImGui::StyleColorsCustom();
                 ImGui::EndMenu();
             }
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Hierarchy")) 
+            if (ImGui::MenuItem("Hierarchy"))
                 showHierarchyWindow = !showHierarchyWindow;
-            if (ImGui::MenuItem("Inspector")) 
+            if (ImGui::MenuItem("Inspector"))
                 showInspectorWindow = !showInspectorWindow;
-            if (ImGui::MenuItem("Scene")) 
+            if (ImGui::MenuItem("Scene"))
                 showSceneWindow = !showSceneWindow;
-            if (ImGui::MenuItem("Game")) 
+            if (ImGui::MenuItem("Game"))
                 showGameWindow = !showGameWindow;
-            if (ImGui::MenuItem("Console")) 
+            if (ImGui::MenuItem("Console"))
                 showConsoleWindow = !showConsoleWindow;
-            if (ImGui::MenuItem("Textures")) 
+            if (ImGui::MenuItem("Textures"))
                 showTextures = !showTextures;
             if (ImGui::MenuItem("Resources Hierarchy"))
                 showResourcesHierarchy = !showResourcesHierarchy;
@@ -432,17 +444,17 @@ void ModuleEditor::MenuBar()
                 showResourcesTab = !showResourcesTab;
 
             ImGui::Separator();
-            if (ImGui::MenuItem("Configuration")) 
+            if (ImGui::MenuItem("Configuration"))
                 showConfWindow = !showConfWindow;
-            
+
 
             ImGui::EndMenu();
         }
 
         /* ---- HELP ----*/
-        if (ImGui::BeginMenu("Help")) 
+        if (ImGui::BeginMenu("Help"))
         {
-            if (ImGui::MenuItem("About")) 
+            if (ImGui::MenuItem("About"))
                 showAboutWindow = !showAboutWindow;
             ImGui::EndMenu();
         }
@@ -451,6 +463,7 @@ void ModuleEditor::MenuBar()
 
     ImGui::EndMainMenuBar();
 }
+
 void ModuleEditor::DrawImageAndText(uint id, const char* text)
 {
     ImGui::Text(text);
@@ -458,7 +471,6 @@ void ModuleEditor::DrawImageAndText(uint id, const char* text)
 }
 void ModuleEditor::UpdateWindowStatus() 
 {
-
     //Demo
     if (showDemoWindow) 
         ImGui::ShowDemoWindow(&showDemoWindow);
@@ -578,8 +590,6 @@ void ModuleEditor::UpdateWindowStatus()
         ImGui::SameLine();
         if (ImGui::Button("Delete Folder", { 100,20 })) delFolderPopUp = !delFolderPopUp;
 
-
-
         ImGui::Separator();
 
         std::stack<File*> S;
@@ -616,6 +626,8 @@ void ModuleEditor::UpdateWindowStatus()
 
                     if (fileSelected->isSelected)
                     {
+                        resourceArray.clear();
+                        FillResourceArray();
                         LOG("File selected name: %s", fileSelected->name.c_str());
                     }
                     else
@@ -672,11 +684,34 @@ void ModuleEditor::UpdateWindowStatus()
                         // Crear vector con nombres dirs y archivos.
                             // Usar el HasExtension para poner un png u otro en el button.
                             // Tener en cuenta el update directory bajo los create directories.
-                        for (int i = 0; i < f->files.size(); i++)
+                        for (int i = 0; i < resourceArray.size(); i++)
                         {
-                            ImGui::Text(f->files.at(i).c_str());
+                            if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
+                            {
+                                DrawImageAndText(folderID, resourceArray.at(i).c_str());
+                            }
+                            std::string str = f->path + resourceArray.at(i);
+                            if (App->fileSystem->HasExtension(str.c_str(), "png") || App->fileSystem->HasExtension(str.c_str(), "jpg"))
+                            {
+                                DrawImageAndText(pngID, resourceArray.at(i).c_str());
+                            }
+                            if (App->fileSystem->HasExtension(str.c_str(), "fbx"))
+                            {
+                                DrawImageAndText(fbxID, resourceArray.at(i).c_str());
+                            }
+                            
+                           
+                            
+                            //else
+                            //{
+                            //    ImGui::Text(f->files.at(i).c_str());
+                            //}
+
+
                         }
+                        
                         ImGui::TreePop();
+
                     }
                 }
 
@@ -825,6 +860,37 @@ void ModuleEditor::UpdateWindowStatus()
         ImGui::End();
     }
     
+}
+
+void ModuleEditor::FillResourceArray()
+{
+    std::stack<File*> S;
+    S.push(fileSelected);
+
+    while (!S.empty())
+    {
+        f = S.top();
+        S.pop();
+        if (!App->fileSystem->HasExtension(f->name.c_str()))
+        {
+            for (int i = 0; i < f->children.size(); i++)
+            {
+                std::string str = f->children.at(i)->name;
+                resourceArray.push_back(str);
+                LOG("Folder: %s", resourceArray.at(i).c_str());
+            }
+        }
+        for (int i = 0; i < f->files.size(); i++)
+        {
+            if (App->fileSystem->HasExtension(f->files.at(i).c_str()))
+            {
+                std::string str = f->files.at(i);
+                resourceArray.push_back(str);
+                LOG("File: %s", resourceArray.at(i).c_str());
+
+            }
+        }
+    }
 }
 
 void ModuleEditor::InspectorGameObject() 
