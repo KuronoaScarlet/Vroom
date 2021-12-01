@@ -131,8 +131,13 @@ update_status ModuleEditor::Update(float dt)
     if (freq >= 1.0f)
     {
         App->scene->assets->children.clear();
+        resourceArray.clear();
         App->scene->assets->children.shrink_to_fit();
-        App->scene->assets->ReadFiles();
+        if (fileSelected != nullptr)
+        {
+            App->scene->assets->ReadFiles();
+            FillResourceArray();
+        }
 
         freq = 0.0f;
     }
@@ -692,7 +697,7 @@ void ModuleEditor::UpdateWindowStatus()
 
                 if (f->isSelected && fileSelected)
                 {
-                    ImGui::Columns(resourceArray.size() + 8, NULL, false);
+                    ImGui::Columns(resourceArray.size() + 5, NULL, false);
                     for (int i = 0; i < resourceArray.size(); i++)
                     {
                         if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
