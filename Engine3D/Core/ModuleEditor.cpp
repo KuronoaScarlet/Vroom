@@ -86,9 +86,13 @@ bool ModuleEditor::Start()
     png = App->textures->Load("png.png");
     fbx = App->textures->Load("fbx.png");
     folder = App->textures->Load("folder.png");
+    jpg = App->textures->Load("jpg.png");
+    default = App->textures->Load("default.png");
     pngID = png.id;
     fbxID = fbx.id;
     folderID = folder.id;
+    jpgID = jpg.id;
+    defaultID = default.id;
 
     // Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
@@ -610,6 +614,8 @@ void ModuleEditor::UpdateWindowStatus()
                 nodeFlags |= ImGuiTreeNodeFlags_Selected;
             if (f->children.size() == 0)
                 nodeFlags |= ImGuiTreeNodeFlags_Leaf;
+            if (f->isSelected)
+                nodeFlags |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
             for (uint i = 0; i < indentsAmount; ++i)
             {
@@ -691,27 +697,25 @@ void ModuleEditor::UpdateWindowStatus()
                                 DrawImageAndText(folderID, resourceArray.at(i).c_str());
                             }
                             std::string str = f->path + resourceArray.at(i);
-                            if (App->fileSystem->HasExtension(str.c_str(), "png") || App->fileSystem->HasExtension(str.c_str(), "jpg"))
+                            if (App->fileSystem->HasExtension(str.c_str(), "png"))
                             {
                                 DrawImageAndText(pngID, resourceArray.at(i).c_str());
+                            }
+                            if (App->fileSystem->HasExtension(str.c_str(), "jpg"))
+                            {
+                                DrawImageAndText(jpgID, resourceArray.at(i).c_str());
                             }
                             if (App->fileSystem->HasExtension(str.c_str(), "fbx"))
                             {
                                 DrawImageAndText(fbxID, resourceArray.at(i).c_str());
-                            }
-                            
-                           
-                            
-                            //else
-                            //{
-                            //    ImGui::Text(f->files.at(i).c_str());
-                            //}
-
-
+                            }                  
+                            /*if (app->filesystem->hasextension(str.c_str()))
+                            {
+                                drawimageandtext(defaultid, resourcearray.at(i).c_str());
+                            }*/
                         }
                         
                         ImGui::TreePop();
-
                     }
                 }
 

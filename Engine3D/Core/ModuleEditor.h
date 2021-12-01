@@ -76,9 +76,13 @@ public:
 	TextureObject png;
 	TextureObject fbx;
 	TextureObject folder;
+	TextureObject jpg;
+	TextureObject default;
 	uint pngID;
+	uint jpgID;
 	uint folderID;
 	uint fbxID;
+	uint defaultID;
 	ImGuiTextBuffer consoleText;
 
 	int resourceCount = 0;
