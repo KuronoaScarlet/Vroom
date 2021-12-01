@@ -83,11 +83,12 @@ bool ModuleEditor::Start()
     // Setup ImGui style by default
     ImGui::StyleColorsDark();
 
-    png = App->textures->Load("png.png");
-    fbx = App->textures->Load("fbx.png");
-    folder = App->textures->Load("folder.png");
-    jpg = App->textures->Load("jpg.png");
-    default = App->textures->Load("default.png");
+    png = App->textures->Load("Config/FormatImages/png.png");
+    fbx = App->textures->Load("Config/FormatImages/fbx.png");
+    folder = App->textures->Load("Config/FormatImages/folder.png");
+    jpg = App->textures->Load("Config/FormatImages/jpg.png");
+    default = App->textures->Load("Config/FormatImages/default.png");
+
     pngID = png.id;
     fbxID = fbx.id;
     folderID = folder.id;
@@ -132,6 +133,7 @@ update_status ModuleEditor::Update(float dt)
         App->scene->assets->children.clear();
         App->scene->assets->children.shrink_to_fit();
         App->scene->assets->ReadFiles();
+
         freq = 0.0f;
     }
 
@@ -276,7 +278,6 @@ void ModuleEditor::DrawGrid()
 
 void ModuleEditor::About_Window() 
 {
-
     ImGui::Begin("About 3D Engine", &showAboutWindow);
 
     ImGui::Separator();
@@ -309,11 +310,7 @@ void ModuleEditor::About_Window()
     ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n");
     ImGui::Text("SOFTWARE.\n");
 
-    //ImGui::Separator();
-
-
     ImGui::End();
-
 }
 
 void ModuleEditor::UpdateText(const char* text) 
@@ -360,27 +357,24 @@ void ModuleEditor::BeginDock(char* dockSpaceId, ImGuiDockNodeFlags dockFlags, Im
 
 void ModuleEditor::MenuBar() 
 {
-
     /* ---- MAIN MENU BAR DOCKED ----*/
     if (ImGui::BeginMainMenuBar()) 
     {
-
         /* ---- FILE ---- */
         if (ImGui::BeginMenu("File")) 
         {
-if (ImGui::MenuItem("Save", "Ctrl + S")) //DO SOMETHING
-{
+            if (ImGui::MenuItem("Save", "Ctrl + S")) //DO SOMETHING
+            {
 
-}
-ImGui::Separator();
-if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
-ImGui::EndMenu();
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;
+            ImGui::EndMenu();
         }
 
         /* ---- GAMEOBJECTS ---- */
         if (ImGui::BeginMenu("GameObject"))
         {
-
             if (ImGui::MenuItem("Create empty GameObject"))
             {
                 App->scene->CreateGameObject();
@@ -408,11 +402,9 @@ ImGui::EndMenu();
             ImGui::EndMenu();
         }
 
-
         /* ---- WINDOW ----*/
         if (ImGui::BeginMenu("Window"))
         {
-
             if (ImGui::MenuItem("Examples")) showDemoWindow = !showDemoWindow;
             ImGui::Separator();
 
@@ -451,7 +443,6 @@ ImGui::EndMenu();
             if (ImGui::MenuItem("Configuration"))
                 showConfWindow = !showConfWindow;
 
-
             ImGui::EndMenu();
         }
 
@@ -462,17 +453,41 @@ ImGui::EndMenu();
                 showAboutWindow = !showAboutWindow;
             ImGui::EndMenu();
         }
-
     }
-
     ImGui::EndMainMenuBar();
 }
 
-void ModuleEditor::DrawImageAndText(uint id, const char* text)
+void ModuleEditor::DrawImageAndText(uint id, const char* text, int numID)
 {
+    ImGui::PushID(numID);
+    if (ImGui::ImageButton((ImTextureID)id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0), 1))
+    {
+        std::string str = fileSelected->path + std::string(text);
+        if (!App->fileSystem->HasExtension(str.c_str()))
+        {
+            fileSelected->isSelected = false;
+            for (uint i = 0; i < fileSelected->children.size(); i++)
+            {
+                if (fileSelected->children.at(i)->name == text)
+                {
+                    fileSelected = fileSelected->children.at(i);
+                    f = fileSelected;
+                    fileSelected->isSelected = true;
+                    resourceArray.clear();
+                    FillResourceArray();
+                }
+            }
+            LOG("Entering folder: %s", fileSelected->path.c_str());
+        }
+        else
+        {
+            LOG("Clicked File Path: %s", str.c_str());
+        }
+    }
     ImGui::Text(text);
-    ImGui::ImageButton((ImTextureID)id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+    ImGui::PopID();
 }
+
 void ModuleEditor::UpdateWindowStatus() 
 {
     //Demo
@@ -566,6 +581,7 @@ void ModuleEditor::UpdateWindowStatus()
             if (ImGui::Button("Delete", ImVec2(120, 0)))
             {
                 App->fileSystem->DeleteDir(fileSelected->path.c_str());
+                fileSelected = nullptr;
                 delFolderPopUp = false;
                 ImGui::CloseCurrentPopup();
             }
@@ -614,8 +630,6 @@ void ModuleEditor::UpdateWindowStatus()
                 nodeFlags |= ImGuiTreeNodeFlags_Selected;
             if (f->children.size() == 0)
                 nodeFlags |= ImGuiTreeNodeFlags_Leaf;
-            if (f->isSelected)
-                nodeFlags |= ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
             for (uint i = 0; i < indentsAmount; ++i)
             {
@@ -634,11 +648,6 @@ void ModuleEditor::UpdateWindowStatus()
                     {
                         resourceArray.clear();
                         FillResourceArray();
-                        LOG("File selected name: %s", fileSelected->name.c_str());
-                    }
-                    else
-                    {
-                        LOG("File unselected name: %s", fileSelected->name.c_str());
                     }
                 }
 
@@ -683,40 +692,36 @@ void ModuleEditor::UpdateWindowStatus()
 
                 if (f->isSelected && fileSelected)
                 {
-                    // Si no tienes carpeta seleccionada y metes un archivo, crear carpeta Library, updatear, y mostrar.
-
-                    if (ImGui::TreeNodeEx(f->name.c_str(), nodeFlags))
+                    ImGui::Columns(resourceArray.size() + 8, NULL, false);
+                    for (int i = 0; i < resourceArray.size(); i++)
                     {
-                        // Crear vector con nombres dirs y archivos.
-                            // Usar el HasExtension para poner un png u otro en el button.
-                            // Tener en cuenta el update directory bajo los create directories.
-                        for (int i = 0; i < resourceArray.size(); i++)
+                        if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
                         {
-                            if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
-                            {
-                                DrawImageAndText(folderID, resourceArray.at(i).c_str());
-                            }
+                            DrawImageAndText(folderID, resourceArray.at(i).c_str(), i);
+                        }
+                        if (resourceArray.size() > 0)
+                        {
                             std::string str = f->path + resourceArray.at(i);
                             if (App->fileSystem->HasExtension(str.c_str(), "png"))
                             {
-                                DrawImageAndText(pngID, resourceArray.at(i).c_str());
+                                DrawImageAndText(pngID, resourceArray.at(i).c_str(), i);
                             }
                             if (App->fileSystem->HasExtension(str.c_str(), "jpg"))
                             {
-                                DrawImageAndText(jpgID, resourceArray.at(i).c_str());
+                                DrawImageAndText(jpgID, resourceArray.at(i).c_str(), i);
                             }
-                            if (App->fileSystem->HasExtension(str.c_str(), "fbx"))
+                            if (App->fileSystem->HasExtension(str.c_str(), "fbx") || App->fileSystem->HasExtension(str.c_str(), "FBX"))
                             {
-                                DrawImageAndText(fbxID, resourceArray.at(i).c_str());
+                                DrawImageAndText(fbxID, resourceArray.at(i).c_str(), i);
                             }                  
                             /*if (app->filesystem->hasextension(str.c_str()))
                             {
                                 drawimageandtext(defaultid, resourcearray.at(i).c_str());
                             }*/
                         }
-                        
-                        ImGui::TreePop();
+                        ImGui::NextColumn();
                     }
+                    ImGui::Columns(1);
                 }
 
             }
@@ -877,21 +882,18 @@ void ModuleEditor::FillResourceArray()
         S.pop();
         if (!App->fileSystem->HasExtension(f->name.c_str()))
         {
-            for (int i = 0; i < f->children.size(); i++)
+            for (int i = f->children.size() - 1; i >= 0 ; i--)
             {
                 std::string str = f->children.at(i)->name;
                 resourceArray.push_back(str);
-                LOG("Folder: %s", resourceArray.at(i).c_str());
             }
         }
-        for (int i = 0; i < f->files.size(); i++)
+        for (int i = f->files.size() - 1; i >= 0; i--)
         {
             if (App->fileSystem->HasExtension(f->files.at(i).c_str()))
             {
                 std::string str = f->files.at(i);
                 resourceArray.push_back(str);
-                LOG("File: %s", resourceArray.at(i).c_str());
-
             }
         }
     }

@@ -23,7 +23,6 @@ public:
 	~File() {}
 
 	void ReadFiles();
-	void DeleteFiles();
 
 public:
 	std::string name;
@@ -74,6 +73,7 @@ public:
 	bool HasExtension(const char* path, std::vector<std::string> extensions) const;
 
 	std::string NormalizePath(const char* path) const;
+	std::string DeNormalizePath(const char* path) const;
 	void SplitFilePath(const char* full_path, std::string* path, std::string* file = nullptr, std::string* extension = nullptr) const;
 
 	// Open for Read/Write

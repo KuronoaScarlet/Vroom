@@ -46,7 +46,7 @@ public:
 	//Core Update functions to show and manage windows
 	void MenuBar();
 	void UpdateWindowStatus();
-	void DrawImageAndText(uint id, const char* text);
+	void DrawImageAndText(uint id, const char* text, int numID);
 	//Console Text Pushback
 	void UpdateText(const char* consoleText);
 

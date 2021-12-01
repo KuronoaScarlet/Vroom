@@ -327,6 +327,17 @@ std::string ModuleFileSystem::NormalizePath(const char * full_path) const
 	return newPath;
 }
 
+std::string ModuleFileSystem::DeNormalizePath(const char* full_path) const
+{
+	std::string newPath(full_path);
+	for (int i = 0; i < newPath.size(); ++i)
+	{
+		if (newPath[i] == '/')
+			newPath[i] = '\\';
+	}
+	return newPath;
+}
+
 void ModuleFileSystem::SplitFilePath(const char * full_path, std::string * path, std::string * file, std::string * extension) const
 {
 	if (full_path != nullptr)
@@ -594,4 +605,6 @@ void File::ReadFiles()
 			App->fileSystem->f->ReadFiles();
 		}
 	}
+
+	dirs.clear();
 }

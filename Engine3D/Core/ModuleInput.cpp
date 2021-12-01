@@ -7,6 +7,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScene.h"
 #include "ComponentMaterial.h"
 #include "ImGui/imgui_impl_sdl.h"
 
@@ -131,10 +132,23 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				filePath = event.drop.file;
 				std::string fileName(filePath);
+
+				if (App->editor->fileSelected == nullptr || App->editor->fileSelected == App->scene->assets)
+				{
+					App->fileSystem->CreateDir("Assets/Library/");
+					App->fileSystem->DuplicateFile(fileName.c_str(), "Assets/Library", std::string(""));
+				}
+				else if (App->editor->fileSelected != nullptr)
+				{
+					std::string str = App->fileSystem->DeNormalizePath(App->editor->fileSelected->path.c_str());
+					App->fileSystem->DuplicateFile(fileName.c_str(), str.c_str(), std::string(""));
+				}
+
 				if (fileName.substr(fileName.find_last_of(".")) == ".fbx" || fileName.substr(fileName.find_last_of(".")) == ".FBX" || fileName.substr(fileName.find_last_of(".")) == ".OBJ" || fileName.substr(fileName.find_last_of(".")) == ".obj")
 				{
 					LOG("Path of file dropped will be %s", filePath);
 					App->import->LoadGeometry(filePath);
+
 				}
 				else if (fileName.substr(fileName.find_last_of(".")) == ".jpg" || fileName.substr(fileName.find_last_of(".")) == ".png" || fileName.substr(fileName.find_last_of(".")) == ".PNG" || fileName.substr(fileName.find_last_of(".")) == ".JPG")
 				{
@@ -149,7 +163,6 @@ update_status ModuleInput::PreUpdate(float dt)
 							{
 								material->SetTexture(texture);
 							}
-
 						}
 					}
 					else
@@ -161,7 +174,6 @@ update_status ModuleInput::PreUpdate(float dt)
 							{
 								material->SetTexture(texture);
 							}
-
 						}
 					}
 				}
