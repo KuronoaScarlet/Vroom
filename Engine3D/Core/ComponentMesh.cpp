@@ -166,6 +166,12 @@ bool ComponentMesh::Update(float dt)
 		globalAABB.GetCornerPoints(points);
 		App->renderer3D->DrawBox(points, float3(0.5f, 0.8f, 0.1f));
 	}
+	if (drawOBB)
+	{
+		float3 p[8];
+		globalOBB.GetCornerPoints(p);
+		App->renderer3D->DrawBox(p, float3(0.2f, 0.4f, 0.9f));
+	}
 	drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -225,6 +231,7 @@ void ComponentMesh::OnGui()
 		ImGui::Checkbox("Draw face normals", &drawFaceNormals);
 		ImGui::Checkbox("Draw vertex normals", &drawVertexNormals);
 		ImGui::Checkbox("Show boundingBoxes", &drawBounding);
+		ImGui::Checkbox("Show OBB", &drawOBB);
 	}
 }
 

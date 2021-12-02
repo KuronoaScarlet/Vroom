@@ -54,6 +54,7 @@ public:
 	bool drawWireframe = false;
 	bool drawVertexNormals = false;
 	bool drawBounding = false;
+	bool drawOBB = false;
 	bool drawFaceNormals = false;
 	float normalScale = 1.f;
 	
