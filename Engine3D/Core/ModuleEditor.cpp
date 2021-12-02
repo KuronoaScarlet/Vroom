@@ -489,7 +489,8 @@ void ModuleEditor::DrawImageAndText(uint id, const char* text, int numID)
         }
         else
         {
-            ShellExecute(NULL, NULL, str.c_str() , NULL, NULL, SW_SHOW);
+
+            ShellExecute(NULL, "open", App->fileSystem->DeNormalizePath(str.c_str()).c_str(), NULL, NULL, SW_SHOWNORMAL);
             LOG("Clicked File Path: %s", str.c_str());
         }
     }
