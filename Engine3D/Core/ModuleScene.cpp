@@ -103,7 +103,7 @@ update_status ModuleScene::Update(float dt)
 		}
 		App->viewportBufferGame->PostUpdate(dt);
 	}
-	
+
 	return UPDATE_CONTINUE;
 }
 
