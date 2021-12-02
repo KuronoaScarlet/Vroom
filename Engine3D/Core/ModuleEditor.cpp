@@ -138,7 +138,6 @@ update_status ModuleEditor::Update(float dt)
             App->scene->assets->ReadFiles();
             FillResourceArray();
         }
-
         freq = 0.0f;
     }
 
@@ -478,10 +477,10 @@ void ModuleEditor::DrawImageAndText(uint id, const char* text, int numID)
             {
                 if (fileSelected->children.at(i)->name == text)
                 {
+                    resourceArray.clear();
                     fileSelected = fileSelected->children.at(i);
                     f = fileSelected;
                     fileSelected->isSelected = true;
-                    resourceArray.clear();
                     FillResourceArray();
                 }
             }
@@ -588,6 +587,14 @@ void ModuleEditor::UpdateWindowStatus()
 
             if (ImGui::Button("Delete", ImVec2(120, 0)))
             {
+                if (fileSelected->files.size() > 0)
+                {
+                    for (uint i = 0; i < fileSelected->files.size(); i++)
+                    {
+                        std::string filePath = fileSelected->path + std::string(fileSelected->files.at(i));
+                        App->fileSystem->DeleteDir(filePath.c_str());
+                    }
+                }
                 App->fileSystem->DeleteDir(fileSelected->path.c_str());
                 fileSelected = nullptr;
                 delFolderPopUp = false;
@@ -700,14 +707,14 @@ void ModuleEditor::UpdateWindowStatus()
 
                 if (f->isSelected && fileSelected)
                 {
-                    ImGui::Columns(resourceArray.size() + 5, NULL, false);
+                    ImGui::Columns(resourceArray.size() + 6, NULL, false);
                     for (int i = 0; i < resourceArray.size(); i++)
                     {
                         if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
                         {
                             DrawImageAndText(folderID, resourceArray.at(i).c_str(), i);
                         }
-                        if (resourceArray.size() > 0)
+                        if (resourceArray.size() > 0 && i < resourceArray.size())
                         {
                             std::string str = f->path + resourceArray.at(i);
                             if (App->fileSystem->HasExtension(str.c_str(), "png"))
