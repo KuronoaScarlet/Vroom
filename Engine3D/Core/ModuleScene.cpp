@@ -63,6 +63,7 @@ bool ModuleScene::CleanUp()
 
 update_status ModuleScene::Update(float dt)
 {
+	App->viewportBuffer->PreUpdate(dt);
 	std::queue<GameObject*> S;
 	for (GameObject* child : root->children)
 	{
@@ -79,7 +80,6 @@ update_status ModuleScene::Update(float dt)
 			S.push(child);
 		}
 	}
-
 	App->editor->DrawGrid();
 	App->viewportBuffer->PostUpdate(dt);
 	if (camera != nullptr)
