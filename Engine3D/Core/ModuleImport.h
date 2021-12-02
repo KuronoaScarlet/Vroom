@@ -1,6 +1,9 @@
 #pragma once
 #include "Module.h"
 
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+
 #include <string>
 
 class ComponentMesh;
@@ -20,5 +23,13 @@ public:
 
 	void FindNodeName(const aiScene* scene, const size_t i, std::string& name);
 
+	//void Import(const aiMaterial* material, ComponentMesh* mesh);
+	/*
+	* every time we drop file:
+	IMPORT(done) -> SAVE -> LOAD
+	(LOAD == SAVE in reverse order)
+	*/
+	uint64 Save(const ComponentMesh* mesh, const char* name);
+	void Load(const char* name);
 
 };

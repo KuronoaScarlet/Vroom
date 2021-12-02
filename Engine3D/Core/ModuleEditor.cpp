@@ -762,6 +762,7 @@ void ModuleEditor::UpdateWindowStatus()
         {
             LOG("GameObject deleted name: %s", App->editor->gameobjectSelected->name.c_str());
             App->scene->root->EraseGameObject();
+            //App->import->Load("BakerHouse.asset");
         }
 
         //Just cleaning gameObjects(not textures,buffers...)
