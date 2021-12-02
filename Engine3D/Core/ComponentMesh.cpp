@@ -168,9 +168,9 @@ bool ComponentMesh::Update(float dt)
 	}
 	if (drawOBB)
 	{
-		float3 p[8];
-		globalOBB.GetCornerPoints(p);
-		App->renderer3D->DrawBox(p, float3(0.2f, 0.4f, 0.9f));
+		float3 points[8];
+		globalOBB.GetCornerPoints(points);
+		App->renderer3D->DrawBox(points, float3(0.2f, 0.4f, 0.9f));
 	}
 	drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
