@@ -55,6 +55,7 @@ void ComponentMesh::CopyParMesh(par_shapes_mesh* parMesh)
 	{
 		indices[i] = parMesh->triangles[i];
 	}
+
 	memcpy(&normals[0], parMesh->normals, numVertices);
 
 	par_shapes_free_mesh(parMesh);
@@ -62,6 +63,7 @@ void ComponentMesh::CopyParMesh(par_shapes_mesh* parMesh)
 	GenerateBuffers();
 	ComputeNormals();
 	GenerateBounds();
+
 }
 
 
@@ -115,19 +117,11 @@ void ComponentMesh::GenerateBounds()
 {
 	localAABB.SetNegativeInfinity();
 	localAABB.Enclose(&vertices[0], vertices.size());
-		
-	Sphere sphere;	
-	sphere.r = 0.f;
-	sphere.pos = localAABB.CenterPoint();
-	sphere.Enclose(localAABB);
-
-	radius = sphere.r;
-	centerPoint = sphere.pos;
 
 	globalOBB = localAABB;
-	globalOBB.Transform(owner->transform->transformMatrixLocal);
+	globalOBB.Transform(owner->parent->transform->transformMatrixLocal);
 	globalAABB.SetNegativeInfinity();
-	globalAABB.Enclose(globalAABB);
+	globalAABB.Enclose(globalOBB);
 }
 
 void ComponentMesh::DrawNormals() const
@@ -167,7 +161,12 @@ float3 ComponentMesh::GetCenterPointInWorldCoords() const
 
 bool ComponentMesh::Update(float dt)
 {
-
+	if (drawBounding)
+	{
+		float3 points[8];
+		globalAABB.GetCornerPoints(points);
+		App->renderer3D->DrawBox(points, float3(0.5f, 0.8f, 0.1f));
+	}
 	drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -208,6 +207,8 @@ bool ComponentMesh::Update(float dt)
 	
 	App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+
+
 	if (drawFaceNormals || drawVertexNormals)
 		DrawNormals();
 
@@ -224,6 +225,7 @@ void ComponentMesh::OnGui()
 		ImGui::DragFloat("Normal draw scale", &normalScale);
 		ImGui::Checkbox("Draw face normals", &drawFaceNormals);
 		ImGui::Checkbox("Draw vertex normals", &drawVertexNormals);
+		ImGui::Checkbox("Show boundingBoxes", &drawBounding);
 	}
 }
 
