@@ -15,7 +15,7 @@ public:
 	update_status Update(float dt)override;
 	bool CleanUp() override;
 
-	void LookAt(const float3&point);
+	void LookAt(const float3& point);
 	void CalculateViewMatrix();
 	void RecalculateProjection();
 	void OnGui() override;
@@ -29,8 +29,8 @@ public:
 	float verticalFOV = 60.f;
 	float nearPlaneDistance = 0.1f;
 	float farPlaneDistance = 5000.f;
-	float cameraSensitivity = .5f; 
-	float cameraSpeed = 30.f;
+	float cameraSensitivity = .5f;
+	float cameraSpeed = 60.f;
 	bool projectionIsDirty = false;
 
 private:

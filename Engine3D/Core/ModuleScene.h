@@ -22,5 +22,6 @@ public:
 public:
 	
 	GameObject* root;
+	GameObject* camera;
 	File* assets;
 };

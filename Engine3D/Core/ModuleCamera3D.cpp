@@ -16,9 +16,8 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 	position = float3(0.0f, 5.0f, -15.0f);
 	reference = float3(0.0f, 0.0f, 0.0f);
-	
-	CalculateViewMatrix();
 
+	CalculateViewMatrix();
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -48,21 +47,21 @@ bool ModuleCamera3D::CleanUp()
 update_status ModuleCamera3D::Update(float dt)
 {
 
-	float3 newPos(0,0,0);
+	float3 newPos(0, 0, 0);
 	float speed = cameraSpeed * dt;
-	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed *= 4.f;
 
-	if(App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
 		newPos.y += speed;
-	if(App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 		newPos.y -= speed;
-		
+
 	//Focus
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) 
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
-		if(App->editor->gameobjectSelected != nullptr)
-		{			
+		if (App->editor->gameobjectSelected != nullptr)
+		{
 			if (ComponentMesh* mesh = App->editor->gameobjectSelected->GetComponent<ComponentMesh>())
 			{
 				const float3 meshCenter = mesh->GetCenterPointInWorldCoords();
@@ -78,21 +77,21 @@ update_status ModuleCamera3D::Update(float dt)
 			}
 		}
 	}
-	
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		newPos += front * speed;
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		newPos -= front * speed;
 
 
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		newPos += right * speed;
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		newPos -= right * speed;
 
-	if (App->input->GetMouseZ() > 0) 
+	if (App->input->GetMouseZ() > 0)
 		newPos += front * speed * 2;
-	if (App->input->GetMouseZ() < 0) 
+	if (App->input->GetMouseZ() < 0)
 		newPos -= front * speed * 2;
 
 	position += newPos;
@@ -101,7 +100,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	bool hasRotated = false;
 
-	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
@@ -113,8 +112,8 @@ update_status ModuleCamera3D::Update(float dt)
 				const float newDeltaY = (float)dy * cameraSensitivity;
 
 				reference = App->editor->gameobjectSelected->transform->GetPosition();
-				Quat orbitMat = Quat::RotateY(newDeltaX * .1f);								
-				
+				Quat orbitMat = Quat::RotateY(newDeltaX * .1f);
+
 				if (abs(up.y) < 0.3f) // Avoid gimball lock on up & down apex
 				{
 					if (position.y > reference.y && newDeltaY < 0.f)
@@ -126,7 +125,7 @@ update_status ModuleCamera3D::Update(float dt)
 				{
 					orbitMat = orbitMat * math::Quat::RotateAxisAngle(right, newDeltaY * .1f);
 				}
-				
+
 				position = orbitMat * (position - reference) + reference;
 
 				CalculateViewMatrix();
@@ -170,7 +169,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::LookAt(const float3& point)
-{		
+{
 	reference = point;
 
 	front = (reference - position).Normalized();
@@ -226,14 +225,14 @@ void ModuleCamera3D::OnGui()
 
 void ModuleCamera3D::OnSave(JSONWriter& writer) const
 {
-	writer.String("camera");	
+	writer.String("camera");
 	writer.StartObject();
 	SAVE_JSON_FLOAT(verticalFOV)
-	SAVE_JSON_FLOAT(nearPlaneDistance)
-	SAVE_JSON_FLOAT(farPlaneDistance)
-	SAVE_JSON_FLOAT(cameraSpeed)
-	SAVE_JSON_FLOAT(cameraSensitivity)
-	writer.EndObject();
+		SAVE_JSON_FLOAT(nearPlaneDistance)
+		SAVE_JSON_FLOAT(farPlaneDistance)
+		SAVE_JSON_FLOAT(cameraSpeed)
+		SAVE_JSON_FLOAT(cameraSensitivity)
+		writer.EndObject();
 }
 
 void ModuleCamera3D::OnLoad(const JSONReader& reader)

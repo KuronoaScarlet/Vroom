@@ -14,12 +14,12 @@ class ModuleWindow;
 class ModuleInput;
 class ModuleScene;
 class ModuleRenderer3D;
-class ModuleCamera3D;
 class ModuleEditor;
 class ModuleViewportFrameBuffer;
 class ModuleImport;
 class ModuleFileSystem;
 class ModuleTextures;
+class ModuleCamera3D;
 
 class Application
 {
@@ -29,10 +29,11 @@ public:
 	ModuleInput* input { nullptr };
 	ModuleScene* scene { nullptr };
 	ModuleRenderer3D* renderer3D { nullptr };
-	ModuleCamera3D* camera { nullptr };
 	ModuleEditor* editor { nullptr };
 	ModuleViewportFrameBuffer* viewportBuffer { nullptr };
+	ModuleViewportFrameBuffer* viewportBufferGame { nullptr };
 	ModuleImport* import { nullptr };
+	ModuleCamera3D* camera { nullptr };
 	ModuleFileSystem* fileSystem { nullptr };
 	ModuleTextures* textures { nullptr };
 

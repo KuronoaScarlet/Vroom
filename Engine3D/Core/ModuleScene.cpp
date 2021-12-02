@@ -9,7 +9,9 @@
 #include "Component.h"
 #include <stack>
 #include <queue>
-
+#include "ModuleViewportFrameBuffer.h"
+#include "CameraComponent.h"
+#include "ModuleEditor.h"
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -20,6 +22,9 @@ bool ModuleScene::Start()
 	bool ret = true;
 	
 	root = new GameObject("Root");
+	camera = CreateGameObject("Camera", root);
+	camera->CreateComponent<CameraComponent>();
+	camera->GetComponent<CameraComponent>()->Start();
 	assets = new File("Assets");
 	assets->path = assets->name;
 	assets->ReadFiles();
@@ -75,6 +80,30 @@ update_status ModuleScene::Update(float dt)
 		}
 	}
 
+	App->editor->DrawGrid();
+	App->viewportBuffer->PostUpdate(dt);
+	if (camera != nullptr)
+	{
+		camera->GetComponent<CameraComponent>()->PreUpdate(dt);
+		std::queue<GameObject*> S;
+		for (GameObject* child : root->children)
+		{
+			S.push(child);
+		}
+
+		while (!S.empty())
+		{
+			GameObject* go = S.front();
+			go->Update(dt);
+			S.pop();
+			for (GameObject* child : go->children)
+			{
+				S.push(child);
+			}
+		}
+		App->viewportBufferGame->PostUpdate(dt);
+	}
+	
 	return UPDATE_CONTINUE;
 }
 

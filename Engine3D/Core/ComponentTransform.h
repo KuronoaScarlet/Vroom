@@ -21,6 +21,8 @@ public:
 	inline float3 GetPosition() const { return position; };
 	inline float3 GetRotation() const { return rotationEuler; };
 	inline float3 GetScale() const { return scale; };
+	inline float3 GetForward() const { return  transformMatrix.RotatePart().Col(2).Normalized(); };
+	inline float3 GetUp() const { return  transformMatrix.RotatePart().Col(1).Normalized(); };
 
 	void NewAttachment();
 	void OnParentMoved();

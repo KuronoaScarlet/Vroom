@@ -23,12 +23,13 @@ Application::Application()
 	input = new ModuleInput(this);
 	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
-	camera = new ModuleCamera3D(this);
 	editor = new ModuleEditor(this);
 	viewportBuffer = new ModuleViewportFrameBuffer(this);
+	viewportBufferGame = new ModuleViewportFrameBuffer(this);
 	import = new ModuleImport(this);
 	fileSystem = new ModuleFileSystem(this);
 	textures = new ModuleTextures(this);
+	camera = new ModuleCamera3D(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -44,6 +45,7 @@ Application::Application()
 	
 	// Scenes
 	AddModule(viewportBuffer);
+	AddModule(viewportBufferGame);
 	AddModule(scene);
 	AddModule(editor);
 
@@ -61,7 +63,6 @@ Application::Application()
 
 Application::~Application()
 {
-
 	for(uint i = modules.size(); i <= 0 ; i--)
 		RELEASE(modules[i]);
 	
