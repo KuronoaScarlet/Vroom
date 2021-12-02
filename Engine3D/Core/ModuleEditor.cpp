@@ -14,6 +14,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ModuleFileSystem.h"
+#include <fstream>
 
 //Tools
 #include "CameraComponent.h"
@@ -488,6 +489,7 @@ void ModuleEditor::DrawImageAndText(uint id, const char* text, int numID)
         }
         else
         {
+            ShellExecute(NULL, NULL, str.c_str() , NULL, NULL, SW_SHOW);
             LOG("Clicked File Path: %s", str.c_str());
         }
     }
