@@ -16,7 +16,7 @@
 #include "ModuleFileSystem.h"
 
 //Tools
-
+#include "CameraComponent.h"
 #include <string>
 #include <stack>
 #include "ImGui/imgui_impl_opengl3.h"
@@ -862,7 +862,8 @@ void ModuleEditor::UpdateWindowStatus()
         if (viewportSize.x != lastViewportSize.x || viewportSize.y != lastViewportSize.y)
         {
             App->camera->aspectRatio = viewportSize.x / viewportSize.y;
-            App->camera->RecalculateProjection();
+            App->scene->camera->GetComponent<CameraComponent>()->aspectRatio = viewportSize.x / viewportSize.y;
+            App->scene->camera->GetComponent<CameraComponent>()->RecalculateProjection();
         }
         lastViewportSize = viewportSize;
         ImGui::Image((ImTextureID)App->viewportBufferGame->texture, viewportSize, ImVec2(0, 1), ImVec2(1, 0));
