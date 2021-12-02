@@ -138,6 +138,7 @@ update_status ModuleEditor::Update(float dt)
         {
             App->scene->assets->ReadFiles();
             FillResourceArray();
+            fileSelected = f;
         }
         freq = 0.0f;
     }
@@ -719,7 +720,7 @@ void ModuleEditor::UpdateWindowStatus()
                         }
                         if (resourceArray.size() > 0 && i < resourceArray.size())
                         {
-                            std::string str = f->path + resourceArray.at(i);
+                            std::string str = fileSelected->path + resourceArray.at(i);
                             if (App->fileSystem->HasExtension(str.c_str(), "png"))
                             {
                                 DrawImageAndText(pngID, resourceArray.at(i).c_str(), i);
@@ -901,6 +902,7 @@ void ModuleEditor::FillResourceArray()
 {
     std::stack<File*> S;
     S.push(fileSelected);
+
 
     while (!S.empty())
     {
