@@ -160,129 +160,80 @@ float3 ComponentMesh::GetCenterPointInWorldCoords() const
 	return owner->transform->transformMatrix.TransformPos(centerPoint);
 }
 
+bool ComponentMesh::Render(float dt)
+{
+	if (drawBounding)
+	{
+		float3 points[8];
+		globalAABB.GetCornerPoints(points);
+		App->renderer3D->DrawBox(points, float3(0.5f, 0.8f, 0.1f));
+	}
+	if (drawOBB)
+	{
+		float3 points[8];
+		globalOBB.GetCornerPoints(points);
+		App->renderer3D->DrawBox(points, float3(0.2f, 0.4f, 0.9f));
+	}
+	drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//--Enable States--//
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	//-- Buffers--//
+	glBindBuffer(GL_ARRAY_BUFFER, this->textureBufferId);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferId);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	if (ComponentMaterial* material = owner->GetComponent<ComponentMaterial>())
+	{
+		drawWireframe || !App->renderer3D->useTexture || App->renderer3D->wireframeMode ? 0 : glBindTexture(GL_TEXTURE_2D, material->GetTextureId());
+	}
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBufferId);
+
+	//-- Draw --//
+	glPushMatrix();
+	glMultMatrixf(owner->transform->transformMatrix.Transposed().ptr());
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glDrawElements(GL_TRIANGLES, this->numIndices, GL_UNSIGNED_INT, NULL);
+	glPopMatrix();
+	//-- UnBind Buffers--//
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//--Disables States--//
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	if (drawFaceNormals || drawVertexNormals)
+		DrawNormals();
+
+	return true;
+}
 bool ComponentMesh::Update(float dt)
 {
 	if (!App->editor->playing)
 	{
-		if (drawBounding)
-		{
-			float3 points[8];
-			globalAABB.GetCornerPoints(points);
-			App->renderer3D->DrawBox(points, float3(0.5f, 0.8f, 0.1f));
-		}
-		if (drawOBB)
-		{
-			float3 points[8];
-			globalOBB.GetCornerPoints(points);
-			App->renderer3D->DrawBox(points, float3(0.2f, 0.4f, 0.9f));
-		}
-		drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		//--Enable States--//
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		//-- Buffers--//
-		glBindBuffer(GL_ARRAY_BUFFER, this->textureBufferId);
-		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-		glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferId);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		if (ComponentMaterial* material = owner->GetComponent<ComponentMaterial>())
-		{
-			drawWireframe || !App->renderer3D->useTexture || App->renderer3D->wireframeMode ? 0 : glBindTexture(GL_TEXTURE_2D, material->GetTextureId());
-		}
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBufferId);
-
-		//-- Draw --//
-		glPushMatrix();
-		glMultMatrixf(owner->transform->transformMatrix.Transposed().ptr());
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glDrawElements(GL_TRIANGLES, this->numIndices, GL_UNSIGNED_INT, NULL);
-		glPopMatrix();
-		//-- UnBind Buffers--//
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		//--Disables States--//
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		if (drawFaceNormals || drawVertexNormals)
-			DrawNormals();
-
-		return true;
+		Render(dt);
 	}
 	else
 	{
 		if (CanCameraSeeObject(&App->scene->camera->GetComponent<CameraComponent>()->GetCamera()))
 		{
-			if (drawBounding)
-			{
-				float3 points[8];
-				globalAABB.GetCornerPoints(points);
-				App->renderer3D->DrawBox(points, float3(0.5f, 0.8f, 0.1f));
-			}
-			if (drawOBB)
-			{
-				float3 points[8];
-				globalOBB.GetCornerPoints(points);
-				App->renderer3D->DrawBox(points, float3(0.2f, 0.4f, 0.9f));
-			}
-			drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			//--Enable States--//
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-			//-- Buffers--//
-			glBindBuffer(GL_ARRAY_BUFFER, this->textureBufferId);
-			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-			glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferId);
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-			if (ComponentMaterial* material = owner->GetComponent<ComponentMaterial>())
-			{
-				drawWireframe || !App->renderer3D->useTexture || App->renderer3D->wireframeMode ? 0 : glBindTexture(GL_TEXTURE_2D, material->GetTextureId());
-			}
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBufferId);
-
-			//-- Draw --//
-			glPushMatrix();
-			glMultMatrixf(owner->transform->transformMatrix.Transposed().ptr());
-			glColor3f(1.0f, 1.0f, 1.0f);
-			glDrawElements(GL_TRIANGLES, this->numIndices, GL_UNSIGNED_INT, NULL);
-			glPopMatrix();
-			//-- UnBind Buffers--//
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			//--Disables States--//
-			glDisableClientState(GL_VERTEX_ARRAY);
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-			App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-			if (drawFaceNormals || drawVertexNormals)
-				DrawNormals();
-
-			return true;
+			Render(dt);
 		}
 	}
+
+	return true;
 }
 
 void ComponentMesh::OnGui()

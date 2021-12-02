@@ -34,6 +34,7 @@ public:
 	inline float GetSphereRadius() const { return radius; }
 
 	bool Update(float dt) override;
+	bool Render(float dt);
 	void OnGui() override;
 
 	uint vertexBufferId = 0, indexBufferId = 0, textureBufferId = 0;
