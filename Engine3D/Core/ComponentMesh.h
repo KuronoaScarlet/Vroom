@@ -29,6 +29,7 @@ public:
 	void ComputeNormals();
 	void GenerateBounds();
 	void DrawNormals() const;
+	bool CanCameraSeeObject(Frustum* cameraFrustum);
 	float3 GetCenterPointInWorldCoords() const;
 	inline float GetSphereRadius() const { return radius; }
 

@@ -5,12 +5,14 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ComponentMaterial.h"
+#include "CameraComponent.h"
+#include "ModuleScene.h"
 #include "ComponentTransform.h"
 #include "GameObject.h"
 #include "ImGui/imgui.h"
 #include "Geometry/Sphere.h"
 #include "par_shapes.h"
-
+#include "Geometry/Plane.h"
 
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent) {}
 
@@ -160,64 +162,66 @@ float3 ComponentMesh::GetCenterPointInWorldCoords() const
 
 bool ComponentMesh::Update(float dt)
 {
-	if (drawBounding)
+	if (CanCameraSeeObject(&App->scene->camera->GetComponent<CameraComponent>()->GetCamera()))
 	{
-		float3 points[8];
-		globalAABB.GetCornerPoints(points);
-		App->renderer3D->DrawBox(points, float3(0.5f, 0.8f, 0.1f));
+		if (drawBounding)
+		{
+			float3 points[8];
+			globalAABB.GetCornerPoints(points);
+			App->renderer3D->DrawBox(points, float3(0.5f, 0.8f, 0.1f));
+		}
+		if (drawOBB)
+		{
+			float3 points[8];
+			globalOBB.GetCornerPoints(points);
+			App->renderer3D->DrawBox(points, float3(0.2f, 0.4f, 0.9f));
+		}
+		drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		//--Enable States--//
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		//-- Buffers--//
+		glBindBuffer(GL_ARRAY_BUFFER, this->textureBufferId);
+		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+		glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferId);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		if (ComponentMaterial* material = owner->GetComponent<ComponentMaterial>())
+		{
+			drawWireframe || !App->renderer3D->useTexture || App->renderer3D->wireframeMode ? 0 : glBindTexture(GL_TEXTURE_2D, material->GetTextureId());
+		}
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBufferId);
+
+		//-- Draw --//
+		glPushMatrix();
+		glMultMatrixf(owner->transform->transformMatrix.Transposed().ptr());
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glDrawElements(GL_TRIANGLES, this->numIndices, GL_UNSIGNED_INT, NULL);
+		glPopMatrix();
+		//-- UnBind Buffers--//
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		//--Disables States--//
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		if (drawFaceNormals || drawVertexNormals)
+			DrawNormals();
+
+		return true;
 	}
-	if (drawOBB)
-	{
-		float3 points[8];
-		globalOBB.GetCornerPoints(points);
-		App->renderer3D->DrawBox(points, float3(0.2f, 0.4f, 0.9f));
-	}
-	drawWireframe || App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//--Enable States--//
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	//-- Buffers--//
-	glBindBuffer(GL_ARRAY_BUFFER, this->textureBufferId);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferId);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	if (ComponentMaterial* material = owner->GetComponent<ComponentMaterial>())
-	{	
-		drawWireframe || !App->renderer3D->useTexture || App->renderer3D->wireframeMode ? 0 : glBindTexture(GL_TEXTURE_2D, material->GetTextureId());
-	}
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBufferId);
-
-	//-- Draw --//
-	glPushMatrix();
-	glMultMatrixf(owner->transform->transformMatrix.Transposed().ptr());
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glDrawElements(GL_TRIANGLES, this->numIndices, GL_UNSIGNED_INT, NULL);
-	glPopMatrix();
-	//-- UnBind Buffers--//
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//--Disables States--//
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	App->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-
-
-	if (drawFaceNormals || drawVertexNormals)
-		DrawNormals();
-
-	return true;
 }
 
 void ComponentMesh::OnGui()
@@ -234,5 +238,37 @@ void ComponentMesh::OnGui()
 		ImGui::Checkbox("Show OBB", &drawOBB);
 	}
 }
+bool ComponentMesh::CanCameraSeeObject(Frustum* cameraFrustum)
+{
 
+	float3 obb[8];
+	Plane frustum[6];
 
+	int totalInPoints = 0;
+	cameraFrustum->GetPlanes(frustum);
+	globalAABB.GetCornerPoints(obb);
+
+	for (size_t i = 0; i < 6; i++)
+	{
+		int inPointCount = 8;
+		int inTotalPoints = 1;
+
+		for (size_t k = 0; k < 8; k++)
+		{
+			if (frustum[i].IsOnPositiveSide(obb[k]))
+			{
+				inTotalPoints = 0;
+				--inPointCount;
+			}
+			if (inPointCount == 0)
+				return false;
+
+			totalInPoints += inTotalPoints;
+		}
+	}
+
+	if (totalInPoints == 6)
+		return true;
+
+	return true;
+}
