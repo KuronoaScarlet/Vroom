@@ -61,6 +61,7 @@ public:
 	bool showDemoWindow;
 	bool showAnotherWindow;
 	bool showAboutWindow;
+	bool playing = false;
 	bool showConfWindow;
 	bool showInspectorWindow;
 	bool showHierarchyWindow;

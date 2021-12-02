@@ -451,6 +451,9 @@ void ModuleEditor::MenuBar()
             ImGui::EndMenu();
         }
 
+        ImGui::Separator();
+        if (ImGui::Checkbox("Playing", &playing)){}
+
         /* ---- HELP ----*/
         if (ImGui::BeginMenu("Help"))
         {
