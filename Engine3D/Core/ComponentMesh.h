@@ -57,7 +57,9 @@ public:
 	bool drawOBB = false;
 	bool drawFaceNormals = false;
 	float normalScale = 1.f;
-	
+	AABB localAABB;
+	AABB globalAABB;
+	OBB globalOBB;
 private:
 
 	//Bounding sphere
@@ -65,7 +67,5 @@ private:
 	float radius;
 
 	//Local coords AABB
-	AABB localAABB;
-	AABB globalAABB;
-	OBB globalOBB;	
+
 };

@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "glew.h"
 #include "ImGui/imgui.h"
+#include "ComponentMesh.h"
 
 ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent) {
 	
@@ -21,7 +22,8 @@ bool ComponentTransform::Update(float dt) {
 	{
 		transformMatrixLocal = float4x4::FromTRS(position, rotation, scale);
 		RecomputeGlobalMatrix();
-		owner->PropagateTransform();
+		owner->PropagateTransform();		
+
 		isDirty = false;
 	}
 	return true;
@@ -98,5 +100,12 @@ void ComponentTransform::RecomputeGlobalMatrix()
 	else
 	{
 		transformMatrix = transformMatrixLocal;
+	}
+	if (owner->GetComponent<ComponentMesh>() != nullptr)
+	{
+		owner->GetComponent<ComponentMesh>()->globalOBB = owner->GetComponent<ComponentMesh>()->localAABB;
+		owner->GetComponent<ComponentMesh>()->globalOBB.Transform(transformMatrix);
+		owner->GetComponent<ComponentMesh>()->globalAABB.SetNegativeInfinity();
+		owner->GetComponent<ComponentMesh>()->globalAABB.Enclose(owner->GetComponent<ComponentMesh>()->globalOBB);
 	}
 }
