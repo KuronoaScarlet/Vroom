@@ -123,6 +123,11 @@ void ComponentMesh::GenerateBounds()
 
 	radius = sphere.r;
 	centerPoint = sphere.pos;
+
+	globalOBB = localAABB;
+	globalOBB.Transform(owner->transform->transformMatrixLocal);
+	globalAABB.SetNegativeInfinity();
+	globalAABB.Enclose(globalAABB);
 }
 
 void ComponentMesh::DrawNormals() const

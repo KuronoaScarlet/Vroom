@@ -6,6 +6,7 @@
 #include "Math/float2.h"
 #include "Geometry/AABB.h"
 #include "par_shapes.h"
+#include "Geometry/OBB.h"
 
 class ComponentMesh : public Component {
 
@@ -63,5 +64,6 @@ private:
 
 	//Local coords AABB
 	AABB localAABB;
-	
+	AABB globalAABB;
+	OBB globalOBB;	
 };
