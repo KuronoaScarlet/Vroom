@@ -94,11 +94,12 @@ public:
 	ImGuiWindowFlags sceneWindow = 0;
 
 	GameObject* gameobjectSelected;
+
 	File* fileSelected;
+	File* f;
 
 	ImVec2 lastViewportSize;
 
-	File* f;
 
 	float freq;
 };
