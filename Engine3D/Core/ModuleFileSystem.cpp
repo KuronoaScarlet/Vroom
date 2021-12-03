@@ -165,11 +165,9 @@ bool ModuleFileSystem::CreateDir(const char* dir)
 
 bool ModuleFileSystem::DeleteDir(const char* dir)
 {
-
 	PHYSFS_delete(dir);
 	LOG("Directory deleted: %s", dir);
 	return true;
-
 }
 
 // Check if a file is a directory
