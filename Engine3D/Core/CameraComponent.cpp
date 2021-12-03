@@ -13,17 +13,13 @@ CameraComponent::CameraComponent(GameObject* parent) : Component(parent)
 {
 	frustrum.type = FrustumType::PerspectiveFrustum;
 	frustrum.nearPlaneDistance = 0.2f;
-	frustrum.farPlaneDistance = 500.f;
+	frustrum.farPlaneDistance = 600.f;
 	frustrum.front = owner->transform->GetForward();
 	frustrum.up = owner->transform->GetUp();
-	frustrum.verticalFov = 60.0f * DEGTORAD;
+	frustrum.verticalFov = 90.0f * DEGTORAD;
 	frustrum.horizontalFov = 2.0f * atanf(tanf(frustrum.verticalFov / 2) * (16.f / 9.f));
 }
 
-CameraComponent::~CameraComponent()
-{}
-
-// -----------------------------------------------------------------
 bool CameraComponent::Start()
 {
 	LOG("Setting up the camera");
@@ -35,16 +31,12 @@ bool CameraComponent::Start()
 	return ret;
 }
 
-// -----------------------------------------------------------------
-// -----------------------------------------------------------------
 bool CameraComponent::Update(float dt)
 {
-
-		frustrum.pos = owner->transform->GetPosition();
-		frustrum.front = owner->transform->GetForward();
-		frustrum.up = owner->transform->GetUp();
-		viewMatrix = frustrum.ViewMatrix();
-
+	frustrum.pos = owner->transform->GetPosition();
+	frustrum.front = owner->transform->GetForward();
+	frustrum.up = owner->transform->GetUp();
+	viewMatrix = frustrum.ViewMatrix();
 
 	return true;
 }
@@ -52,27 +44,21 @@ bool CameraComponent::Update(float dt)
 bool CameraComponent::PreUpdate(float dt)
 {
 	App->viewportBufferGame->PreUpdate(dt);
-	glLoadIdentity();
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(frustrum.ProjectionMatrix().Transposed().ptr());
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(viewMatrix.Transposed().ptr());
+	Buffer();
 
 	return true;
 }
 
-// -----------------------------------------------------------------
 void CameraComponent::LookAt(const float3& point)
 {		
-	float3 right;
-
 	frustrum.front = (point - frustrum.pos).Normalized();
-	right = float3(0.0f, 1.0f, 0.0f).Cross(frustrum.front).Normalized();
+	float3 p;
+	p = float3(0.0f, 1.0f, 0.0f).Cross(frustrum.front).Normalized();
 	frustrum.up = frustrum.front.Cross(right);
 
 	movedCamera = true;
 }
-// -----------------------------------------------------------------
+
 void CameraComponent::CalculateViewMatrix()
 {
 	if (projectionIsDirty)
@@ -104,4 +90,13 @@ void CameraComponent::OnGui()
 			RecalculateProjection();
 		}
 	}
+}
+
+void CameraComponent::Buffer()
+{
+	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(frustrum.ProjectionMatrix().Transposed().ptr());
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(viewMatrix.Transposed().ptr());
 }

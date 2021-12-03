@@ -9,7 +9,7 @@ class CameraComponent : public Component
 {
 public:
 	CameraComponent(GameObject* parent);
-	virtual ~CameraComponent();
+	virtual ~CameraComponent(){}
 
 	bool Start();
 	bool Update(float dt)override;
@@ -43,6 +43,8 @@ public:
 
 	Frustum frustrum;
 	float FOV = 60.f;
+
+	void Buffer();
 
 private:
 	float lastDeltaX = 0.f, lastDeltaY = 0.f;

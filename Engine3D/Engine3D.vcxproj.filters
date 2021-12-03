@@ -128,9 +128,6 @@
     <ClCompile Include="Core\MathGeoLib\include\Time\Clock.cpp">
       <Filter>ExternalLibraries\MathGeoLib\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Core\CameraComponent.cpp">
-      <Filter>Engine\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ModuleInput.cpp">
       <Filter>Engine\Modules</Filter>
     </ClCompile>
@@ -181,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="Core\ModuleCamera3D.cpp">
       <Filter>Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\CameraComponent.cpp">
+      <Filter>Engine\GameObjects - Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,9 +404,6 @@
       <Filter>ExternalLibraries\MathGeoLib\Time</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleWindow.h">
-      <Filter>Engine\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\CameraComponent.h">
       <Filter>Engine\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleInput.h">
@@ -708,6 +705,9 @@
     </ClInclude>
     <ClInclude Include="Core\ModuleCamera3D.h">
       <Filter>Engine\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\CameraComponent.h">
+      <Filter>Engine\GameObjects - Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
