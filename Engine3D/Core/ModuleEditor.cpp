@@ -134,11 +134,11 @@ update_status ModuleEditor::Update(float dt)
         App->scene->assets->children.clear();
         resourceArray.clear();
         App->scene->assets->children.shrink_to_fit();
+        App->scene->assets->ReadFiles();
         if (fileSelected != nullptr)
         {
-            App->scene->assets->ReadFiles();
-            FillResourceArray();
             fileSelected = f;
+            FillResourceArray();
         }
         freq = 0.0f;
     }
@@ -625,10 +625,11 @@ void ModuleEditor::UpdateWindowStatus()
     if (showResourcesHierarchy)
     {
         ImGui::Begin("Resources Hierarchy", &showResourcesHierarchy);
+
+        ImGui::Separator();
         if (ImGui::Button("Create Folder", { 100,20 })) newFolderPopUp = !newFolderPopUp;
         ImGui::SameLine();
         if (ImGui::Button("Delete Folder", { 100,20 })) delFolderPopUp = !delFolderPopUp;
-
         ImGui::Separator();
 
         std::stack<File*> S;
@@ -699,7 +700,6 @@ void ModuleEditor::UpdateWindowStatus()
 
             while (!S.empty())
             {
-
                 f = S.top();
                 S.pop();
                 ImGuiTreeNodeFlags nodeFlags = 0;
@@ -902,7 +902,6 @@ void ModuleEditor::FillResourceArray()
 {
     std::stack<File*> S;
     S.push(fileSelected);
-
 
     while (!S.empty())
     {

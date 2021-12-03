@@ -144,6 +144,10 @@ update_status ModuleInput::PreUpdate(float dt)
 					App->fileSystem->DuplicateFile(fileName.c_str(), str.c_str(), std::string(""));
 				}
 
+				App->editor->fileSelected->children.clear();
+				App->editor->fileSelected->files.clear();
+				App->editor->fileSelected->ReadFiles();
+
 				if (fileName.substr(fileName.find_last_of(".")) == ".fbx" || fileName.substr(fileName.find_last_of(".")) == ".FBX" || fileName.substr(fileName.find_last_of(".")) == ".OBJ" || fileName.substr(fileName.find_last_of(".")) == ".obj")
 				{
 					LOG("Path of file dropped will be %s", filePath);
