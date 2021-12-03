@@ -17,7 +17,23 @@ ComponentTransform::ComponentTransform(GameObject* parent) : Component(parent) {
 }
 
 
-bool ComponentTransform::Update(float dt) {
+void ComponentTransform::Save()
+{
+	savedPos = position;
+	savedRot = rotationEuler;
+	savedSca = scale;
+}
+void ComponentTransform::Load()
+{
+	position = savedPos;
+	rotationEuler = savedRot;
+	scale = savedSca;
+	SetPosition(position);
+	SetRotation(rotationEuler);
+	SetScale(scale);
+}
+bool ComponentTransform::Update(float dt) 
+{
 	if (isDirty)
 	{
 		transformMatrixLocal = float4x4::FromTRS(position, rotation, scale);

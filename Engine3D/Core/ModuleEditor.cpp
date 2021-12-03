@@ -15,6 +15,7 @@
 #include "ComponentMesh.h"
 #include "ModuleFileSystem.h"
 #include <fstream>
+#include "ComponentTransform.h"
 
 //Tools
 #include "CameraComponent.h"
@@ -453,7 +454,31 @@ void ModuleEditor::MenuBar()
         }
 
         ImGui::Separator();
-        if (ImGui::Checkbox("Playing", &playing)){}
+        if (ImGui::Checkbox("Playing", &playing))
+        {
+            std::stack<GameObject*> S;
+            S.push(App->scene->root);
+            while (!S.empty())
+            {
+                GameObject* go = S.top();
+                S.pop();
+                if (playing)
+                {
+                    go->GetComponent<ComponentTransform>()->Save();
+                }
+                else
+                {
+                    go->GetComponent<ComponentTransform>()->Load();
+                }
+                for (GameObject* child : go->children)
+                {
+                    S.push(child);
+                }
+
+
+            }
+        }
+
 
         /* ---- HELP ----*/
         if (ImGui::BeginMenu("Help"))
@@ -490,7 +515,6 @@ void ModuleEditor::DrawImageAndText(uint id, const char* text, int numID)
         }
         else
         {
-
             ShellExecute(NULL, "open", App->fileSystem->DeNormalizePath(str.c_str()).c_str(), NULL, NULL, SW_SHOWNORMAL);
             LOG("Clicked File Path: %s", str.c_str());
         }
@@ -868,7 +892,7 @@ void ModuleEditor::UpdateWindowStatus()
 
     if (showGameWindow) 
     {
-        ImGui::Begin("Game", &showGameWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar);
+        ImGui::Begin("Game", &showGameWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
         ImVec2 viewportSize = ImGui::GetCurrentWindow()->Size;
         if (viewportSize.x != lastViewportSize.x || viewportSize.y != lastViewportSize.y)
         {
@@ -883,7 +907,7 @@ void ModuleEditor::UpdateWindowStatus()
 
     if (showSceneWindow) 
     {
-        ImGui::Begin("Scene", &showSceneWindow, ImGuiWindowFlags_NoScrollbar);
+        ImGui::Begin("Scene", &showSceneWindow, ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
 
         ImVec2 viewportSize = ImGui::GetCurrentWindow()->Size;
         if (viewportSize.x != lastViewportSize.x || viewportSize.y != lastViewportSize.y)

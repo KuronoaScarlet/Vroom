@@ -17,6 +17,8 @@ public:
 	void SetPosition(const float3& newPosition);
 	void SetRotation(const float3& newRotation);
 	void SetScale(const float3& newScale);
+	void Save();
+	void Load();
 
 	inline float3 GetPosition() const { return position; };
 	inline float3 GetRotation() const { return rotationEuler; };
@@ -31,14 +33,17 @@ public:
 	
 	float4x4 transformMatrix;
 	float4x4 transformMatrixLocal;
-
-private:
-	
-	bool isDirty = false;
-
+	float3 savedPos;
+	float3 savedRot;
+	float3 savedSca;
 	float3 position;
 	Quat rotation;
 	float3 rotationEuler;
 	float3 scale;
+private:
+	
+	bool isDirty = false;
+
+
 
 };
