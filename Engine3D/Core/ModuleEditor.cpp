@@ -424,6 +424,10 @@ void ModuleEditor::MenuBar()
                     ImGui::StyleColorsLight();
                 if (ImGui::MenuItem("Custom"))
                     ImGui::StyleColorsCustom();
+                if (ImGui::MenuItem("Grey"))
+                    ImGui::Style();
+                if (ImGui::MenuItem("Green"))
+                    ImGui::Custom();
                 ImGui::EndMenu();
             }
             ImGui::Separator();
@@ -473,8 +477,6 @@ void ModuleEditor::MenuBar()
                 {
                     S.push(child);
                 }
-
-
             }
         }
 
