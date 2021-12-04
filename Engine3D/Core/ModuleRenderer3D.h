@@ -27,7 +27,7 @@ public:
 	void OnSave(JSONWriter& writer) const override;
 	void DrawingModes(bool currentState, int glMode);
 	void ModuleRenderer3D::DrawBox(float3* points, float3 color);
-	void DrawRayCast(float init, float end);
+	void DrawRayCast(LineSegment pick);
 
 public:
 

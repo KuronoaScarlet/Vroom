@@ -281,10 +281,10 @@ ImVec2 ModuleCamera3D::NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse)
 	ImVec2 normal;
 	float h = ImGui::GetFrameHeight();
 	normal.x = (mouse.x - pos.x) / size.x;
-	normal.y = (mouse.y - (pos.y + h)) /(size.y - h);
+	normal.y = (mouse.y - (pos.y + h)) / (size.y - h);
 
-	normal.x = (normal.x - 0.5f) * 2.0f;
-	normal.y = -((normal.y - 0.5f) * 2.0f);
+	normal.x = (normal.x - 0.5f) / 0.5f;
+	normal.y = -((normal.y - 0.5f) /0.5f);
 
 	return normal;
 }

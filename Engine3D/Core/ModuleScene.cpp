@@ -81,7 +81,7 @@ update_status ModuleScene::Update(float dt)
 			S.push(child);
 		}
 	}
-	App->renderer3D->DrawRayCast(App->camera->picking.a.x, App->camera->picking.b.x);
+	App->renderer3D->DrawRayCast(App->camera->picking);
 	App->editor->DrawGrid();
 	App->viewportBuffer->PostUpdate(dt);
 	if (camera != nullptr)

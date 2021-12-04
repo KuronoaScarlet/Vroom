@@ -261,13 +261,13 @@ void ModuleRenderer3D::DrawBox(float3* points, float3 color)
 	glColor3f(1.f, 1.f, 1.f);
 }
 
-void ModuleRenderer3D::DrawRayCast(float init, float end)
+void ModuleRenderer3D::DrawRayCast(LineSegment pick)
 {
 	glColor3f(1.f, 0.f, 0.f);
 	glLineWidth(2.f);
 	glBegin(GL_LINES);
-	glVertex3fv(&init);
-	glVertex3fv(&end);
+	glVertex3fv(&pick.a.x);
+	glVertex3fv(&pick.b.x);
 	glEnd();
 	glLineWidth(1.f);
 	glColor3f(1.f, 1.f, 1.f);
