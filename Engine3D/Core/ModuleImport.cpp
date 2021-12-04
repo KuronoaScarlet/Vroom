@@ -62,7 +62,6 @@ bool ModuleImport::LoadGeometry(const char* path) {
 	if (buffer == nullptr) 
 	{
 		std::string normPathShort = "Assets/Models/" + App->fileSystem->SetNormalName(path);
-		App->fileSystem->NormalizePath(normPathShort.c_str());
 		bytesFile = App->fileSystem->Load(normPathShort.c_str(), &buffer);
 	}
 	if (buffer != nullptr) 
@@ -95,10 +94,9 @@ bool ModuleImport::LoadGeometry(const char* path) {
 				{
 					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, assimpMesh->mMaterialIndex, &texturePath);
 					std::string new_path(texturePath.C_Str());
-					new_path = App->fileSystem->NormalizePath(texturePath.C_Str());
 					if (new_path.size() > 0) 
 					{
-						mesh->texturePath = "Assets/Textures/" + App->fileSystem->SetNormalName(new_path.c_str());
+						mesh->texturePath = "Assets/Textures/" + new_path;
 						if (!App->textures->Find(mesh->texturePath))
 						{
 							const TextureObject& textureObject = App->textures->Load(mesh->texturePath);							

@@ -560,6 +560,7 @@ std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) 
 
 std::string ModuleFileSystem::SetNormalName(const char* path) 
 {
+
 	std::string name(path);
 	std::string new_name;
 	bool found = false;
