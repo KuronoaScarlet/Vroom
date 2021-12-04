@@ -316,6 +316,9 @@ GameObject* ModuleCamera3D::TestRayCast(const LineSegment& segment)
 
 void ModuleCamera3D::ObjectPick()
 {
+	if (App->editor->gameobjectSelected != nullptr)
+		App->editor->gameobjectSelected->isSelected = false;
+	
 	ImVec2 winSize(ImGui::GetWindowSize());
 	ImVec2 mousePos(ImGui::GetMousePos());
 	ImVec2 winPos(ImGui::GetWindowPos());
@@ -324,6 +327,9 @@ void ModuleCamera3D::ObjectPick()
 	GameObject* hitGO = TestRayCast(picking);
 
 	App->editor->gameobjectSelected = hitGO;
+	if (App->editor->gameobjectSelected != nullptr)
+		App->editor->gameobjectSelected->isSelected = true;
+
 }
 
 ImVec2 ModuleCamera3D::NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse)
@@ -333,8 +339,8 @@ ImVec2 ModuleCamera3D::NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse)
 	normal.x = (mouse.x - pos.x) / size.x;
 	normal.y = (mouse.y - (pos.y + h)) / (size.y - h);
 
-	normal.x = (normal.x - 0.5f) / 0.5f;
-	normal.y = -((normal.y - 0.55f) / 0.5f);
+	normal.x = (normal.x - 0.51f) / 0.5f;
+	normal.y = -((normal.y - 0.52f) / 0.5f);
 
 	return normal;
 }

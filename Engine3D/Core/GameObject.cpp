@@ -45,6 +45,16 @@ void GameObject::Update(float dt)
 	{
 		component->Update(dt);
 	}
+	if (isSelected)
+	{
+		if (this->name != "Camera")
+			this->GetComponent<ComponentMesh>()->drawOBB = true;
+	}
+	else
+	{
+		if (this->name != "Camera")
+			this->GetComponent<ComponentMesh>()->drawOBB = false;
+	}
 }
 
 void GameObject::OnGui()
