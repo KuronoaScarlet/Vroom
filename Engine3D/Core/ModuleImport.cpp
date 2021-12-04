@@ -155,10 +155,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 					memcpy(&mesh->texCoords[j], &assimpMesh->mTextureCoords[0][j], sizeof(float2));
 				}
 			}
-			
-			mesh->GenerateBuffers();
-			mesh->GenerateBounds();
-			mesh->ComputeNormals();
+
 			ThroughTheFireAndTheNodes(scene->mMeshes[i], scene->mRootNode, t, scene);
 
 			aiVector3D position, scale;
@@ -169,11 +166,14 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			newGameObject->transform->SetPosition(float3(position.x, position.y, position.z));
 			newGameObject->transform->SetRotation(Quat(rotation.x, rotation.y, rotation.z, rotation.w).ToEulerXYZ());
 			newGameObject->transform->SetScale(float3(scale.x, scale.y, scale.z));
-			std::string newName(path);
-			newName = newName.substr(newName.find_last_of("/")+1);
-			newName = newName.substr(0,newName.find_first_of("."));
-			newName += ".asset";
-			//Save(mesh, newName.c_str());
+
+			std::string newName("Library/Meshes/" + name + ".mesh");
+			Save(mesh, newName.c_str());
+			Load(mesh, newName.c_str());
+			//gen buf should not be here
+			mesh->GenerateBuffers();
+			mesh->GenerateBounds();
+			mesh->ComputeNormals();
 		}
 		aiReleaseImport(scene);		
 		RELEASE_ARRAY(buffer);
@@ -234,17 +234,16 @@ void ModuleImport::FindNodeName(const aiScene* scene, const size_t i, std::strin
 	}
 }
 
-uint64 ModuleImport::Save(const ComponentMesh* mesh, const char* name)
+void ModuleImport::Save(const ComponentMesh* mesh, const char* name)
 {
 	uint ranges[2] =
 	{
 		mesh->numIndices,
 		mesh->numVertices
 	};
-	uint size =
-		sizeof(ranges)
+	uint size = sizeof(ranges)
 		+ sizeof(uint) * mesh->numIndices
-		+ sizeof(float) * mesh->numVertices * 3;
+		+ sizeof(float3) * mesh->numVertices;
 
 	char* buffer = new char[size];
 	char* cursor = buffer;
@@ -261,33 +260,28 @@ uint64 ModuleImport::Save(const ComponentMesh* mesh, const char* name)
 	memcpy(cursor, &mesh->vertices, bytes);
 	cursor += bytes;
 
-	//texturePath
-	//numNormalFaces
-	//call GenerateBuffers?
-	//call ComputeNormals? etc
-	//AABB?
-
-	std::ofstream outfile(name, std::ofstream::binary);//bin?
+	std::ofstream outfile(name, std::ofstream::binary | std::ofstream::trunc);
 	outfile.write(buffer, size);
 	outfile.close();
 	delete[] buffer;
-
-	return uint64();//?
+	LOG("file %s saved successfully", name);
 }
 
-void ModuleImport::Load(const char* name)
+void ModuleImport::Load(ComponentMesh* mesh, const char* name)
 {
-	std::ifstream infile(name, std::ifstream::binary);//bin?
+	std::ifstream infile(name, std::ifstream::binary | std::ifstream::in);
+	if (!infile.is_open())
+	{
+		LOG("ERROR opening file: %s", name);
+		return;
+	}
 	infile.seekg(0, infile.end);
 	long size = infile.tellg();
 	infile.seekg(0);
+
 	char* buffer = new char[size];
 	infile.read(buffer, size);
 	infile.close();
-
-	GameObject* newGameObject = App->scene->CreateGameObject(name);
-	ComponentMesh* mesh = newGameObject->CreateComponent<ComponentMesh>();
-
 	uint ranges[2];
 	char* cursor = buffer;
 
@@ -307,9 +301,7 @@ void ModuleImport::Load(const char* name)
 	memcpy(&mesh->vertices, cursor, bytes);
 	cursor += bytes;
 
-	mesh->GenerateBuffers();
-	mesh->GenerateBounds();
-	mesh->ComputeNormals();
+	LOG("file %s loaded successfully", name);
 }
 
 // Called before quitting

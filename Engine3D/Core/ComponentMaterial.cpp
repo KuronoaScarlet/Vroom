@@ -26,3 +26,21 @@ void ComponentMaterial::OnGui()
 	}
 }
 
+void ComponentMaterial::Save(JSONWriter& writer)
+{
+	writer.StartObject();
+	writer.String("material");
+	writer.StartArray();
+
+	writer.String("name");
+	writer.String(textureName.c_str());
+
+	writer.String("width");
+	writer.Uint(width);
+	writer.String("height");
+	writer.Uint(height);
+
+	writer.EndArray();
+	writer.EndObject();
+}
+

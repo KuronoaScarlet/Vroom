@@ -143,7 +143,7 @@ void ModuleScene::Save()
 	writer.EndArray();
 	writer.EndObject();
 
-	if (App->fileSystem->Save("example.scene", sb.GetString(), strlen(sb.GetString()), false))
+	if (App->fileSystem->Save("Library/Scenes/example.scene", sb.GetString(), strlen(sb.GetString()), false))
 	{
 		LOG("Scene saved.");
 	}

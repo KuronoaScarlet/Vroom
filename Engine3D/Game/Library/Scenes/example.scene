@@ -80,25 +80,41 @@
                         },
                         {
                             "rotation": [
-                                0.0,
+                                -0.7071068286895752,
                                 0.0,
                                 0.0
                             ]
                         },
                         {
                             "scale": [
-                                1.0,
-                                1.0,
-                                1.0
+                                100.0,
+                                100.0,
+                                100.0
                             ]
                         }
                     ]
                 },
                 {
-                    "name": "?",
-                    "UUID": -1,
-                    "parent UUID": -1,
-                    []
+                    "mesh": [
+                        "name",
+                        "?",
+                        "UUID",
+                        -1,
+                        "parent UUID",
+                        -1,
+                        "path",
+                        "?"
+                    ]
+                },
+                {
+                    "material": [
+                        "name",
+                        "Assets/Textures/Baker_house.png",
+                        "width",
+                        1024,
+                        "height",
+                        1024
+                    ]
                 }
             ]
         },
@@ -118,25 +134,41 @@
                         },
                         {
                             "rotation": [
-                                0.0,
+                                -0.7071068286895752,
                                 0.0,
                                 0.0
                             ]
                         },
                         {
                             "scale": [
-                                1.0,
-                                1.0,
-                                1.0
+                                100.0,
+                                100.0,
+                                100.0
                             ]
                         }
                     ]
                 },
                 {
-                    "name": "?",
-                    "UUID": -1,
-                    "parent UUID": -1,
-                    []
+                    "mesh": [
+                        "name",
+                        "?",
+                        "UUID",
+                        -1,
+                        "parent UUID",
+                        -1,
+                        "path",
+                        "?"
+                    ]
+                },
+                {
+                    "material": [
+                        "name",
+                        "Assets/Textures/Baker_house.png",
+                        "width",
+                        1024,
+                        "height",
+                        1024
+                    ]
                 }
             ]
         }

@@ -289,6 +289,8 @@ bool ComponentMesh::CanCameraSeeObject(Frustum* cameraFrustum)
 void ComponentMesh::Save(JSONWriter& writer)
 {
 	writer.StartObject();
+	writer.String("mesh");
+	writer.StartArray();
 
 	writer.String("name");
 	writer.String("?");
@@ -297,14 +299,11 @@ void ComponentMesh::Save(JSONWriter& writer)
 	writer.Int(-1);
 
 	writer.String("parent UUID");
-	writer.Int(-1);
-	//writer.Int((parent != nullptr) ? parent->UUID : 0);
+	writer.Int(-1/*parent->UUID*/);
 
-	writer.StartArray();
-
-
+	writer.String("path");
+	writer.String("?"/*file*/);
 
 	writer.EndArray();
-
 	writer.EndObject();
 }
