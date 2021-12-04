@@ -128,10 +128,37 @@ void ComponentTransform::RecomputeGlobalMatrix()
 
 void ComponentTransform::Save(JSONWriter& writer)
 {
+	writer.StartObject();
 	writer.String("transform");
+	writer.StartArray();
+
+	writer.StartObject();
+	writer.String("position");
 	writer.StartArray();
 	writer.Double(position.x);
 	writer.Double(position.y);
 	writer.Double(position.z);
 	writer.EndArray();
+	writer.EndObject();
+
+	writer.StartObject();
+	writer.String("rotation");
+	writer.StartArray();
+	writer.Double(rotation.x);
+	writer.Double(rotation.y);
+	writer.Double(rotation.z);
+	writer.EndArray();
+	writer.EndObject();
+
+	writer.StartObject();
+	writer.String("scale");
+	writer.StartArray();
+	writer.Double(scale.x);
+	writer.Double(scale.y);
+	writer.Double(scale.z);
+	writer.EndArray();
+	writer.EndObject();
+
+	writer.EndArray();
+	writer.EndObject();
 }

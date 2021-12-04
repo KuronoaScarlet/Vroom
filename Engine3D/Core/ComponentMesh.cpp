@@ -250,6 +250,7 @@ void ComponentMesh::OnGui()
 		ImGui::Checkbox("Show OBB", &drawOBB);
 	}
 }
+
 bool ComponentMesh::CanCameraSeeObject(Frustum* cameraFrustum)
 {
 
@@ -283,4 +284,27 @@ bool ComponentMesh::CanCameraSeeObject(Frustum* cameraFrustum)
 		return true;
 
 	return true;
+}
+
+void ComponentMesh::Save(JSONWriter& writer)
+{
+	writer.StartObject();
+
+	writer.String("name");
+	writer.String("?");
+
+	writer.String("UUID");
+	writer.Int(-1);
+
+	writer.String("parent UUID");
+	writer.Int(-1);
+	//writer.Int((parent != nullptr) ? parent->UUID : 0);
+
+	writer.StartArray();
+
+
+
+	writer.EndArray();
+
+	writer.EndObject();
 }

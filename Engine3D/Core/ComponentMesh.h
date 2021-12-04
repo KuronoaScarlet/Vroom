@@ -37,6 +37,8 @@ public:
 	bool Render(float dt);
 	void OnGui() override;
 
+	void Save(JSONWriter& writer);
+
 	uint vertexBufferId = 0, indexBufferId = 0, textureBufferId = 0;
 	std::string texturePath;
 	
