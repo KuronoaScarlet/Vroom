@@ -1,0 +1,56 @@
+{
+    "GameObjects": [
+        {
+            "name": "Root",
+            "UUID": -842150451,
+            "parent UUID": 0,
+            "components": [
+                "transform",
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        },
+        {
+            "name": "Camera",
+            "UUID": -842150451,
+            "parent UUID": -842150451,
+            "components": [
+                "transform",
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        },
+        {
+            "name": "Chimney",
+            "UUID": -842150451,
+            "parent UUID": -842150451,
+            "components": [
+                "transform",
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        },
+        {
+            "name": "Baker_house",
+            "UUID": -842150451,
+            "parent UUID": -842150451,
+            "components": [
+                "transform",
+                [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            ]
+        }
+    ]
+}

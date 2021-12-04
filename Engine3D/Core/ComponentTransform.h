@@ -30,6 +30,8 @@ public:
 	void OnParentMoved();
 
 	void RecomputeGlobalMatrix();
+
+	void Save(JSONWriter& writer);
 	
 	float4x4 transformMatrix;
 	float4x4 transformMatrixLocal;

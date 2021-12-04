@@ -19,6 +19,9 @@ public:
 	GameObject* CreateGameObject(GameObject* parent = nullptr);	
 	GameObject* CreateGameObject(const std::string name, GameObject* parent = nullptr);	
 	
+	void Save();
+	void Load();
+
 public:
 	
 	GameObject* root;

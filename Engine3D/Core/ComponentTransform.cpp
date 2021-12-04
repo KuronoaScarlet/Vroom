@@ -125,3 +125,13 @@ void ComponentTransform::RecomputeGlobalMatrix()
 		owner->GetComponent<ComponentMesh>()->globalAABB.Enclose(owner->GetComponent<ComponentMesh>()->globalOBB);
 	}
 }
+
+void ComponentTransform::Save(JSONWriter& writer)
+{
+	writer.String("transform");
+	writer.StartArray();
+	writer.Double(position.x);
+	writer.Double(position.y);
+	writer.Double(position.z);
+	writer.EndArray();
+}

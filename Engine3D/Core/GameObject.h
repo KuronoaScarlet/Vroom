@@ -3,6 +3,12 @@
 #include <vector>
 #include <string>
 
+#include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
+#include "rapidjson-1.1.0/include/rapidjson/document.h"
+
+typedef rapidjson::PrettyWriter<rapidjson::StringBuffer> JSONWriter;
+typedef rapidjson::Value JSONReader;
+
 class Component;
 class ComponentTransform;
 
@@ -52,5 +58,9 @@ public:
 	bool active = true;
 	bool isSelected = false;
 
+	unsigned __int32 UUID;
+	void GenerateUUID();
+
+	void Save(JSONWriter& writer);
 };
 

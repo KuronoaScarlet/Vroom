@@ -25,6 +25,8 @@ public:
 	virtual bool Disable() { return active = false; };
 	virtual void OnGui() { }
 
+	virtual void Save(JSONWriter& writer) {}
+
 public:
 
 	GameObject* owner = nullptr;

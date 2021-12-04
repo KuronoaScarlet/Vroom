@@ -182,6 +182,7 @@
     <ClCompile Include="Core\CameraComponent.cpp">
       <Filter>Engine\GameObjects - Components</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\ImGui\imconfig.h">

@@ -100,6 +100,11 @@ void GameObject::EraseGameObject()
 	}
 }
 
+void GameObject::GenerateUUID()
+{
+	UUID = 0;
+}
+
 void GameObject::AttachChild(GameObject* child)
 {
 	child->parent = this;
@@ -122,5 +127,35 @@ void GameObject::PropagateTransform()
 	for (GameObject* go : children)
 	{
 		go->transform->OnParentMoved();
+	}
+}
+
+void GameObject::Save(JSONWriter& writer)
+{
+	writer.StartObject();
+
+	writer.String("name");
+	writer.String(name.c_str());
+
+	writer.String("UUID");
+	writer.Int(UUID);
+
+	writer.String("parent UUID");
+	writer.Int((parent != nullptr) ? parent->UUID : 0);
+
+	writer.String("components");
+	writer.StartArray();
+	for (size_t i = 0; i < components.size(); ++i)
+	{
+		components[i]->Save(writer);
+	}
+	writer.EndArray();
+
+	writer.EndObject();
+
+	if (!children.empty())
+		for (size_t i = 0; i < children.size(); ++i)
+	{
+		children[i]->Save(writer);
 	}
 }

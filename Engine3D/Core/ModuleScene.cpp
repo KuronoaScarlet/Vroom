@@ -13,6 +13,9 @@
 #include "CameraComponent.h"
 #include "ModuleEditor.h"
 #include "ModuleRenderer3D.h"
+
+#include "rapidjson-1.1.0/include/rapidjson/rapidjson.h"
+
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -126,4 +129,31 @@ GameObject* ModuleScene::CreateGameObject(const std::string name, GameObject* pa
 	else
 		root->AttachChild(temp);
 	return temp;
+}
+
+void ModuleScene::Save()
+{
+	rapidjson::StringBuffer sb;
+	JSONWriter writer(sb);
+
+	writer.StartObject();
+	writer.String("GameObjects");
+	writer.StartArray();
+	root->Save(writer);
+	writer.EndArray();
+	writer.EndObject();
+
+	if (App->fileSystem->Save("example.scene", sb.GetString(), strlen(sb.GetString()), false))
+	{
+		LOG("Scene saved.");
+	}
+	else
+	{
+		LOG("Scene not saved.");
+	}
+}
+
+void ModuleScene::Load()
+{
+
 }
