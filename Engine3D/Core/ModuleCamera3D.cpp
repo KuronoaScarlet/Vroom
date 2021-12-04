@@ -7,6 +7,8 @@
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
+#include "Geometry/Triangle.h"
 
 #include <map>
 
@@ -263,7 +265,53 @@ GameObject* ModuleCamera3D::VroomCast(LineSegment pick)
 void ModuleCamera3D::TestRayCast(const LineSegment& segment, GameObject** candidate)
 {
 	std::map<float, GameObject*> rayHitList;
+	float nHit = 0;
+	float fHit = 0;
 
+	bool selected = false;
+	for (std::vector<GameObject*>::iterator i = App->scene->root->children.begin(); i != App->scene->root->children.end(); i++)
+	{
+		if (segment.Intersects((*i)->GetComponent<ComponentMesh>()->globalAABB, nHit, fHit))
+			rayHitList[nHit] = (*i);
+	}
+
+	std::map<float, GameObject*> dist;
+	for (auto i = rayHitList.begin(); i != rayHitList.end(); i++)
+	{
+		const ComponentMesh* _mesh = (*i).second->GetComponent<ComponentMesh>();
+		if (_mesh)
+		{
+			LineSegment local = segment;
+			local.Transform((*i).second->GetComponent<ComponentTransform>()->transformMatrix.Inverted());
+
+			if (_mesh->numVertices >= 9)
+			{
+				for (uint j = 0; j < _mesh->numIndices; j += 3)
+				{
+					float3 pA(_mesh->vertices.at(_mesh->indices.at(j) * 3));
+					float3 pB(_mesh->vertices.at(_mesh->indices.at(j + 1) * 3));
+					float3 pC(_mesh->vertices.at(_mesh->indices.at(j + 2) * 3));
+
+					Triangle triangle(pA, pB, pC);
+
+					float distance = 0;
+					if (local.Intersects(triangle, &distance, nullptr)) 
+					{
+						dist[distance] = (*i).second;
+					}
+				}
+			}
+		}
+	}
+	rayHitList.clear();
+	if (dist.begin() != dist.end())
+	{
+		App->editor->gameobjectSelected = (*dist.begin()).second;
+		selected = true;
+	}
+	dist.clear();
+
+	if (!selected) App->editor->gameobjectSelected = nullptr;
 }
 
 void ModuleCamera3D::ObjectPick()
