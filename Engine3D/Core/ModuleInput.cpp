@@ -131,8 +131,9 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:
 			{
 				filePath = event.drop.file;
+				
 				std::string fileName(filePath);
-
+				fileName = App->fileSystem->NormalizePath(filePath);
 				if (App->editor->fileSelected == nullptr || App->editor->fileSelected == App->scene->assets)
 				{
 					App->fileSystem->CreateDir("Assets/Library/");
@@ -153,13 +154,13 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				if (fileName.substr(fileName.find_last_of(".")) == ".fbx" || fileName.substr(fileName.find_last_of(".")) == ".FBX" || fileName.substr(fileName.find_last_of(".")) == ".OBJ" || fileName.substr(fileName.find_last_of(".")) == ".obj")
 				{
-					LOG("Path of file dropped will be %s", filePath);
-					App->import->LoadGeometry(filePath);
+					LOG("Path of file dropped will be %s", fileName.c_str());
+					App->import->LoadGeometry(fileName.c_str());
 
 				}
 				else if (fileName.substr(fileName.find_last_of(".")) == ".jpg" || fileName.substr(fileName.find_last_of(".")) == ".png" || fileName.substr(fileName.find_last_of(".")) == ".PNG" || fileName.substr(fileName.find_last_of(".")) == ".JPG")
 				{
-					LOG("Path of file dropped will be %s", filePath);
+					LOG("Path of file dropped will be %s", fileName.c_str());
 					std::string realFileName = fileName.substr(fileName.find_last_of("\\") + 1); 					
 					if (App->textures->Find(realFileName))
 					{
