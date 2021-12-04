@@ -908,10 +908,14 @@ void ModuleEditor::UpdateWindowStatus()
     if (showSceneWindow) 
     {
         ImGui::Begin("Scene", &showSceneWindow, ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
+
         //Mouse Picking
-        if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && ImGui::IsWindowHovered)
+        if (ImGui::IsWindowFocused())
         {
-            App->camera->ObjectPick();
+            if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+            {
+                App->camera->ObjectPick();
+            }
         }
 
         ImVec2 viewportSize = ImGui::GetCurrentWindow()->Size;

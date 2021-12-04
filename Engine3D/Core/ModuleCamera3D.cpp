@@ -255,44 +255,41 @@ void ModuleCamera3D::OnLoad(const JSONReader& reader)
 	RecalculateProjection();
 }
 
-GameObject* ModuleCamera3D::VroomCast(LineSegment pick)
-{
-	GameObject* candidate = nullptr;
-
-	return candidate;
-}
-
-void ModuleCamera3D::TestRayCast(const LineSegment& segment, GameObject** candidate)
+GameObject* ModuleCamera3D::TestRayCast(const LineSegment& segment)
 {
 	std::map<float, GameObject*> rayHitList;
 	float nHit = 0;
 	float fHit = 0;
-
 	bool selected = false;
+
 	for (std::vector<GameObject*>::iterator i = App->scene->root->children.begin(); i != App->scene->root->children.end(); i++)
 	{
-		if (segment.Intersects((*i)->GetComponent<ComponentMesh>()->globalAABB, nHit, fHit))
-			rayHitList[nHit] = (*i);
+		if ((*i)->name != "Camera")
+		{
+			if(segment.Intersects((*i)->GetComponent<ComponentMesh>()->globalAABB, nHit, fHit))
+				rayHitList[nHit] = (*i);
+		}
 	}
 
 	std::map<float, GameObject*> dist;
+
 	for (auto i = rayHitList.begin(); i != rayHitList.end(); i++)
 	{
-		const ComponentMesh* _mesh = (*i).second->GetComponent<ComponentMesh>();
-		if (_mesh)
+		const ComponentMesh* mesh = (*i).second->GetComponent<ComponentMesh>();
+		if (mesh)
 		{
 			LineSegment local = segment;
 			local.Transform((*i).second->GetComponent<ComponentTransform>()->transformMatrix.Inverted());
 
-			if (_mesh->numVertices >= 9)
+			if (mesh->numVertices >= 9)
 			{
-				for (uint j = 0; j < _mesh->numIndices; j += 3)
+				for (uint j = 0; j < mesh->numIndices; j += 3)
 				{
-					float3 pA(_mesh->vertices.at(_mesh->indices.at(j) * 3));
-					float3 pB(_mesh->vertices.at(_mesh->indices.at(j + 1) * 3));
-					float3 pC(_mesh->vertices.at(_mesh->indices.at(j + 2) * 3));
+					float3 A(mesh->vertices.at(mesh->indices.at(j)));
+					float3 B(mesh->vertices.at(mesh->indices.at(j+1)));
+					float3 C(mesh->vertices.at(mesh->indices.at(j+2)));
 
-					Triangle triangle(pA, pB, pC);
+					Triangle triangle(A, B, C);
 
 					float distance = 0;
 					if (local.Intersects(triangle, &distance, nullptr)) 
@@ -303,15 +300,18 @@ void ModuleCamera3D::TestRayCast(const LineSegment& segment, GameObject** candid
 			}
 		}
 	}
+
 	rayHitList.clear();
+
 	if (dist.begin() != dist.end())
 	{
-		App->editor->gameobjectSelected = (*dist.begin()).second;
+		return (*dist.begin()).second;
 		selected = true;
 	}
+
 	dist.clear();
 
-	if (!selected) App->editor->gameobjectSelected = nullptr;
+	if (!selected) return nullptr;
 }
 
 void ModuleCamera3D::ObjectPick()
@@ -321,7 +321,9 @@ void ModuleCamera3D::ObjectPick()
 	ImVec2 winPos(ImGui::GetWindowPos());
 	ImVec2 normPos(NormalizePick(winPos, winSize, mousePos));
 	picking = cameraFrustum.UnProjectLineSegment(normPos.x, normPos.y);
-	GameObject* hitGO = VroomCast(picking);
+	GameObject* hitGO = TestRayCast(picking);
+
+	App->editor->gameobjectSelected = hitGO;
 }
 
 ImVec2 ModuleCamera3D::NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse)
@@ -332,7 +334,7 @@ ImVec2 ModuleCamera3D::NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse)
 	normal.y = (mouse.y - (pos.y + h)) / (size.y - h);
 
 	normal.x = (normal.x - 0.5f) / 0.5f;
-	normal.y = -((normal.y - 0.5f) /0.5f);
+	normal.y = -((normal.y - 0.55f) / 0.5f);
 
 	return normal;
 }

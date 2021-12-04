@@ -28,8 +28,7 @@ public:
 
 	void ObjectPick();
 	ImVec2 NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse);
-	GameObject* VroomCast(LineSegment pick);
-	void TestRayCast(const LineSegment& segment, GameObject** candidate);
+	GameObject* TestRayCast(const LineSegment& segment);
 	
 
 	float3 right, up, front, position, reference;
