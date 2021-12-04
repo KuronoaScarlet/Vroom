@@ -7,7 +7,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
-
+#include "ComponentTransform.h"
 #include <vector>
 #include <queue>
 #include "SDL/include/SDL_opengl.h"
@@ -81,6 +81,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 		{		
 			bool nameFound = false;
 			std::string name;
+			aiMatrix4x4 t;
 			FindNodeName(scene, i, name);
 
 			GameObject* newGameObject = App->scene->CreateGameObject(name);
@@ -158,7 +159,16 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			mesh->GenerateBuffers();
 			mesh->GenerateBounds();
 			mesh->ComputeNormals();
+			ThroughTheFireAndTheNodes(scene->mMeshes[i], scene->mRootNode, t, scene);
 
+			aiVector3D position, scale;
+			aiQuaternion rotation;
+
+			t.Decompose(scale, rotation, position);
+
+			newGameObject->transform->SetPosition(float3(position.x, position.y, position.z));
+			newGameObject->transform->SetRotation(Quat(rotation.x, rotation.y, rotation.z, rotation.w).ToEulerXYZ());
+			newGameObject->transform->SetScale(float3(scale.x, scale.y, scale.z));
 			std::string newName(path);
 			newName = newName.substr(newName.find_last_of("/")+1);
 			newName = newName.substr(0,newName.find_first_of("."));
@@ -174,6 +184,27 @@ bool ModuleImport::LoadGeometry(const char* path) {
 	RELEASE_ARRAY(buffer);
 
 	return true;
+}
+
+void ModuleImport::ThroughTheFireAndTheNodes(const aiMesh* mS, aiNode* n, aiMatrix4x4& t, const aiScene* s)
+{
+	for (int i = 0; i < n->mNumChildren; i++)
+	{
+		if (n->mChildren[i]->mNumMeshes > 0)
+		{
+			for (int j = 0; j < n->mChildren[i]->mNumMeshes; j++)
+			{
+				if (s->mMeshes[n->mChildren[i]->mMeshes[j]] == mS)
+				{
+					t = n->mChildren[i]->mTransformation;
+				}
+			}
+		}
+		if (n->mChildren[i]->mNumChildren > 0)
+		{
+			ThroughTheFireAndTheNodes(mS, n->mChildren[i], t, s);
+		}
+	}
 }
 
 void ModuleImport::FindNodeName(const aiScene* scene, const size_t i, std::string& name)

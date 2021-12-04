@@ -151,7 +151,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					App->editor->fileSelected->ReadFiles();
 				}
 
-				if (fileName.substr(fileName.find_last_of(".")) == ".fbx" || fileName.substr(fileName.find_last_of(".")) == ".FBX" || fileName.substr(fileName.find_last_of(".")) == ".OBJ" || fileName.substr(fileName.find_last_of(".")) == ".obj")
+				if (fileName.substr(fileName.find_last_of(".")) == ".fbx" || fileName.substr(fileName.find_last_of(".")) == ".FBX" || fileName.substr(fileName.find_last_of(".")) == ".OBJ" || fileName.substr(fileName.find_last_of(".")) == ".obj" || fileName.substr(fileName.find_last_of(".")) == ".dae" || fileName.substr(fileName.find_last_of(".")) == ".DAE" )
 				{
 					LOG("Path of file dropped will be %s", fileName.c_str());
 					App->import->LoadGeometry(fileName.c_str());

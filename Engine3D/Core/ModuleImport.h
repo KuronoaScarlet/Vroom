@@ -3,11 +3,13 @@
 
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
-
+#include "Assimp/include/matrix4x4.h"
 #include <string>
 
 class ComponentMesh;
 struct aiScene;
+struct aiMesh;
+struct aiNode;
 
 class ModuleImport : public Module
 {
@@ -22,6 +24,8 @@ public:
 	bool LoadGeometry(const char* path);
 
 	void FindNodeName(const aiScene* scene, const size_t i, std::string& name);
+	void ThroughTheFireAndTheNodes(const aiMesh* meshScene, aiNode* node, aiMatrix4x4& transform, const aiScene* scene);
+		;
 
 	//void Import(const aiMaterial* material, ComponentMesh* mesh);
 	/*
