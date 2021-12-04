@@ -89,12 +89,14 @@ bool ModuleEditor::Start()
     folder = App->textures->Load("Config/FormatImages/folder.png");
     jpg = App->textures->Load("Config/FormatImages/jpg.png");
     default = App->textures->Load("Config/FormatImages/default.png");
+    tga = App->textures->Load("Config/FormatImages/tga.png");
 
     pngID = png.id;
     fbxID = fbx.id;
     folderID = folder.id;
     jpgID = jpg.id;
     defaultID = default.id;
+    tgaID = tga.id;
 
     // Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
@@ -752,6 +754,10 @@ void ModuleEditor::UpdateWindowStatus()
                             if (App->fileSystem->HasExtension(str.c_str(), "jpg"))
                             {
                                 DrawImageAndText(jpgID, resourceArray.at(i).c_str(), i);
+                            }
+                            if (App->fileSystem->HasExtension(str.c_str(), "tga"))
+                            {
+                                DrawImageAndText(tgaID, resourceArray.at(i).c_str(), i);
                             }
                             if (App->fileSystem->HasExtension(str.c_str(), "fbx") || App->fileSystem->HasExtension(str.c_str(), "FBX"))
                             {

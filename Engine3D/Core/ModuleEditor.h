@@ -78,8 +78,10 @@ public:
 	TextureObject fbx;
 	TextureObject folder;
 	TextureObject jpg;
+	TextureObject tga;
 	TextureObject default;
 	uint pngID;
+	uint tgaID;
 	uint jpgID;
 	uint folderID;
 	uint fbxID;
