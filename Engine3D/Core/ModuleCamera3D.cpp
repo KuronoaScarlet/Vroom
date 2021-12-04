@@ -6,6 +6,10 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "GameObject.h"
+#include "ModuleWindow.h"
+
+#include <map>
+
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -247,4 +251,40 @@ void ModuleCamera3D::OnLoad(const JSONReader& reader)
 		LOAD_JSON_FLOAT(cameraSensitivity);
 	}
 	RecalculateProjection();
+}
+
+GameObject* ModuleCamera3D::VroomCast(LineSegment pick)
+{
+	GameObject* candidate = nullptr;
+
+	return candidate;
+}
+
+void ModuleCamera3D::TestRayCast(const LineSegment& segment, GameObject** candidate)
+{
+	std::map<float, GameObject*> rayHitList;
+
+}
+
+void ModuleCamera3D::ObjectPick()
+{
+	ImVec2 winSize(ImGui::GetWindowSize());
+	ImVec2 mousePos(ImGui::GetMousePos());
+	ImVec2 winPos(ImGui::GetWindowPos());
+	ImVec2 normPos(NormalizePick(winPos, winSize, mousePos));
+	picking = cameraFrustum.UnProjectLineSegment(normPos.x, normPos.y);
+	GameObject* hitGO = VroomCast(picking);
+}
+
+ImVec2 ModuleCamera3D::NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse)
+{
+	ImVec2 normal;
+	float h = ImGui::GetFrameHeight();
+	normal.x = (mouse.x - pos.x) / size.x;
+	normal.y = (mouse.y - (pos.y + h)) /(size.y - h);
+
+	normal.x = (normal.x - 0.5f) * 2.0f;
+	normal.y = -((normal.y - 0.5f) * 2.0f);
+
+	return normal;
 }

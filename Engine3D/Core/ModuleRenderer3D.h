@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
+#include "Geometry/LineSegment.h"
+#include "ModuleCamera3D.h"
 
 
 #define MAX_LIGHTS 8
@@ -25,6 +27,7 @@ public:
 	void OnSave(JSONWriter& writer) const override;
 	void DrawingModes(bool currentState, int glMode);
 	void ModuleRenderer3D::DrawBox(float3* points, float3 color);
+	void DrawRayCast(float init, float end);
 
 public:
 

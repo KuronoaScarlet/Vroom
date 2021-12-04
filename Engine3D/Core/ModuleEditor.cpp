@@ -478,7 +478,6 @@ void ModuleEditor::MenuBar()
             }
         }
 
-
         /* ---- HELP ----*/
         if (ImGui::BeginMenu("Help"))
         {
@@ -908,6 +907,7 @@ void ModuleEditor::UpdateWindowStatus()
     {
         ImGui::Begin("Scene", &showSceneWindow, ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
 
+
         ImVec2 viewportSize = ImGui::GetCurrentWindow()->Size;
         if (viewportSize.x != lastViewportSize.x || viewportSize.y != lastViewportSize.y)
         {
@@ -915,6 +915,11 @@ void ModuleEditor::UpdateWindowStatus()
             App->camera->RecalculateProjection();
         }
         lastViewportSize = viewportSize;
+        //Mouse Picking
+        if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && ImGui::IsWindowHovered)
+        {
+            App->camera->ObjectPick();
+        }
         ImGui::Image((ImTextureID)App->viewportBuffer->texture, viewportSize, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }

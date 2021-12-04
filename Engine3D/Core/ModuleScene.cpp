@@ -12,6 +12,7 @@
 #include "ModuleViewportFrameBuffer.h"
 #include "CameraComponent.h"
 #include "ModuleEditor.h"
+#include "ModuleRenderer3D.h"
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -80,6 +81,7 @@ update_status ModuleScene::Update(float dt)
 			S.push(child);
 		}
 	}
+	App->renderer3D->DrawRayCast(App->camera->picking.a.x, App->camera->picking.b.x);
 	App->editor->DrawGrid();
 	App->viewportBuffer->PostUpdate(dt);
 	if (camera != nullptr)

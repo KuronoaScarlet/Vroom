@@ -4,6 +4,10 @@
 #include "Math/float3.h"
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
+#include "Geometry/LineSegment.h"
+#include "ImGui/imgui.h"
+
+class GameObject;
 
 class ModuleCamera3D : public Module
 {
@@ -22,19 +26,25 @@ public:
 	void OnSave(JSONWriter& writer) const override;
 	void OnLoad(const JSONReader& reader) override;
 
+	void ObjectPick();
+	ImVec2 NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse);
+	GameObject* VroomCast(LineSegment pick);
+	void TestRayCast(const LineSegment& segment, GameObject** candidate);
+	
+
 	float3 right, up, front, position, reference;
 	Frustum cameraFrustum;
 	float4x4 viewMatrix;
 	float aspectRatio = 1.f;
 	float verticalFOV = 60.f;
 	float nearPlaneDistance = 0.1f;
-	float farPlaneDistance = 5000.f;
+	float farPlaneDistance = 500.f;
 	float cameraSensitivity = .5f;
 	float cameraSpeed = 60.f;
 	bool projectionIsDirty = false;
+	LineSegment picking;
 
 private:
-
 	float lastDeltaX = 0.f, lastDeltaY = 0.f;
 
 };

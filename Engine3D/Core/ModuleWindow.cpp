@@ -158,6 +158,11 @@ void ModuleWindow::OnSave(JSONWriter& writer) const
 	writer.EndObject();
 }
 
+ImVec2 ModuleWindow::GetWindowSize()
+{
+	return ImVec2((float)width, (float)height);
+}
+
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);

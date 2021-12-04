@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
+#include "ImGui/imgui.h"
 
 class Application;
 
@@ -20,6 +21,7 @@ public:
 	bool CleanUp() override;
 	void OnLoad(const JSONReader& reader) override;
 	void OnSave(JSONWriter& writer) const override;
+	ImVec2 GetWindowSize();
 
 	void OnGui() override;
 	void SetTitle(const char* title);
