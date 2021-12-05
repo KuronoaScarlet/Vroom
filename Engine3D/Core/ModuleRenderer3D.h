@@ -40,5 +40,5 @@ public:
 	bool useTexture;
 	bool wireframeMode;
 	bool vsyncActive;
-
+	bool drawRayLine = false;
 };

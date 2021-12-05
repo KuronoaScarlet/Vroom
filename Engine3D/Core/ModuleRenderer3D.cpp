@@ -207,6 +207,7 @@ void ModuleRenderer3D::OnGui() {
 		if (ImGui::Checkbox("Wireframe Mode", &wireframeMode)) {
 			wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
+		if (ImGui::Checkbox("Mouse Pick Ray Draw", &drawRayLine));
 	}
 }
 void ModuleRenderer3D::OnLoad(const JSONReader& reader)
