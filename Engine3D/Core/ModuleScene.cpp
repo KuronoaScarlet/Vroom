@@ -153,7 +153,20 @@ void ModuleScene::Save()
 	}
 }
 
-void ModuleScene::Load()
+void ModuleScene::Load(const char* file)
 {
+	char* buffer = nullptr;
+	if (App->fileSystem->Load(file, &buffer))
+	{
+		rapidjson::Document document;
+		if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError()==false)
+		{
+			const rapidjson::Value reader = document.GetObjectJSON();
 
+			root->Load(reader);
+
+			LOG("Engine config loaded");
+		}
+	}
+	RELEASE_ARRAY(buffer);
 }

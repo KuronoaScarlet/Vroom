@@ -148,10 +148,10 @@ void GameObject::Save(JSONWriter& writer)
 	writer.String(name.c_str());
 
 	writer.String("UUID");
-	writer.Int(UUID);
+	writer.Uint(UUID);
 
 	writer.String("parent UUID");
-	writer.Int(parent != nullptr ? parent->UUID : 0);
+	writer.Uint(parent != nullptr ? parent->UUID : 0);
 
 	writer.String("components");
 	writer.StartArray();
@@ -166,5 +166,22 @@ void GameObject::Save(JSONWriter& writer)
 	for (size_t i = 0; i < children.size(); ++i)
 	{
 		children[i]->Save(writer);
+	}
+}
+
+void GameObject::Load(const JSONReader& reader)
+{
+	if (reader.HasMember("name"))
+		name = reader["name"].GetString();
+	
+	if (reader.HasMember("UUID"))
+		name = reader["UUID"].GetUint();
+
+	if (reader.HasMember("parent UUID"))
+		name = reader["parent UUID"].GetUint();
+
+	if (reader.HasMember("components"))
+	{
+
 	}
 }

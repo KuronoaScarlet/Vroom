@@ -307,3 +307,8 @@ void ComponentMesh::Save(JSONWriter& writer)
 	writer.EndArray();
 	writer.EndObject();
 }
+
+void ComponentMesh::Load(const JSONReader& reader)
+{
+	
+}

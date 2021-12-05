@@ -38,6 +38,7 @@ public:
 	void OnGui() override;
 
 	void Save(JSONWriter& writer);
+	void Load(const JSONReader& reader);
 
 	uint vertexBufferId = 0, indexBufferId = 0, textureBufferId = 0;
 	std::string texturePath;

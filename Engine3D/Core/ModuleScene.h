@@ -20,7 +20,7 @@ public:
 	GameObject* CreateGameObject(const std::string name, GameObject* parent = nullptr);	
 	
 	void Save();
-	void Load();
+	void Load(const char* path);
 
 public:
 	

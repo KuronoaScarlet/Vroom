@@ -62,5 +62,6 @@ public:
 	void GenerateUUID();
 
 	void Save(JSONWriter& writer);
+	void Load(const JSONReader& reader);
 };
 
