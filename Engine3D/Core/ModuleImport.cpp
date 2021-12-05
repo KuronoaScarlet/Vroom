@@ -90,11 +90,11 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			
 			if (scene->HasMaterials()) 
 			{
-				texture = scene->mMaterials[assimpMesh->mMaterialIndex];
+				aiMaterial* tex = scene->mMaterials[assimpMesh->mMaterialIndex];
 
-				if (texture != nullptr) 
+				if (tex != nullptr)
 				{
-					aiGetMaterialTexture(texture, aiTextureType_DIFFUSE, assimpMesh->mMaterialIndex, &texturePath);
+					tex->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath);
 					std::string new_path(texturePath.C_Str());
 					new_path = App->fileSystem->NormalizePath(texturePath.C_Str());
 					if (new_path.size() > 0) 
