@@ -168,8 +168,8 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			newGameObject->transform->SetScale(float3(scale.x, scale.y, scale.z));
 
 			std::string newName("Library/Meshes/" + name + ".mesh");
-			Save(mesh, newName.c_str());
-			Load(mesh, newName.c_str());
+			//Save(mesh, newName.c_str());
+			//Load(mesh, newName.c_str());
 			//gen buf should not be here
 			mesh->GenerateBuffers();
 			mesh->GenerateBounds();
