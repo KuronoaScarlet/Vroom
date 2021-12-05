@@ -739,46 +739,48 @@ void ModuleEditor::UpdateWindowStatus()
 
                 if (f->isSelected && fileSelected)
                 {
-                    ImGui::Columns(resourceArray.size(), NULL, false);
-                    for (int i = 0; i < resourceArray.size(); i++)
+                    if (resourceArray.size() > 0)
                     {
-                        if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
+                        ImGui::Columns(resourceArray.size(), NULL, false);
+                        for (int i = 0; i < resourceArray.size(); i++)
                         {
-                            DrawImageAndText(folderID, resourceArray.at(i).c_str(), i);
+                            if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
+                            {
+                                DrawImageAndText(folderID, resourceArray.at(i).c_str(), i);
+                            }
+                            if (resourceArray.size() > 0 && i < resourceArray.size())
+                            {
+                                std::string str = fileSelected->path + resourceArray.at(i);
+                                if (App->fileSystem->HasExtension(str.c_str(), "png"))
+                                {
+                                    DrawImageAndText(pngID, resourceArray.at(i).c_str(), i);
+                                }
+                                if (App->fileSystem->HasExtension(str.c_str(), "jpg"))
+                                {
+                                    DrawImageAndText(jpgID, resourceArray.at(i).c_str(), i);
+                                }
+                                if (App->fileSystem->HasExtension(str.c_str(), "tga"))
+                                {
+                                    DrawImageAndText(tgaID, resourceArray.at(i).c_str(), i);
+                                }
+                                if (App->fileSystem->HasExtension(str.c_str(), "fbx") || App->fileSystem->HasExtension(str.c_str(), "FBX"))
+                                {
+                                    DrawImageAndText(fbxID, resourceArray.at(i).c_str(), i);
+                                }
+                                if (App->fileSystem->HasExtension(str.c_str(), "dae") || App->fileSystem->HasExtension(str.c_str(), "DAE"))
+                                {
+                                    DrawImageAndText(daeID, resourceArray.at(i).c_str(), i);
+                                }
+                                /*if (app->filesystem->hasextension(str.c_str()))
+                                {
+                                    drawimageandtext(defaultid, resourcearray.at(i).c_str());
+                                }*/
+                            }
+                            ImGui::NextColumn();
                         }
-                        if (resourceArray.size() > 0 && i < resourceArray.size())
-                        {
-                            std::string str = fileSelected->path + resourceArray.at(i);
-                            if (App->fileSystem->HasExtension(str.c_str(), "png"))
-                            {
-                                DrawImageAndText(pngID, resourceArray.at(i).c_str(), i);
-                            }
-                            if (App->fileSystem->HasExtension(str.c_str(), "jpg"))
-                            {
-                                DrawImageAndText(jpgID, resourceArray.at(i).c_str(), i);
-                            }
-                            if (App->fileSystem->HasExtension(str.c_str(), "tga"))
-                            {
-                                DrawImageAndText(tgaID, resourceArray.at(i).c_str(), i);
-                            }
-                            if (App->fileSystem->HasExtension(str.c_str(), "fbx") || App->fileSystem->HasExtension(str.c_str(), "FBX"))
-                            {
-                                DrawImageAndText(fbxID, resourceArray.at(i).c_str(), i);
-                            }
-                            if (App->fileSystem->HasExtension(str.c_str(), "dae") || App->fileSystem->HasExtension(str.c_str(), "DAE"))
-                            {
-                                DrawImageAndText(daeID, resourceArray.at(i).c_str(), i);
-                            }
-                            /*if (app->filesystem->hasextension(str.c_str()))
-                            {
-                                drawimageandtext(defaultid, resourcearray.at(i).c_str());
-                            }*/
-                        }
-                        ImGui::NextColumn();
-                    }
-                    ImGui::Columns(1);
+                        ImGui::Columns(1);
+                    } 
                 }
-
             }
         }
         ImGui::End();
