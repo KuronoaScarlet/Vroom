@@ -814,4 +814,7 @@
       <Filter>ExternalLibraries\DevIL</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
 </Project>
