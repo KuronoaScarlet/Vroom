@@ -255,7 +255,12 @@ void ModuleCamera3D::OnLoad(const JSONReader& reader)
 	RecalculateProjection();
 }
 
-GameObject* ModuleCamera3D::TestRayCast(const LineSegment& segment)
+Triangle ModuleCamera3D::CreateMeshTriangles(float3 A, float3 B, float3 C)
+{
+	return Triangle(A, B, C);
+}
+
+GameObject* ModuleCamera3D::TestRayCast(const LineSegment& line)
 {
 	std::map<float, GameObject*> rayHitList;
 	float nHit = 0;
@@ -266,7 +271,7 @@ GameObject* ModuleCamera3D::TestRayCast(const LineSegment& segment)
 	{
 		if ((*i)->name != "Camera")
 		{
-			if(segment.Intersects((*i)->GetComponent<ComponentMesh>()->globalAABB, nHit, fHit))
+			if(line.Intersects((*i)->GetComponent<ComponentMesh>()->globalAABB, nHit, fHit))
 				rayHitList[nHit] = (*i);
 		}
 	}
@@ -278,23 +283,20 @@ GameObject* ModuleCamera3D::TestRayCast(const LineSegment& segment)
 		const ComponentMesh* mesh = (*i).second->GetComponent<ComponentMesh>();
 		if (mesh)
 		{
-			LineSegment local = segment;
+			LineSegment local = line;
 			local.Transform((*i).second->GetComponent<ComponentTransform>()->transformMatrix.Inverted());
 
 			if (mesh->numVertices >= 9)
 			{
 				for (uint j = 0; j < mesh->numIndices; j += 3)
 				{
-					float3 A(mesh->vertices.at(mesh->indices.at(j)));
-					float3 B(mesh->vertices.at(mesh->indices.at(j+1)));
-					float3 C(mesh->vertices.at(mesh->indices.at(j+2)));
-
-					Triangle triangle(A, B, C);
+					Triangle triangle = CreateMeshTriangles(mesh->vertices.at(mesh->indices.at(j)), mesh->vertices.at(mesh->indices.at(j + 1)), mesh->vertices.at(mesh->indices.at(j + 2)));
 
 					float distance = 0;
 					if (local.Intersects(triangle, &distance, nullptr)) 
 					{
 						dist[distance] = (*i).second;
+						break;
 					}
 				}
 			}

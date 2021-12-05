@@ -26,9 +26,11 @@ public:
 	void OnSave(JSONWriter& writer) const override;
 	void OnLoad(const JSONReader& reader) override;
 
+	Triangle CreateMeshTriangles(float3 A, float3 B, float3 C);
+
 	void ObjectPick();
 	ImVec2 NormalizePick(ImVec2 pos, ImVec2 size, ImVec2 mouse);
-	GameObject* TestRayCast(const LineSegment& segment);
+	GameObject* TestRayCast(const LineSegment& line);
 	
 
 	float3 right, up, front, position, reference;
