@@ -17,6 +17,10 @@ public:
 	void SetPosition(const float3& newPosition);
 	void SetRotation(const float3& newRotation);
 	void SetScale(const float3& newScale);
+	inline const float3& Right() const { return right; }
+	inline const float3& Up() const { return up; }
+	inline const float3& Front() const { return front; }
+
 	void Save();
 	void Load();
 
@@ -47,6 +51,8 @@ private:
 	
 	bool isDirty = false;
 
-
+	float3 front = float3::unitZ;
+	float3 up = float3::unitY;
+	float3 right = float3::unitX;
 
 };
