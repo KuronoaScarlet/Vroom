@@ -79,12 +79,14 @@ public:
 	TextureObject folder;
 	TextureObject jpg;
 	TextureObject tga;
+	TextureObject dae;
 	TextureObject default;
 	uint pngID;
 	uint tgaID;
 	uint jpgID;
 	uint folderID;
 	uint fbxID;
+	uint daeID;
 	uint defaultID;
 	ImGuiTextBuffer consoleText;
 

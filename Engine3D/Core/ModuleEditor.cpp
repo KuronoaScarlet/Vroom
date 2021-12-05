@@ -90,6 +90,7 @@ bool ModuleEditor::Start()
     jpg = App->textures->Load("Config/FormatImages/jpg.png");
     default = App->textures->Load("Config/FormatImages/default.png");
     tga = App->textures->Load("Config/FormatImages/tga.png");
+    dae = App->textures->Load("Config/FormatImages/dae.png");
 
     pngID = png.id;
     fbxID = fbx.id;
@@ -97,6 +98,7 @@ bool ModuleEditor::Start()
     jpgID = jpg.id;
     defaultID = default.id;
     tgaID = tga.id;
+    daeID = dae.id;
 
     // Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
@@ -737,7 +739,7 @@ void ModuleEditor::UpdateWindowStatus()
 
                 if (f->isSelected && fileSelected)
                 {
-                    ImGui::Columns(resourceArray.size() + 6, NULL, false);
+                    ImGui::Columns(resourceArray.size(), NULL, false);
                     for (int i = 0; i < resourceArray.size(); i++)
                     {
                         if (!App->fileSystem->HasExtension(resourceArray.at(i).c_str()))
@@ -762,7 +764,11 @@ void ModuleEditor::UpdateWindowStatus()
                             if (App->fileSystem->HasExtension(str.c_str(), "fbx") || App->fileSystem->HasExtension(str.c_str(), "FBX"))
                             {
                                 DrawImageAndText(fbxID, resourceArray.at(i).c_str(), i);
-                            }                  
+                            }
+                            if (App->fileSystem->HasExtension(str.c_str(), "dae") || App->fileSystem->HasExtension(str.c_str(), "DAE"))
+                            {
+                                DrawImageAndText(daeID, resourceArray.at(i).c_str(), i);
+                            }
                             /*if (app->filesystem->hasextension(str.c_str()))
                             {
                                 drawimageandtext(defaultid, resourcearray.at(i).c_str());
