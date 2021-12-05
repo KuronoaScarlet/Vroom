@@ -236,14 +236,18 @@ void ModuleImport::FindNodeName(const aiScene* scene, const size_t i, std::strin
 
 void ModuleImport::Save(const ComponentMesh* mesh, const char* name)
 {
-	uint ranges[2] =
+	uint ranges[4] =
 	{
 		mesh->numIndices,
-		mesh->numVertices
+		mesh->numVertices,
+		mesh->texturePath.length(),
+		mesh->texCoords.size()
 	};
 	uint size = sizeof(ranges)
 		+ sizeof(uint) * mesh->numIndices
-		+ sizeof(float3) * mesh->numVertices;
+		+ sizeof(float3) * mesh->numVertices
+		+ mesh->texturePath.length()
+		+ sizeof(float2) * mesh->texCoords.size();
 
 	char* buffer = new char[size];
 	char* cursor = buffer;
@@ -258,6 +262,14 @@ void ModuleImport::Save(const ComponentMesh* mesh, const char* name)
 
 	bytes = sizeof(float3) * mesh->numVertices;
 	memcpy(cursor, &mesh->vertices, bytes);
+	cursor += bytes;
+
+	bytes = mesh->texturePath.length();
+	memcpy(cursor, &mesh->texturePath, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float2) * mesh->texCoords.size();
+	memcpy(cursor, &mesh->texCoords, bytes);
 	cursor += bytes;
 
 	std::ofstream outfile(name, std::ofstream::binary | std::ofstream::trunc);
@@ -282,7 +294,8 @@ void ModuleImport::Load(ComponentMesh* mesh, const char* name)
 	char* buffer = new char[size];
 	infile.read(buffer, size);
 	infile.close();
-	uint ranges[2];
+
+	uint ranges[4];
 	char* cursor = buffer;
 
 	uint bytes = sizeof(ranges);
@@ -299,6 +312,16 @@ void ModuleImport::Load(ComponentMesh* mesh, const char* name)
 	bytes = sizeof(float3) * mesh->numVertices;
 	mesh->vertices.resize(mesh->numVertices);
 	memcpy(&mesh->vertices, cursor, bytes);
+	cursor += bytes;
+
+	bytes = ranges[2];
+	mesh->texturePath.resize(bytes);
+	memcpy(&mesh->texturePath, cursor, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float2) * ranges[3];
+	mesh->texCoords.resize(ranges[3]);
+	memcpy(&mesh->texCoords, cursor, bytes);
 	cursor += bytes;
 
 	LOG("file %s loaded successfully", name);

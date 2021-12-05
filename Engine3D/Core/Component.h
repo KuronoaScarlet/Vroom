@@ -26,6 +26,7 @@ public:
 	virtual void OnGui() { }
 
 	virtual void Save(JSONWriter& writer) {}
+	virtual void Load(const JSONReader& reader) {}
 
 public:
 

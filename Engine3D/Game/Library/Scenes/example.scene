@@ -2,7 +2,7 @@
     "GameObjects": [
         {
             "name": "Root",
-            "UUID": -842150451,
+            "UUID": 3452816845,
             "parent UUID": 0,
             "components": [
                 {
@@ -34,8 +34,8 @@
         },
         {
             "name": "Camera",
-            "UUID": -842150451,
-            "parent UUID": -842150451,
+            "UUID": 3452816845,
+            "parent UUID": 3452816845,
             "components": [
                 {
                     "transform": [
@@ -66,8 +66,8 @@
         },
         {
             "name": "Chimney",
-            "UUID": -842150451,
-            "parent UUID": -842150451,
+            "UUID": 3452816845,
+            "parent UUID": 3452816845,
             "components": [
                 {
                     "transform": [
@@ -97,13 +97,11 @@
                 {
                     "mesh": [
                         "name",
-                        "?",
+                        "",
                         "UUID",
-                        -1,
+                        -842150451,
                         "parent UUID",
-                        -1,
-                        "path",
-                        "?"
+                        -1
                     ]
                 },
                 {
@@ -120,8 +118,8 @@
         },
         {
             "name": "Baker_house",
-            "UUID": -842150451,
-            "parent UUID": -842150451,
+            "UUID": 3452816845,
+            "parent UUID": 3452816845,
             "components": [
                 {
                     "transform": [
@@ -151,13 +149,11 @@
                 {
                     "mesh": [
                         "name",
-                        "?",
+                        "",
                         "UUID",
-                        -1,
+                        -842150451,
                         "parent UUID",
-                        -1,
-                        "path",
-                        "?"
+                        -1
                     ]
                 },
                 {

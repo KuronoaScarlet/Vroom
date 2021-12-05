@@ -5,6 +5,7 @@
 #include "ModuleFileSystem.h"
 #include "ComponentTransform.h"
 #include "ImGui/imgui.h"
+#include "../UUIDRandom.h"
 
 GameObject::GameObject() {
 
@@ -112,7 +113,7 @@ void GameObject::EraseGameObject()
 
 void GameObject::GenerateUUID()
 {
-	UUID = 0;
+	UUID = generateUUID();
 }
 
 void GameObject::AttachChild(GameObject* child)
@@ -182,6 +183,24 @@ void GameObject::Load(const JSONReader& reader)
 
 	if (reader.HasMember("components"))
 	{
+		auto& a = reader["components"];
+		for (int i = 0; i < a.MemberCount(); ++i)
+		{
+			Component* x = nullptr;
+			if (a[i].HasMember("transform"))
 
+				x = new ComponentTransform(0);
+			if (a[i].HasMember("mesh"))
+
+				x = new ComponentMesh(0);
+			if (a[i].HasMember("material"))
+				x = new ComponentTransform(0);
+
+			if (x != nullptr)
+			{
+				x->Load(reader);
+				components.push_back(x);
+			}
+		}
 	}
 }

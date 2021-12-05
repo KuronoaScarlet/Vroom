@@ -44,3 +44,9 @@ void ComponentMaterial::Save(JSONWriter& writer)
 	writer.EndObject();
 }
 
+void ComponentMaterial::Load(const JSONReader& reader)
+{
+	if (reader.HasMember("name"))
+		textureName = reader["name"].GetString();
+}
+

@@ -41,7 +41,9 @@ public:
 	void Load(const JSONReader& reader);
 
 	uint vertexBufferId = 0, indexBufferId = 0, textureBufferId = 0;
+	std::string meshPath;
 	std::string texturePath;
+	unsigned __int32 UUID;
 	
 	uint numVertices = 0;
 	std::vector<float3> vertices;

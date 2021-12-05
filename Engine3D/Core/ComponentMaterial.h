@@ -14,6 +14,7 @@ public:
 	void OnGui() override;
 	inline uint GetTextureId() const { return textureId; }
 	void Save(JSONWriter& writer);
+	void Load(const JSONReader& reader);
 
 private:
 

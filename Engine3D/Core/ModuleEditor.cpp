@@ -376,6 +376,7 @@ void ModuleEditor::MenuBar()
             if (ImGui::MenuItem("Save", "Ctrl + S")) //DO SOMETHING
             {
                 App->scene->Save();
+                //App->scene->Load("Library/Scenes/example.scene");
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;

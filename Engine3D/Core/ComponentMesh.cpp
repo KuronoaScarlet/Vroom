@@ -293,16 +293,13 @@ void ComponentMesh::Save(JSONWriter& writer)
 	writer.StartArray();
 
 	writer.String("name");
-	writer.String("?");
+	writer.String(meshPath.c_str());
 
 	writer.String("UUID");
-	writer.Int(-1);
+	writer.Int(UUID);
 
 	writer.String("parent UUID");
 	writer.Int(-1/*parent->UUID*/);
-
-	writer.String("path");
-	writer.String("?"/*file*/);
 
 	writer.EndArray();
 	writer.EndObject();
@@ -310,5 +307,11 @@ void ComponentMesh::Save(JSONWriter& writer)
 
 void ComponentMesh::Load(const JSONReader& reader)
 {
-	
+	if (reader.HasMember("name"))
+		meshPath = reader["name"].GetString();
+	if (reader.HasMember("UUID"))
+		UUID = reader["UUID"].GetUint();
+	/*if (reader.HasMember("parentUUID"))
+		UUID = reader["parentUUID"].GetUint();*/
+
 }

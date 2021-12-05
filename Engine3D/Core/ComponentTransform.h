@@ -32,6 +32,7 @@ public:
 	void RecomputeGlobalMatrix();
 
 	void Save(JSONWriter& writer);
+	void Load(const JSONReader& reader);
 	
 	float4x4 transformMatrix;
 	float4x4 transformMatrixLocal;

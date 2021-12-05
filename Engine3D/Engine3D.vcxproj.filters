@@ -710,6 +710,9 @@
     <ClInclude Include="Core\CameraComponent.h">
       <Filter>Engine\GameObjects - Components</Filter>
     </ClInclude>
+    <ClInclude Include="UUIDRandom.h">
+      <Filter>Engine\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ExternalLibraries">

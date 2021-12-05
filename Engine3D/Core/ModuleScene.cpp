@@ -163,7 +163,19 @@ void ModuleScene::Load(const char* file)
 		{
 			const rapidjson::Value reader = document.GetObjectJSON();
 
-			root->Load(reader);
+			if (reader.HasMember("GameObjects"))
+			{
+				auto& a = reader["GameObjects"];
+				if (a.IsArray())
+				{
+					for (int i = 0; i < a.MemberCount(); ++i)
+					{
+						GameObject n;
+						n.Load(reader);
+						root->AttachChild(&n);
+					}
+				}
+			}
 
 			LOG("Engine config loaded");
 		}

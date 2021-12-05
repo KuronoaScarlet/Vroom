@@ -162,3 +162,28 @@ void ComponentTransform::Save(JSONWriter& writer)
 	writer.EndArray();
 	writer.EndObject();
 }
+
+void ComponentTransform::Load(const JSONReader& reader)
+{
+	if (reader.HasMember("position"))
+	{
+		auto a = reader["position"].GetArray();
+		position.x = a[0].GetFloat();
+		position.y = a[1].GetFloat();
+		position.z = a[2].GetFloat();
+	}
+	if (reader.HasMember("rotation"))
+	{
+		auto a = reader["rotation"].GetArray();
+		rotation.x = a[0].GetFloat();
+		rotation.y = a[1].GetFloat();
+		rotation.z = a[2].GetFloat();
+	}
+	if (reader.HasMember("scale"))
+	{
+		auto a = reader["scale"].GetArray();
+		scale.x = a[0].GetFloat();
+		scale.y = a[1].GetFloat();
+		scale.z = a[2].GetFloat();
+	}
+}

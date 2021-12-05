@@ -18,6 +18,7 @@
 
 Application::Application()
 {
+	srand(time(0));
 	PERF_START(ptimer);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
