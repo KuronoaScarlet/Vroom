@@ -418,24 +418,6 @@ void ModuleEditor::MenuBar()
             if (ImGui::MenuItem("Examples")) showDemoWindow = !showDemoWindow;
             ImGui::Separator();
 
-            if (ImGui::BeginMenu("Workspace Style"))
-            {
-                if (ImGui::MenuItem("Dark"))
-                    ImGui::StyleColorsDark();
-                if (ImGui::MenuItem("Classic"))
-                    ImGui::StyleColorsClassic();
-                if (ImGui::MenuItem("Light"))
-                    ImGui::StyleColorsLight();
-                if (ImGui::MenuItem("Custom"))
-                    ImGui::StyleColorsCustom();
-                if (ImGui::MenuItem("Grey"))
-                    ImGui::Style();
-                if (ImGui::MenuItem("Green"))
-                    ImGui::Custom();
-                ImGui::EndMenu();
-            }
-            ImGui::Separator();
-
             if (ImGui::MenuItem("Hierarchy"))
                 showHierarchyWindow = !showHierarchyWindow;
             if (ImGui::MenuItem("Inspector"))
@@ -457,6 +439,23 @@ void ModuleEditor::MenuBar()
             if (ImGui::MenuItem("Configuration"))
                 showConfWindow = !showConfWindow;
 
+            ImGui::EndMenu();
+        }
+        ImGui::Separator();
+        if (ImGui::BeginMenu("Workspace Style"))
+        {
+            if (ImGui::MenuItem("Dark"))
+                ImGui::StyleColorsDark();
+            if (ImGui::MenuItem("Classic"))
+                ImGui::StyleColorsClassic();
+            if (ImGui::MenuItem("Light"))
+                ImGui::StyleColorsLight();
+            if (ImGui::MenuItem("Custom"))
+                ImGui::StyleColorsCustom();
+            if (ImGui::MenuItem("Grey"))
+                ImGui::Style();
+            if (ImGui::MenuItem("Green"))
+                ImGui::Custom();
             ImGui::EndMenu();
         }
 
