@@ -34,7 +34,7 @@ bool ModuleScene::Start()
 	assets->ReadFiles();
 
 	//Loading house and textures since beginning
-	App->import->LoadGeometry("Assets/Models/BakerHouse.fbx");
+	App->import->LoadGeometry("Assets/Models/s.fbx");
 	
 	return ret;
 }
