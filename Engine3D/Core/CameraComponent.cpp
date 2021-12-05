@@ -25,7 +25,7 @@ bool CameraComponent::Start()
 	LOG("Setting up the camera");
 
 	LookAt(float3::zero);
-
+	frustrum.farPlaneDistance = 60000.f;
 	bool ret = true;
 
 	return ret;
