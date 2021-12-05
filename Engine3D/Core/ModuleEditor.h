@@ -91,6 +91,7 @@ public:
 	ImGuiTextBuffer consoleText;
 
 	int resourceCount = 0;
+	int bg = 0, textColor = 0, mainColor= 0, mainAccentColor = 0, highlightColor = 0;
 	std::vector<std::string> resourceArray;
 
 	ImVec4 currentColor;

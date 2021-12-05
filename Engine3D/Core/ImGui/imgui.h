@@ -57,6 +57,7 @@ Index of this file:
 #include <stdarg.h>                 // va_list, va_start, va_end
 #include <stddef.h>                 // ptrdiff_t, NULL
 #include <string.h>                 // memset, memmove, memcpy, strlen, strchr, strcpy, strcmp
+#include <math.h>                 // memset, memmove, memcpy, strlen, strchr, strcpy, strcmp
 
 // Version
 // (Integer encoded as XYYZZ for use in #if preprocessor conditionals. Work in progress versions typically starts at XYY99 then bounce up to XYY00, XYY01 etc. when release tagging happens)
@@ -280,6 +281,11 @@ namespace ImGui
     IMGUI_API void          StyleColorsCustom(ImGuiStyle* dst = NULL);  // custom style to Zero Engine
     IMGUI_API void          Style(ImGuiStyle* dst = NULL);  // custom style to Zero Engine
     IMGUI_API void          Custom(ImGuiStyle* dst = NULL);  // custom style to Zero Engine
+    IMGUI_API void          Pink(ImGuiStyle* dst = NULL);  // custom style to Zero Engine
+    IMGUI_API void          Purple(ImGuiStyle* dst = NULL);  // custom style to Zero Engine
+    IMGUI_API void          Green(ImGuiStyle* dst = NULL);  // custom style to Zero Engine
+    IMGUI_API void          Ignasi(ImGuiStyle* dst = NULL);  // custom style to Zero Engine
+    IMGUI_API void          SetColors(int backGroundColor, int textColor, int mainColor, int mainAccentColor, int highlightColor);  // custom style to Zero Engine
     // Windows
     // - Begin() = push window to the stack and start appending to it. End() = pop window from the stack.
     // - Passing 'bool* p_open != NULL' shows a window-closing widget in the upper-right corner of the window,
@@ -294,7 +300,36 @@ namespace ImGui
     // - Note that the bottom of window stack always contains a window called "Debug".
     IMGUI_API bool          Begin(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
     IMGUI_API void          End();
+    static int BackGroundColor = 0x25213100;
+    static int TextColor = 0xF4F1DE00;
+    static int MainColor = 0xDA115E00;
+    static int MainAccentColor = 0x79235900;
+    static int HighlightColor = 0xC7EF0000;
+    static int Black = 0x00000000;
+    static int White = 0xFFFFFF00;
 
+    static int AlphaTransparent = 0x00;
+    static int Alpha20 = 0x33;
+    static int Alpha40 = 0x66;
+    static int Alpha50 = 0x80;
+    static int Alpha60 = 0x99;
+    static int Alpha80 = 0xCC;
+    static int Alpha90 = 0xE6;
+    static int AlphaFull = 0xFF;
+
+    static float GetR(int colorCode) { return (float)((colorCode & 0xFF000000) >> 24) / (float)(0xFF); }
+    static float GetG(int colorCode) { return (float)((colorCode & 0x00FF0000) >> 16) / (float)(0xFF); }
+    static float GetB(int colorCode) { return (float)((colorCode & 0x0000FF00) >> 8) / (float)(0xFF); }
+    static float GetA(int alphaCode) { return ((float)alphaCode / (float)0xFF); }
+
+    static ImVec4 GetColor(int c, int a = Alpha80) { return ImVec4(GetR(c), GetG(c), GetB(c), GetA(a)); }
+    static ImVec4 Darken(ImVec4 c, float p) { return ImVec4(fmax(0.f, c.x - 1.0f * p), fmax(0.f, c.y - 1.0f * p), fmax(0.f, c.z - 1.0f * p), c.w); }
+    static ImVec4 Lighten(ImVec4 c, float p) { return ImVec4(fmax(0.f, c.x + 1.0f * p), fmax(0.f, c.y + 1.0f * p), fmax(0.f, c.z + 1.0f * p), c.w); }
+
+    static ImVec4 Disabled(ImVec4 c) { return Darken(c, 0.6f); }
+    static ImVec4 Hovered(ImVec4 c) { return Lighten(c, 0.2f); }
+    static ImVec4 Active(ImVec4 c) { return Lighten(ImVec4(c.x, c.y, c.z, 1.0f), 0.1f); }
+    static ImVec4 Collapsed(ImVec4 c) { return Darken(c, 0.2f); }
     // Child Windows
     // - Use child windows to begin into a self-contained independent scrolling/clipping regions within a host window. Child windows can embed their own child.
     // - For each independent axis of 'size': ==0.0f: use remaining host window size / >0.0f: fixed size / <0.0f: use remaining window size minus abs(size) / Each axis can use a different mode, e.g. ImVec2(0,400).

@@ -455,8 +455,16 @@ void ModuleEditor::MenuBar()
                 ImGui::StyleColorsCustom();
             if (ImGui::MenuItem("Grey"))
                 ImGui::Style();
-            if (ImGui::MenuItem("Green"))
+            if (ImGui::MenuItem("LightGreen"))
                 ImGui::Custom();
+            if (ImGui::MenuItem("Pink"))
+                ImGui::Pink();
+            if (ImGui::MenuItem("Purple"))
+                ImGui::Purple();
+            if (ImGui::MenuItem("NormalGreen"))
+                ImGui::Green();
+            if (ImGui::MenuItem("Ugly"))
+                ImGui::Ignasi();
             ImGui::EndMenu();
         }
 
