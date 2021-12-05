@@ -135,8 +135,8 @@ update_status ModuleInput::PreUpdate(float dt)
 				fileName = App->fileSystem->NormalizePath(filePath);
 				if (App->editor->fileSelected == nullptr || App->editor->fileSelected == App->scene->assets)
 				{
-					App->fileSystem->CreateDir("Assets/Library/");
-					App->fileSystem->DuplicateFile(fileName.c_str(), "Assets/Library", std::string(""));
+					App->fileSystem->CreateDir("Assets/NewAssets/");
+					App->fileSystem->DuplicateFile(fileName.c_str(), "Assets/NewAssets", std::string(""));
 				}
 				else if (App->editor->fileSelected != nullptr)
 				{
