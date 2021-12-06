@@ -34,7 +34,7 @@ bool ModuleScene::Start()
 	assets->ReadFiles();
 
 	//Loading house and textures since beginning
-	App->import->LoadGeometry("Assets/Models/s.fbx");
+	App->import->LoadGeometry("Assets/Models/street.fbx");
 	
 	return ret;
 }
@@ -142,8 +142,8 @@ void ModuleScene::Save()
 	root->Save(writer);
 	writer.EndArray();
 	writer.EndObject();
-
-	if (App->fileSystem->Save("Library/Scenes/example.scene", sb.GetString(), strlen(sb.GetString()), false))
+	App->fileSystem->CreateDir("Library/Scenes/");
+	if (App->fileSystem->Save("Library/Scenes/VroomScene.vrs", sb.GetString(), strlen(sb.GetString()), false))
 	{
 		LOG("Scene saved.");
 	}

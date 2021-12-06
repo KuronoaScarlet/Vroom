@@ -47,10 +47,10 @@ public:
 	Quat rotation;
 	float3 rotationEuler;
 	float3 scale;
+
 private:
 	
 	bool isDirty = false;
-
 	float3 front = float3::unitZ;
 	float3 up = float3::unitY;
 	float3 right = float3::unitX;
