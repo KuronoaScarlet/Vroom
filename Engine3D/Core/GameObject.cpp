@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
+#include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ImGui/imgui.h"
 
@@ -50,15 +51,21 @@ void GameObject::Update(float dt)
 	{
 		component->Update(dt);
 	}
-	if (isSelected)
+	if (this->GetComponent<ComponentMesh>() != nullptr)
 	{
-		if (this->name != "Camera")
-			this->GetComponent<ComponentMesh>()->drawOBB = true;
-	}
-	else
-	{
-		if (this->name != "Camera")
-			this->GetComponent<ComponentMesh>()->drawOBB = false;
+		if (this->GetComponent<ComponentMesh>()->active)
+		{
+			if (isSelected)
+			{
+				if (this->name != "Camera")
+					this->GetComponent<ComponentMesh>()->drawOBB = true;
+			}
+			else
+			{
+				if (this->name != "Camera")
+					this->GetComponent<ComponentMesh>()->drawOBB = false;
+			}
+		}
 	}
 }
 
