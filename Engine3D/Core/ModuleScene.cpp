@@ -143,7 +143,7 @@ void ModuleScene::Save()
 	writer.EndArray();
 	writer.EndObject();
 	App->fileSystem->CreateDir("Library/Scenes/");
-	if (App->fileSystem->Save("Library/Scenes/VroomScene.vrs", sb.GetString(), strlen(sb.GetString()), false))
+	if (App->fileSystem->Save("Library/Scenes/vroomScene.vrs", sb.GetString(), strlen(sb.GetString()), false))
 	{
 		LOG("Scene saved.");
 	}

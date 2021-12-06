@@ -133,6 +133,11 @@ update_status ModuleInput::PreUpdate(float dt)
 				filePath = event.drop.file;
 				std::string fileName(filePath);
 				fileName = App->fileSystem->NormalizePath(filePath);
+
+				std::string fileStr, extensionStr;
+				App->fileSystem->SplitFilePath(fileName.c_str(), nullptr, &fileStr, &extensionStr);
+				fileName = fileStr + std::string(".") + extensionStr;
+
 				if (App->editor->fileSelected == nullptr || App->editor->fileSelected == App->scene->assets)
 				{
 					if (!App->fileSystem->HasExtension(fileName.c_str(), "vrs"))
