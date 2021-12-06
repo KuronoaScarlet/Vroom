@@ -5,7 +5,6 @@
 #include "ModuleFileSystem.h"
 #include "ComponentTransform.h"
 #include "ImGui/imgui.h"
-#include "../UUIDRandom.h"
 
 GameObject::GameObject() {
 
@@ -13,6 +12,8 @@ GameObject::GameObject() {
 	parent = nullptr;
 
 	transform = CreateComponent<ComponentTransform>();
+
+	UUID = 
 
 	active = true;
 }
@@ -109,11 +110,6 @@ void GameObject::EraseGameObject()
 			}
 		}
 	}
-}
-
-void GameObject::GenerateUUID()
-{
-	UUID = generateUUID();
 }
 
 void GameObject::AttachChild(GameObject* child)

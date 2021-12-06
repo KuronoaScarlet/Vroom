@@ -135,8 +135,15 @@ update_status ModuleInput::PreUpdate(float dt)
 				fileName = App->fileSystem->NormalizePath(filePath);
 				if (App->editor->fileSelected == nullptr || App->editor->fileSelected == App->scene->assets)
 				{
-					App->fileSystem->CreateDir("Assets/NewAssets/");
-					App->fileSystem->DuplicateFile(fileName.c_str(), "Assets/NewAssets", std::string(""));
+					if (!App->fileSystem->HasExtension(fileName.c_str(), "vrs"))
+					{
+						App->fileSystem->CreateDir("Assets/NewAssets/");
+						App->fileSystem->DuplicateFile(fileName.c_str(), "Assets/NewAssets", std::string(""));
+					}
+					else
+					{
+						App->scene->Load(fileName.c_str());
+					}
 				}
 				else if (App->editor->fileSelected != nullptr)
 				{

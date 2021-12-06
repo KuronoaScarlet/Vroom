@@ -85,20 +85,23 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			aiMatrix4x4 t;
 			FindNodeName(scene, i, name);
 
-			std::string newName(name + ".mesh");
+			std::string newName(name + ".asset");
 
 			GameObject* newGameObject = App->scene->CreateGameObject(name);
 			ComponentMesh* mesh = newGameObject->CreateComponent<ComponentMesh>();
 
 			bool checked = false;
-			if (check.size() == 0) App->fileSystem->CreateDir("Library/Meshes/");
+			if (check.size() == 0) App->fileSystem->CreateDir("Library/Assets/");
 			check.push_back(newName);
 			for (uint i = 0; i < check.size() - 1; ++i)
 			{
 				if (newName == check.at(i))
 				{
-					Load(mesh, newName.c_str());
-					checked = true;
+					if (mesh->numVertices > 4 && (name != "City_building_010" || name != "City_building_016" || name != "City_building_017"))
+					{
+						Load(mesh, newName.c_str());
+						checked = true;
+					}
 
 					if (!mesh->texturePath.empty())
 					{
@@ -155,6 +158,10 @@ bool ModuleImport::LoadGeometry(const char* path) {
 
 				mesh->numVertices = assimpMesh->mNumVertices;
 				mesh->vertices.resize(assimpMesh->mNumVertices);
+				if (mesh->numVertices <= 4 && name != "Plane001" && checked == false)
+				{
+					check.pop_back();
+				}
 
 				memcpy(&mesh->vertices[0], assimpMesh->mVertices, sizeof(float3) * assimpMesh->mNumVertices);
 				LOG("New mesh with %d vertices", assimpMesh->mNumVertices);
@@ -166,8 +173,10 @@ bool ModuleImport::LoadGeometry(const char* path) {
 
 					for (size_t i = 0; i < assimpMesh->mNumFaces; i++)
 					{
-						if (assimpMesh->mFaces[i].mNumIndices != 3) {
-							LOG("WARNING, geometry face with != 3 indices!")
+						if (assimpMesh->mFaces[i].mNumIndices != 3) 
+						{
+							break;
+							LOG("WARNING, geometry face with != 3 indices!");
 						}
 						else {
 							memcpy(&mesh->indices[i * 3], assimpMesh->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -202,8 +211,10 @@ bool ModuleImport::LoadGeometry(const char* path) {
 				newGameObject->transform->SetPosition(float3(position.x, position.y, position.z));
 				newGameObject->transform->SetRotation(Quat(rotation.x, rotation.y, rotation.z, rotation.w).ToEulerXYZ());
 				newGameObject->transform->SetScale(float3(scale.x, scale.y, scale.z));
-
-				Save(mesh, newName.c_str());
+				if (mesh->numVertices >= 4 && (name != "City_building_010" || name != "City_building_016" || name != "City_building_017"))
+				{
+					Save(mesh, newName.c_str());
+				}
 			}
 			mesh->GenerateBuffers();
 			mesh->GenerateBounds();
@@ -312,7 +323,7 @@ void ModuleImport::Save(const ComponentMesh* mesh, const char* name)
 	if (bytes > 0) memcpy(cursor, &mesh->normals[0], bytes);
 	cursor += bytes;
 	
-	std::ofstream outfile("Library/Meshes/" + std::string(name), std::ofstream::binary | std::ofstream::trunc);
+	std::ofstream outfile("Library/Assets/" + std::string(name), std::ofstream::binary | std::ofstream::trunc);
 	outfile.write(buffer, size);
 	outfile.close();
 	delete[] buffer;
@@ -321,7 +332,7 @@ void ModuleImport::Save(const ComponentMesh* mesh, const char* name)
 
 void ModuleImport::Load(ComponentMesh* mesh, const char* name)
 {
-	std::ifstream infile("Library/Meshes/" + std::string(name), std::ifstream::binary | std::ifstream::in);
+	std::ifstream infile("Library/Assets/" + std::string(name), std::ifstream::binary | std::ifstream::in);
 	if (!infile.is_open())
 	{
 		LOG("ERROR opening file: %s", name);
@@ -356,7 +367,7 @@ void ModuleImport::Load(ComponentMesh* mesh, const char* name)
 
 	bytes = sizeof(char) * ranges[2];
 	if (bytes > 0) mesh->texturePath.resize(bytes);
-	if (bytes > 0) memcpy(&mesh->texturePath[0], cursor, bytes);//god was here
+	if (bytes > 0) memcpy(&mesh->texturePath, cursor, bytes);
 	cursor += bytes;
 
 	bytes = sizeof(float2) * ranges[3];
