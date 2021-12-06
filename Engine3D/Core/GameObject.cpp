@@ -6,6 +6,7 @@
 #include "ComponentTransform.h"
 #include "ImGui/imgui.h"
 
+
 GameObject::GameObject() {
 
 	name = name + ("GameObject");
@@ -13,7 +14,7 @@ GameObject::GameObject() {
 
 	transform = CreateComponent<ComponentTransform>();
 
-	UUID = 
+	UUID = uidGen.Int();
 
 	active = true;
 }
@@ -21,6 +22,8 @@ GameObject::GameObject() {
 GameObject::GameObject(const std::string name) : name(name) 
 {
 	transform = CreateComponent<ComponentTransform>();
+
+	UUID = uidGen.Int();
 
 	active = true;
 }

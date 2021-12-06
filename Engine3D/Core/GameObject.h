@@ -6,6 +6,8 @@
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 
+#include "Algorithm/Random/LCG.h"
+
 typedef rapidjson::PrettyWriter<rapidjson::StringBuffer> JSONWriter;
 typedef rapidjson::Value JSONReader;
 
@@ -63,5 +65,7 @@ public:
 
 	void Save(JSONWriter& writer);
 	void Load(const JSONReader& reader);
+
+	LCG uidGen;
 };
 
