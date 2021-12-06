@@ -827,6 +827,10 @@ void ModuleEditor::UpdateWindowStatus()
         //Just cleaning gameObjects(not textures,buffers...)
         if (ImGui::Button("Clear", { 60,20 })) 
         {
+            if (gameobjectSelected == nullptr)
+            {
+                gameobjectSelected = App->scene->root;
+            }
             LOG("GameObject selected name: %s", gameobjectSelected->name.c_str());
             App->scene->CleanUp(); //Clean GameObjects
             App->editor->gameobjectSelected = nullptr;

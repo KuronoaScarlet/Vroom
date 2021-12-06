@@ -93,15 +93,13 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			bool checked = false;
 			if (check.size() == 0) App->fileSystem->CreateDir("Library/Assets/");
 			check.push_back(newName);
+
 			for (uint i = 0; i < check.size() - 1; ++i)
 			{
 				if (newName == check.at(i))
 				{
-					if (mesh->numVertices > 4 && (name != "City_building_010" || name != "City_building_016" || name != "City_building_017"))
-					{
-						Load(mesh, newName.c_str());
-						checked = true;
-					}
+					Load(mesh, newName.c_str());
+					checked = true;
 
 					if (!mesh->texturePath.empty())
 					{
@@ -118,7 +116,6 @@ bool ModuleImport::LoadGeometry(const char* path) {
 							materialComp->SetTexture(textureObject);
 						}
 					}
-
 					check.pop_back();
 					break;
 				}
@@ -158,10 +155,6 @@ bool ModuleImport::LoadGeometry(const char* path) {
 
 				mesh->numVertices = assimpMesh->mNumVertices;
 				mesh->vertices.resize(assimpMesh->mNumVertices);
-				if (mesh->numVertices <= 4 && name != "Plane001" && checked == false)
-				{
-					check.pop_back();
-				}
 
 				memcpy(&mesh->vertices[0], assimpMesh->mVertices, sizeof(float3) * assimpMesh->mNumVertices);
 				LOG("New mesh with %d vertices", assimpMesh->mNumVertices);
@@ -175,7 +168,6 @@ bool ModuleImport::LoadGeometry(const char* path) {
 					{
 						if (assimpMesh->mFaces[i].mNumIndices != 3) 
 						{
-							break;
 							LOG("WARNING, geometry face with != 3 indices!");
 						}
 						else {
@@ -211,10 +203,8 @@ bool ModuleImport::LoadGeometry(const char* path) {
 				newGameObject->transform->SetPosition(float3(position.x, position.y, position.z));
 				newGameObject->transform->SetRotation(Quat(rotation.x, rotation.y, rotation.z, rotation.w).ToEulerXYZ());
 				newGameObject->transform->SetScale(float3(scale.x, scale.y, scale.z));
-				if (mesh->numVertices >= 4 && (name != "City_building_010" || name != "City_building_016" || name != "City_building_017"))
-				{
-					Save(mesh, newName.c_str());
-				}
+				Save(mesh, newName.c_str());
+
 			}
 			mesh->GenerateBuffers();
 			mesh->GenerateBounds();
