@@ -269,7 +269,7 @@ GameObject* ModuleCamera3D::TestRayCast(const LineSegment& line)
 
 	for (std::vector<GameObject*>::iterator i = App->scene->root->children.begin(); i != App->scene->root->children.end(); i++)
 	{
-		if ((*i)->name != "Camera")
+		if ((*i)->name != "Camera" && (*i)->GetComponent<ComponentMesh>() != nullptr)
 		{
 			if(line.Intersects((*i)->GetComponent<ComponentMesh>()->globalAABB, nHit, fHit))
 				rayHitList[nHit] = (*i);
