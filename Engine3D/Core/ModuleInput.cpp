@@ -140,14 +140,14 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				if (App->editor->fileSelected == nullptr || App->editor->fileSelected == App->scene->assets)
 				{
-					if (!App->fileSystem->HasExtension(fileName.c_str(), "vrs"))
+					if (!App->fileSystem->HasExtension(fileName.c_str(), "knekro"))
 					{
 						App->fileSystem->CreateDir("Assets/NewAssets/");
 						App->fileSystem->DuplicateFile(fileName.c_str(), "Assets/NewAssets", std::string(""));
 					}
 					else
 					{
-						App->scene->Load(fileName.c_str());
+						//App->scene->Load(fileName.c_str());
 					}
 				}
 				else if (App->editor->fileSelected != nullptr)
