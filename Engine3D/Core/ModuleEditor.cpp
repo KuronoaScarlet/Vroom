@@ -84,13 +84,13 @@ bool ModuleEditor::Start()
     // Setup ImGui style by default
     ImGui::StyleColorsDark();
 
-    png = App->textures->Load("Config/FormatImages/png.png");
-    fbx = App->textures->Load("Config/FormatImages/fbx.png");
-    folder = App->textures->Load("Config/FormatImages/folder.png");
-    jpg = App->textures->Load("Config/FormatImages/jpg.png");
-    default = App->textures->Load("Config/FormatImages/default.png");
-    tga = App->textures->Load("Config/FormatImages/tga.png");
-    dae = App->textures->Load("Config/FormatImages/dae.png");
+    png = App->textures->Load("Assets/FormatImages/png.png");
+    fbx = App->textures->Load("Assets/FormatImages/fbx.png");
+    folder = App->textures->Load("Assets/FormatImages/folder.png");
+    jpg = App->textures->Load("Assets/FormatImages/jpg.png");
+    default = App->textures->Load("Assets/FormatImages/default.png");
+    tga = App->textures->Load("Assets/FormatImages/tga.png");
+    dae = App->textures->Load("Assets/FormatImages/dae.png");
 
     pngID = png.id;
     fbxID = fbx.id;
