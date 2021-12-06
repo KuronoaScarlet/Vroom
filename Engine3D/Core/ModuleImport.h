@@ -29,4 +29,5 @@ public:
 	void Save(const ComponentMesh* mesh, const char* name);
 	void Load(ComponentMesh* mesh, const char* name);
 
+	std::vector<std::string> check;
 };

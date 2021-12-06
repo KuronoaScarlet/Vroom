@@ -34,9 +34,15 @@ ComponentMesh::ComponentMesh(GameObject* parent, Shape shape) : Component(parent
 
 ComponentMesh::~ComponentMesh()
 {
-	vertexBufferId ? glDeleteBuffers(1, &vertexBufferId) : 0;
-	textureBufferId ? glDeleteBuffers(1, &textureBufferId) : 0;
-	indexBufferId ? glDeleteBuffers(1, &indexBufferId) : 0;
+	vertexBufferId ?
+		glDeleteBuffers(1, &vertexBufferId)
+		: 0;
+	textureBufferId ?
+		glDeleteBuffers(1, &textureBufferId)
+		: 0;
+	indexBufferId ?
+		glDeleteBuffers(1, &indexBufferId)
+		: 0;
 }
 
 void ComponentMesh::CopyParMesh(par_shapes_mesh* parMesh)
@@ -301,7 +307,7 @@ void ComponentMesh::Save(JSONWriter& writer)
 	writer.StartArray();
 
 	writer.String("name");
-	writer.String(meshPath.c_str());
+	writer.String("mesh...");
 
 	writer.String("UUID");
 	writer.Int(UUID);
@@ -315,8 +321,7 @@ void ComponentMesh::Save(JSONWriter& writer)
 
 void ComponentMesh::Load(const JSONReader& reader)
 {
-	if (reader.HasMember("name"))
-		meshPath = reader["name"].GetString();
+	
 	if (reader.HasMember("UUID"))
 		UUID = reader["UUID"].GetUint();
 	/*if (reader.HasMember("parentUUID"))
