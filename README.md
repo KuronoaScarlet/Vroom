@@ -6,7 +6,6 @@ Next generation engine coded in cpp for videogames.
  - Automatically load 'Street Environment'.
  - There is an “Assets” window that shows all user assets.
  - The user can drop/import new files. Assets window reacts properly.
- - EAsset files can be deleted through the window and /Library entries are removed.
  - Upon start, all resources not managed inside Assets are generated in Library.
  - Various settings and performance metrics in the menus.
  - All resources use reference counting.
