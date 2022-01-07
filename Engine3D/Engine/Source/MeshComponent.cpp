@@ -129,7 +129,7 @@ void MeshComponent::OnEditor()
 		app->fs->DiscoverFiles("Library/Meshes/", files);
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
 		{
-			if ((*it).find(".rgmesh") != std::string::npos)
+			if ((*it).find(".vrmesh") != std::string::npos)
 			{
 				app->fs->GetFilenameWithoutExtension(*it);
 				*it = (*it).substr((*it).find_last_of("_") + 1, (*it).length());

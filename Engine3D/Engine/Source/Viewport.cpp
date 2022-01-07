@@ -74,7 +74,7 @@ void Viewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int curre
 				// TODO: Check this for dropping resources to the scene
 				const char* path = (const char*)payload->Data;
 				std::string scene = path;
-				if (scene.find(".ragnar") != std::string::npos)
+				if (scene.find(".knekro") != std::string::npos)
 				{
 					app->scene->LoadScene(scene.c_str());
 				}

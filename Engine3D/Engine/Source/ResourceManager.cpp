@@ -80,15 +80,15 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 	case ResourceType::NONE:
 		break;
 	case ResourceType::TEXTURE:
-		library = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".rgtexture";
+		library = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".vrtexture";
 		resource = std::make_shared<Texture>(uid, assets, library);
 		break;
 	case ResourceType::MESH:
-		library = MESHES_FOLDER + std::string("mesh_") + std::to_string(uid) + ".rgmesh";
+		library = MESHES_FOLDER + std::string("mesh_") + std::to_string(uid) + ".vrmesh";
 		resource = std::make_shared<Mesh>(uid, assets, library);
 		break;
 	case ResourceType::MODEL:
-		library = MODELS_FOLDER + std::string("model_") + std::to_string(uid) + ".rgmodel";
+		library = MODELS_FOLDER + std::string("model_") + std::to_string(uid) + ".vrmodel";
 		resource = std::make_shared<Model>(uid, assets, library);
 		break;
 	}
@@ -182,7 +182,7 @@ void ResourceManager::ImportResourcesFromLibrary()
 
 		for (int i = 0; i < files.size(); ++i)
 		{
-			if (files[i].find(".rg") != std::string::npos)
+			if (files[i].find(".vr") != std::string::npos)
 			{
 				std::string extension = files[i].substr(files[i].find_last_of("."), files[i].length());
 				std::string metaFile = dir + files[i].substr(0, files[i].find_last_of(".")) + ".meta";
@@ -196,9 +196,9 @@ void ResourceManager::ImportResourcesFromLibrary()
 					uint uid = metaInfo.GetJsonNumber("Uuid");
 
 					// TODO: Find a solution to get the assets path
-					if (files[i].find(".rgmodel") != std::string::npos) CreateResourceCreated(ResourceType::MODEL, uid, assets, dir + files[i]);
-					else if (files[i].find(".rgtexture") != std::string::npos) CreateResourceCreated(ResourceType::TEXTURE, uid, assets, dir + files[i]);
-					else if (files[i].find(".rgmesh") != std::string::npos) CreateResourceCreated(ResourceType::MESH, uid, assets, dir + files[i]);
+					if (files[i].find(".vrmodel") != std::string::npos) CreateResourceCreated(ResourceType::MODEL, uid, assets, dir + files[i]);
+					else if (files[i].find(".vrtexture") != std::string::npos) CreateResourceCreated(ResourceType::TEXTURE, uid, assets, dir + files[i]);
+					else if (files[i].find(".vrmesh") != std::string::npos) CreateResourceCreated(ResourceType::MESH, uid, assets, dir + files[i]);
 
 					RELEASE_ARRAY(buffer);
 				}
@@ -334,7 +334,7 @@ void ResourceManager::AddMesh(Mesh* mesh)
 Mesh* ResourceManager::IsMeshLoaded(std::string path)
 {
 	std::string p = path;
-	if (p.find(".rgmesh") == std::string::npos)
+	if (p.find(".vrmesh") == std::string::npos)
 	{
 		app->fs->GetFilenameWithoutExtension(p);
 		p = MESHES_FOLDER + p + ".dds";

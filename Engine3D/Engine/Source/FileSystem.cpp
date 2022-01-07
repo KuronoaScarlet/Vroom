@@ -258,7 +258,7 @@ void FileSystem::LoadFiles()
 
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
 		{
-			if ((*it).find(".rgmesh") != std::string::npos)
+			if ((*it).find(".vrmesh") != std::string::npos)
 			{
 				
 			}
@@ -309,7 +309,7 @@ ResourceType FileSystem::CheckExtension(std::string& path)
 	std::list<std::string>::iterator s;
 	std::list<std::string>::iterator end = modelExtension.end();
 
-	if (extension.data() == std::string(".ragnar")) return ResourceType::SCENE;
+	if (extension.data() == std::string(".knekro")) return ResourceType::SCENE;
 
 	for (s = modelExtension.begin(); s != end; ++s)
 	{

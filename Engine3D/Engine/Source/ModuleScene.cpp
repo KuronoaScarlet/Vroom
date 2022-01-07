@@ -462,7 +462,7 @@ void ModuleScene::Play()
 	char* buf;
 	uint size = sceneFile.Save(&buf);
 
-	if (app->fs->Save(SCENES_FOLDER "scenePlay.ragnar", buf, size) > 0)
+	if (app->fs->Save(SCENES_FOLDER "scenePlay.knekro", buf, size) > 0)
 		DEBUG_LOG("Scene saved succesfully");
 	else
 		DEBUG_LOG("Scene couldn't be saved");
@@ -475,8 +475,8 @@ void ModuleScene::Play()
 
 void ModuleScene::Stop()
 {
-	LoadScene("Assets/Scenes/scenePlay.ragnar");
-	app->fs->RemoveFile("Assets/Scenes/scenePlay.ragnar");
+	LoadScene("Assets/Scenes/scenePlay.knekro");
+	app->fs->RemoveFile("Assets/Scenes/scenePlay.knekro");
 	qTree.Clear();
 	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 	gameState = GameState::NOT_PLAYING;

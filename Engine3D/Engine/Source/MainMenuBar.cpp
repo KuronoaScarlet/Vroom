@@ -38,12 +38,6 @@ MainMenuBar::~MainMenuBar()
 
 bool MainMenuBar::Start()
 {
-	//TextureImporter::ImportTexture(std::string("Assets/Resources/PlayButton.png"));
-	//TextureImporter::ImportTexture(std::string("Assets/Resources/PauseButton.png"));
-	//TextureImporter::ImportTexture(std::string("Assets/Resources/NextFrame.png"));
-	//TextureImporter::ImportTexture2(std::string("Assets/Resources/PauseButtonActive.png"));
-	//TextureImporter::ImportTexture2(std::string("Assets/Resources/StopButton.png"));
-	
 	buttonPlay = new Texture(-5, std::string("Settings/EngineResources/PlayButton.rgtexture"));
 	buttonPlay->Load();
 
@@ -82,7 +76,7 @@ bool MainMenuBar::Update(float dt)
 			}
 			if (ImGui::MenuItem("Open Project", "Ctrl + O", &ret))
 			{
-				std::string filePath = Dialogs::OpenFile("Ragnar Scene (*.ragnar)\0*.ragnar\0");
+				std::string filePath = Dialogs::OpenFile("VroomEngine Scene (*.knekro)\0*.knekro\0");
 				if (!filePath.empty()) app->scene->LoadScene(filePath.c_str());
 			}
 
@@ -92,14 +86,14 @@ bool MainMenuBar::Update(float dt)
 			{
 				if (app->scene->SceneDirectory().empty())
 				{
-					std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.ragnar)\0*.ragnar\0");
+					std::string filePath = Dialogs::SaveFile("VroomEngine Scene (*.knekro)\0*.knekro\0");
 					if (!filePath.empty()) app->scene->SaveScene(filePath.c_str());
 				}
 				else app->scene->SaveScene(app->scene->SceneDirectory().c_str());
 			}
 			if (ImGui::MenuItem("Save As", "Ctrl + Shift + S", &ret))
 			{
-				std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.ragnar)\0*.ragnar\0");
+				std::string filePath = Dialogs::SaveFile("VroomEngine Scene (*.knekro)\0*.knekro\0");
 				if (!filePath.empty()) app->scene->SaveScene(filePath.c_str());
 			}
 			if (ImGui::MenuItem("Exit", "ESC", &ret))
@@ -228,7 +222,7 @@ bool MainMenuBar::Update(float dt)
 		{
 			if (app->scene->SceneDirectory().empty())
 			{
-				std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.ragnar)\0*.ragnar\0");
+				std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.knekro)\0*.knekro\0");
 				if (!filePath.empty()) app->scene->SaveScene(filePath.c_str());
 			}
 			else
@@ -302,7 +296,7 @@ bool MainMenuBar::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KeyState::KEY_REPEAT &&
 		app->input->GetKey(SDL_SCANCODE_O) == KeyState::KEY_DOWN)
 	{
-		std::string filePath = Dialogs::OpenFile("Ragnar Scene (*.ragnar)\0*.ragnar\0");
+		std::string filePath = Dialogs::OpenFile("Ragnar Scene (*.knekro)\0*.knekro\0");
 		if (!filePath.empty())
 		{
 			app->scene->LoadScene(filePath.c_str());
@@ -313,7 +307,7 @@ bool MainMenuBar::Update(float dt)
 		app->input->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT &&
 		app->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_DOWN)
 	{
-		std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.ragnar)\0*.ragnar\0");
+		std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.knekro)\0*.knekro\0");
 		if (!filePath.empty()) app->scene->SaveScene(filePath.c_str());
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KeyState::KEY_REPEAT &&
@@ -321,7 +315,7 @@ bool MainMenuBar::Update(float dt)
 	{
 		if (app->scene->SceneDirectory().empty())
 		{
-			std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.ragnar)\0*.ragnar\0");
+			std::string filePath = Dialogs::SaveFile("Ragnar Scene (*.knekro)\0*.knekro\0");
 			if (!filePath.empty()) app->scene->SaveScene(filePath.c_str());
 		}
 		else app->scene->SaveScene(app->scene->SceneDirectory().c_str());
