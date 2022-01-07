@@ -10,7 +10,10 @@ enum class ResourceType
 	TEXTURE,
 	MESH,
 	MODEL,
-	SCENE
+	SCENE,
+	ANIMATION,
+	BONE,
+	ANIMATIONGRAPH
 };
 
 class Resource
