@@ -2,7 +2,35 @@
 ## First commit forked from [solidajenjo/Engine3D](https://github.com/solidajenjo/Engine3D)
 ## Source code forked from [RagnarEngine](https://github.com/UriKurae/Ragnar-Engine)
 ## Description
-Next generation engine coded in cpp for videogames.
+We are students of the UPC - CITM university developing a Video Game Engine coded mainly in Cpp, with the help of different libraries to help us. Our goal is to end the engine with a High-Level system, which will be a Skeletal Animation system.
+***////Next generation engine coded in cpp for videogames.////***
+## Developers
+ - Isaac Digón[https://github.com/isaac553876299]
+ - Isaac Colomer[https://github.com/IsaaColomer]
+ - Ignasi Pardo[https://github.com/KuronoaScarlet]
+ ## Member Tasks
+ - Animation Component.
+ - General QA.
+ - Bug fixing.
+ - Display and Debug information.
+ - Interpolate between bone keys.
+
+ ### Ignasi Pardo Carbó
+ - Write the animation resource on binary format.
+ - Handle animation playing through animation component.
+ - Support blending between different animations.
+
+ ### Isaac Digón Donaire
+
+ - Add bone information.
+ - Managing all bone data.
+ - OpenGL buffers.
+
+ ### Isaac Colomer Casas
+ - WebPage
+ - Render of the animated Mesh
+ - Apply the transforms with the animation delta
+
 ## Features
  - Automatically load 'Street Environment'.
  - There is an “Assets” window that shows all user assets.
@@ -10,7 +38,7 @@ Next generation engine coded in cpp for videogames.
  - Upon start, all resources not managed inside Assets are generated in Library.
  - Various settings and performance metrics in the menus.
  - All resources use reference counting.
- -The editor has 2 windows one with the scene(editor view) and another captured from a gameobject with a camera component(main game camera), each one has its own framebuffer and the user can visualize both at the same time.
+ - The editor has 2 windows one with the scene(editor view) and another captured from a gameobject with a camera component(main game camera), each one has its own framebuffer and the user can visualize both at the same time.
  - All meshes use a bounding volume (AABB) and can be discarded using Frustum Culling.
  - Hierarchy: delete, reparent, create empty and create children.
  - Transform: translate, rotate and scale Game Objects.
@@ -26,12 +54,6 @@ Next generation engine coded in cpp for videogames.
  - Mouse wheel up/down zooms scene view.
  - Left click to select a GameObject in the scene.
  - Delete to delete a GameObject.
-
-## Developers
-
- - Isaac Digón[https://github.com/isaac553876299]
- - Isaac Colomer[https://github.com/IsaaColomer]
- - Ignasi Pardo[https://github.com/KuronoaScarlet]
 
 **Students of 3rd year at CITM degree on Videogames Design and Development**
 
