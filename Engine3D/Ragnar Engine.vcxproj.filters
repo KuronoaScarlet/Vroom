@@ -428,7 +428,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Ragnar Engine.rc" />
+    <ResourceCompile Include="VroomEngine.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Output\Settings\EngineResources\logo.ico" />

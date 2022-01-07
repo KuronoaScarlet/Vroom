@@ -19,15 +19,13 @@ AboutMenu::~AboutMenu()
 
 bool AboutMenu::Update(float dt)
 {
-	if (ImGui::Begin("About Ragnar Engine", &active))
+	if (ImGui::Begin("About VroomEngine", &active))
 	{
-		ImGui::TextWrapped("Ragnar Engine v0.3");
+		ImGui::TextWrapped("VroomEngine v1.0");
 		ImGui::NewLine();
 		ImGui::TextWrapped
-		(" This is a videogame engine created for our game engine project. We are two students, Lucas Perez and Oriol Bernal, and the final goal for this engine is"
-			" to create a videogame."
-		);
-		ImGui::TextWrapped("By Oriol Bernal & Lucas Perez");
+		(" The videogame engine that lends to you the power of the fastest videogame creation. ");
+		ImGui::TextWrapped("By Isaac Colomer, Isaac Digón & Ignasi Pardo");
 		ImGui::NewLine();
 
 		ImGui::TextWrapped("3rd Party Libraries used:");
@@ -47,7 +45,7 @@ bool AboutMenu::Update(float dt)
 		ImGui::NewLine();
 		ImGui::TextWrapped("MIT License");
 		ImGui::NewLine();
-		ImGui::TextWrapped("Copyright(c) 2021 Oriol Bernal Martinez & Lucas Perez Garcia");
+		ImGui::TextWrapped("Copyright(c) 2021 Isaac Colomer, Isaac Digón & Ignasi Pardo");
 		ImGui::NewLine();
 		ImGui::TextWrapped(
 			"Permission is hereby granted, free of charge, to any person obtaining a copy"

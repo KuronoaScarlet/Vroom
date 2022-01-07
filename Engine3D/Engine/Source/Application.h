@@ -17,8 +17,8 @@ class ModuleEditor;
 class FileSystem;
 
 #define CONFIG_FILENAME	"config.json"
-#define APPLICATION_NAME "Ragnar Engine"
-#define ORGANIZATION_NAME "Yggdrasil Studios"
+#define APPLICATION_NAME "VroomEngine"
+#define ORGANIZATION_NAME "TDM"
 
 class Application
 {
