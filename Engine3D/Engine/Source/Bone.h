@@ -2,6 +2,7 @@
 #define __BONE_H__
 
 #include "Resource.h"
+#include "MathGeoLib/src/MathGeoLib.h"
 
 struct Weight
 {
@@ -11,13 +12,15 @@ struct Weight
 
 class ComponentMesh;
 
-class Bone : public Bone
+class Bone : public Resource
 {
-	Bone(unsigned int uid);
+public:
+	Bone(unsigned int uid, std::string& assets, std::string& library);
 	~Bone();
 
 	void Load() override;
-	void UnLoad() override;
+	//void UnLoad() override;
+	void BoneImporter(std::string& path);
 
 public:
 	unsigned int numWeights;

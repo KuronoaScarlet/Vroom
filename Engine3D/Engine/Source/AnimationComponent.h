@@ -10,14 +10,18 @@ typedef unsigned char GLubyte;
 
 class GameObject;
 class Resource;
-
+class TransformComponent;
 class AnimationComponent : public Component
 {
 public:
 
-	AnimationComponent(GameObject* own);
+	AnimationComponent(GameObject* own, TransformComponent* trans);
 	~AnimationComponent();
 
+public:
+	bool Update(float dt) override { return true; };
+	void ActivateBonesDebug(GameObject* go, bool isActive);
+	void AssignResource(uint id, bool blend = false, bool blendLoop = true);
 	//void OnEditor() override;
 
 	//bool OnLoad(JsonParsing& node) override;
@@ -49,6 +53,9 @@ private:
 	float blendPercent = 0.0f;
 	float totalBlendTime = 0.1f;
 	float speed = 1.0f;
+
+	/*std::map<uint, uint> bones;
+	std::map<uint, uint> blendBones;*/
 };
 
 #endif
