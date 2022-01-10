@@ -10,53 +10,43 @@
 #include <vector>
 #include "Primitive.h"
 #include "AnimationComponent.h"
+#include "Globals.h"
 
 BoneComponent::BoneComponent(GameObject* owner)
 {
-	sphere = new Sphere();
-	//sphere. = { 1.0,0.0,0.0,1.0 };
-	line = new Line();
-	//line->color = { 1.0,0.0,0.0,1.0 };
+	sphere = new MSphere();
+	sphere->color = { 1.0,0.0,0.0,1.0 };
+	line = new MLine();
+	line->color = { 1.0,0.0,0.0,1.0 };
 }
 
 BoneComponent::~BoneComponent()
 {
-	/*RELEASE(sphere);
-	RELEASE(line);*/
+	RELEASE(sphere);
+	RELEASE(line);
 }
 
 bool BoneComponent::drawDebugInfo()
 {
-	//Bone* bone = (Bone*)app->resources->GetResource(RUID);
-	Resource* guid = nullptr;
-	guid->GetType();
-	Bone* bone = (Bone*)guid;
-
 	if (debugDraw)
 	{
-		//TransformComponent* transform = (TransformComponent*)owner->GetComponent(TRANSFORMATION);
 		TransformComponent* transform = (TransformComponent*)owner->GetComponent<TransformComponent>();
 		vec position = float3::zero;
 		vec scale = float3::one;
 		Quat rot = Quat::identity;
-		//transform->globalMatrix.Decompose(position, rot, scale);
 		transform->GetGlobalTransform().Decompose(position, rot, scale);
-		//sphere->SetPos(position.x, position.y, position.z);
-		RSphere::CreateSphere(,)
-		sphere->pos = vec(position.x, position.y, position.z);
+		sphere->SetPos(position.x, position.y, position.z);
 
-		//if (gameObject->parent != nullptr && gameObject->parent->GetComponent(ANIMATION) == nullptr)
 		if (owner != nullptr && owner->GetParent()->GetComponent<AnimationComponent>() == nullptr)
 		{
-			//line->origin = position;
-			line->pos = position;
+			line->origin = position;
 			float4x4 parentMat = owner->GetParent()->GetComponent<TransformComponent>()->GetGlobalTransform();
 			parentMat.Decompose(position, rot, scale);
-			//line->GetPoint() = position;
+			line->destination = position;
 		}
 
-		/*sphere.
-		line->Render();*/
+		sphere->Render();
+		line->Render();
 	}
 
 	return true;
@@ -64,14 +54,9 @@ bool BoneComponent::drawDebugInfo()
 
 void BoneComponent::OnEditor()
 {
-	//ResourceBone* bone = (ResourceBone*)App->resources->GetResource(RUID);
-	Resource* guid = nullptr;
-	guid->GetType();
-	Bone* bone = (Bone*)guid;
+	ImGui::PushID(this);
 
-	std::string tag = (bone != nullptr) ? bone->GetName() : "Unknown";
-
-	if (ImGui::CollapsingHeader(("Bone - "+tag).c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick))
+	if (ImGui::CollapsingHeader("Material"))
 	{
 		ImGui::Text("This component defines current game object\nas a bone for executing animations");
 

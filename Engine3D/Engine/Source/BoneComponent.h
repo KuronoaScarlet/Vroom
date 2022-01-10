@@ -2,8 +2,10 @@
 #define __BONECOMPONENT_H__
 
 #include "Component.h"
+#include "MathGeoLib/src/MathGeoLib.h"
 
-#include "Primitives.h"
+class MSphere;
+class MLine;
 
 class BoneComponent : public Component
 {
@@ -22,10 +24,10 @@ public:
 
 	bool debugDraw = false;
 
+	MSphere* sphere = nullptr;
+	MLine* line = nullptr;
 
-	Line* line = nullptr;
-
-	float4x4 globalOffset=float4x4::identity;
+	float4x4 globalOffset = float4x4::identity;
 };
 
 #endif // !__COMPONENTBONE_H__

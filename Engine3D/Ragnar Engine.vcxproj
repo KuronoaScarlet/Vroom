@@ -110,7 +110,6 @@
     <ClInclude Include="Dependencies\mmgr\nommgr.h" />
     <ClInclude Include="Engine\Source\AboutMenu.h" />
     <ClInclude Include="Engine\Source\Animation.h" />
-    <ClInclude Include="Engine\Source\AnimationGraph.h" />
     <ClInclude Include="Engine\Source\AnimationImporter.h" />
     <ClInclude Include="Engine\Source\Application.h" />
     <ClInclude Include="Engine\Source\AssimpDefs.h" />
@@ -152,7 +151,6 @@
     <ClInclude Include="Engine\Source\ModuleScene.h" />
     <ClInclude Include="Engine\Source\ModuleWindow.h" />
     <ClInclude Include="Engine\Source\Primitive.h" />
-    <ClInclude Include="Engine\Source\PrimitiveNew.h" />
     <ClInclude Include="Engine\Source\Primitives.h" />
     <ClInclude Include="Engine\Source\Profiling.h" />
     <ClInclude Include="Engine\Source\Quadtree.h" />
@@ -181,7 +179,6 @@
     <ClCompile Include="Dependencies\mmgr\mmgr.cpp" />
     <ClCompile Include="Engine\Source\AboutMenu.cpp" />
     <ClCompile Include="Engine\Source\Animation.cpp" />
-    <ClCompile Include="Engine\Source\AnimationGraph.cpp" />
     <ClCompile Include="Engine\Source\AnimationImporter.cpp" />
     <ClCompile Include="Engine\Source\Application.cpp" />
     <ClCompile Include="Engine\Source\AssimpDefs.cpp" />
