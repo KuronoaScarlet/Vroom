@@ -115,6 +115,7 @@
     <ClInclude Include="Engine\Source\Application.h" />
     <ClInclude Include="Engine\Source\AssimpDefs.h" />
     <ClInclude Include="Engine\Source\Bone.h" />
+    <ClInclude Include="Engine\Source\BoneComponent.h" />
     <ClInclude Include="Engine\Source\CameraComponent.h" />
     <ClInclude Include="Engine\Source\Color.h" />
     <ClInclude Include="Engine\Source\Component.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Engine\Source\ModuleScene.h" />
     <ClInclude Include="Engine\Source\ModuleWindow.h" />
     <ClInclude Include="Engine\Source\Primitive.h" />
+    <ClInclude Include="Engine\Source\PrimitiveNew.h" />
     <ClInclude Include="Engine\Source\Primitives.h" />
     <ClInclude Include="Engine\Source\Profiling.h" />
     <ClInclude Include="Engine\Source\Quadtree.h" />
@@ -184,6 +186,7 @@
     <ClCompile Include="Engine\Source\Application.cpp" />
     <ClCompile Include="Engine\Source\AssimpDefs.cpp" />
     <ClCompile Include="Engine\Source\Bone.cpp" />
+    <ClCompile Include="Engine\Source\BoneComponent.cpp" />
     <ClCompile Include="Engine\Source\CameraComponent.cpp" />
     <ClCompile Include="Engine\Source\Color.cpp" />
     <ClCompile Include="Engine\Source\AnimationComponent.cpp" />

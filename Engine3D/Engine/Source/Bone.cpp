@@ -20,6 +20,8 @@ void Bone::BoneImporter(std::string& path)
 	else
 	{
 		std::string libPath;
+
+
 		ResourceManager::GetInstance()->CreateResource(ResourceType::BONE, path, libPath);
 	}
 }
