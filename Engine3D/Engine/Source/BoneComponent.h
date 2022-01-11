@@ -17,8 +17,8 @@ public:
 	void OnEditor() override;
 	bool drawDebugInfo();
 
-	/*void Save(JSON_Value* component) const;
-	void Load(JSON_Value* component);*/
+	bool OnLoad(JsonParsing& node) override;
+	bool OnSave(JsonParsing& node, JSON_Array* array) override;
 
 public:
 

@@ -15,17 +15,19 @@ class AnimationComponent : public Component
 {
 public:
 
-	AnimationComponent(GameObject* own, TransformComponent* trans);
+	AnimationComponent(GameObject* own);
 	~AnimationComponent();
 
 public:
 	bool Update(float dt) override { return true; };
 	void ActivateBonesDebug(GameObject* go, bool isActive);
 	void AssignResource(uint id, bool blend = false, bool blendLoop = true);
-	//void OnEditor() override;
+	void OnEditor() override;
 
-	//bool OnLoad(JsonParsing& node) override;
-	//bool OnSave(JsonParsing& node, JSON_Array* array) override;
+	bool OnLoad(JsonParsing& node) override;
+	bool OnSave(JsonParsing& node, JSON_Array* array) override;
+
+	void ActivateDebugBones(GameObject* GO, bool active);
 
 private:
 	//std::shared_ptr<Animation> animation;
@@ -53,6 +55,8 @@ private:
 	float blendPercent = 0.0f;
 	float totalBlendTime = 0.1f;
 	float speed = 1.0f;
+	float walkBlendTime = 0.1f;
+	float attackBlendTime = 0.1f;
 
 	/*std::map<uint, uint> bones;
 	std::map<uint, uint> blendBones;*/

@@ -52,6 +52,16 @@ bool BoneComponent::drawDebugInfo()
 	return true;
 }
 
+bool BoneComponent::OnLoad(JsonParsing& node)
+{
+	return false;
+}
+
+bool BoneComponent::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	return false;
+}
+
 void BoneComponent::OnEditor()
 {
 	ImGui::PushID(this);

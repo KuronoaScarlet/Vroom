@@ -5,6 +5,7 @@
 #include <vector>
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/float2.h"
+#include "Bone.h"
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -38,6 +39,9 @@ private:
 	std::vector<unsigned int> indices;
 	std::vector<float3> normals;
 	std::vector<float2> texCoords;
+
+	unsigned int numBones = 0;
+	std::vector<unsigned int> bonesUid;
 
 	VertexBuffer* vbo;
 	IndexBuffer* ebo;

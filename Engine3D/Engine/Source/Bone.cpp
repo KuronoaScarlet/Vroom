@@ -3,6 +3,7 @@
 #include "FileSystem.h"
 #include "MeshComponent.h"
 #include "ResourceManager.h"
+
 Bone::Bone(unsigned int uid, std::string& assets, std::string& library) : Resource(uid, ResourceType::BONE, assets, library)
 {
 	std::string mPath = ANIMATIONS_FOLDER + std::string("bone_") + std::to_string(uid) + ".meta";
@@ -10,30 +11,8 @@ Bone::Bone(unsigned int uid, std::string& assets, std::string& library) : Resour
 
 Bone::~Bone()
 {
+
 }
-void Bone::BoneImporter(std::string& path)
-{
-	if (ResourceManager::GetInstance()->CheckResource(path))
-	{
-		return;
-	}
-	else
-	{
-		std::string libPath;
-
-
-		ResourceManager::GetInstance()->CreateResource(ResourceType::BONE, path, libPath);
-	}
-}
-
-//	CREATE FUNCTION TO SAVE AND LOAD FROM JSON .vrbone
-
-//bool Bone::LoadInMemory()
-//{
-//	LoadBone();
-//
-//	return true;
-//}
 
 void Bone::Load()
 {
@@ -82,13 +61,10 @@ void Bone::Load()
 	}
 }
 
-//bool Bone::UnloadFromMemory()
-//{
-//
-//	//RELEASE_ARRAY(pos);
-//	//RELEASE_ARRAY(rot);
-//	//RELEASE_ARRAY(scale);
-//	//RELEASE_ARRAY(weights);
-//
-//	return true;
-//}
+void Bone::UnLoad()
+{
+	RELEASE_ARRAY(pos);
+	RELEASE_ARRAY(rot);
+	RELEASE_ARRAY(scale);
+	RELEASE_ARRAY(weights);
+}

@@ -147,6 +147,11 @@ void GameObject::DrawEditor()
 				CreateComponent(ComponentType::MATERIAL);
 				newComponent = false;
 			}
+			if (ImGui::Button("Animation Component"))
+			{
+				CreateComponent(ComponentType::ANIMATION);
+				newComponent = false;
+			}
 			else if (!ImGui::IsAnyItemHovered() && ((ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1])))
 			{
 				newComponent = false;

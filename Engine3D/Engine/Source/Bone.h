@@ -15,12 +15,12 @@ class ComponentMesh;
 class Bone : public Resource
 {
 public:
+	Bone() {}
 	Bone(unsigned int uid, std::string& assets, std::string& library);
 	~Bone();
 
 	void Load() override;
-	//void UnLoad() override;
-	void BoneImporter(std::string& path);
+	void UnLoad() override;
 
 public:
 	unsigned int numWeights;
