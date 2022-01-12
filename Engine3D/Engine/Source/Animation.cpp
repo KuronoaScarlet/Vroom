@@ -4,7 +4,7 @@
 #include "AnimationImporter.h"
 #include "Application.h"
 #include "FileSystem.h"
-
+#include "AnimationImporter.h"
 #include "glew/include/GL/glew.h"
 
 #include "Profiling.h"
@@ -15,6 +15,10 @@ Animation::Animation(uint uid, std::string& assets, std::string& library) : Reso
 	name = assets;
 	app->fs->GetFilenameWithoutExtension(name);
 	name = name.substr(name.find_first_of("__") + 2, name.length());
+}
+Animation::Animation(unsigned int  uid, ResourceType type)
+{
+
 }
 
 Animation::~Animation()

@@ -9,7 +9,7 @@
 #include "Mesh.h"
 #include <vector>
 #include "Primitive.h"
-#include "AnimationComponent.h"
+#include "AnimationComponent.h" 
 #include "Globals.h"
 
 BoneComponent::BoneComponent(GameObject* owner)

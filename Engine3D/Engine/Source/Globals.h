@@ -33,6 +33,7 @@ void Log(const char file[], int line, const char* format, ...);
 #define MATERIALS_FOLDER "Library/Materials/"
 #define SCENES_FOLDER "Assets/Scenes/"
 #define ANIMATIONS_FOLDER "Library/Animations/"
+#define BONES_FOLDER "Library/Animations/Bones/"
 
 // Deletes an array of buffers
 #define RELEASE_ARRAY( x )\

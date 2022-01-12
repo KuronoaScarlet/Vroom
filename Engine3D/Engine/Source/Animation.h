@@ -3,6 +3,7 @@
 
 #include "Resource.h"
 #include "MathGeoLib/src/MathGeoLib.h"
+#include "assimp/anim.h"
 
 struct ModelParameters;
 
@@ -45,7 +46,8 @@ class Animation : public Resource
 {
 public:
 
-	Animation(uint uid, std::string& assets, std::string& library);
+	Animation(unsigned int  uid, std::string& assets, std::string& library);
+	Animation(unsigned int  uid, ResourceType type);
 	~Animation();
 
 	//void Load() override;
@@ -55,6 +57,9 @@ public:
 	//float GetDuration() const;
 
 	inline const char* GetPath() const { return path.c_str(); }
+
+
+
 	//void Reimport(ModelParameters& data);
 
 public:

@@ -13,9 +13,7 @@ struct ModelParameters;
 
 namespace AnimationImporter
 {
-	void ImportAnimation(aiAnimation* animation, unsigned int uid, JsonParsing& json, std::string& path);
-	void SaveAnimation(Animation* animation, unsigned int uid, std::string& path);
-
+	bool AnimationImport(aiAnimation* animation, unsigned int uid, std::string& newpath);
 }
 
 #endif

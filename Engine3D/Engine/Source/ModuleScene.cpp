@@ -8,7 +8,7 @@
 #include "FileSystem.h"
 #include "Resource.h"
 #include "ResourceManager.h"
-
+#include "Animation.h"
 #include <stack>
 
 #include "Profiling.h"
@@ -36,8 +36,7 @@ bool ModuleScene::Start()
 	ResourceManager::GetInstance()->ImportResourcesFromLibrary();
 	ResourceManager::GetInstance()->ImportAllResources();
 	ImportPrimitives();
-	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
-
+	ResourceManager::GetInstance()->LoadResource(std::string("Assets/BlueGuy.fbx"));
 	return true;
 }
 

@@ -11,6 +11,8 @@
 #include "Model.h"
 #include "ResourceManager.h"
 #include "Resource.h"
+#include "Animation.h"
+#include "AnimationImporter.h"
 
 #include <stack>
 
@@ -140,7 +142,6 @@ void ModelImporter::ProcessNode(aiNode* node, const aiScene* scene, JsonParsing&
 		JsonParsing jsonValue = JsonParsing();
 		
 		jsonValue.SetNewJsonString(jsonValue.ValueToObject(jsonValue.GetRootValue()), "Name", node->mName.C_Str());
-
 		aiVector3D pos;
 		aiQuaternion quat;
 		aiVector3D sca;
@@ -152,13 +153,14 @@ void ModelImporter::ProcessNode(aiNode* node, const aiScene* scene, JsonParsing&
 		jsonValue.SetNewJson3Number(jsonValue, "Position", position);
 		jsonValue.SetNewJson4Number(jsonValue, "Rotation", quaternion);
 		jsonValue.SetNewJson3Number(jsonValue, "Scale", scale);
-
+		std::string path2 = "Output/Library/Animations/184118576.tesseractAnimation";
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			MeshImporter::ImportMesh(mesh, scene, jsonValue, path, uids);
+			AnimationImporter::AnimationImport(scene->mAnimations[i], uids[i], path2);
 		}
-
+		
 		std::string name = "Childs" + std::string(node->mName.C_Str());
 		JSON_Array* array = jsonValue.SetNewJsonArray(jsonValue.GetRootValue(), name.c_str());
 		// Repeat the process until there's no more children
