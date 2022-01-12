@@ -38,6 +38,7 @@ bool ModuleScene::Start()
 	ImportPrimitives();
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/BlueGuy.fbx"));
 	return true;
+
 }
 
 bool ModuleScene::PreUpdate(float dt)
