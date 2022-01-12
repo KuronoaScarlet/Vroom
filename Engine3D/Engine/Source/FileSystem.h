@@ -53,6 +53,7 @@ public:
 	bool RemoveFile(const char* file);
 	
 	void CreateDir(const char* directory);
+	void SplitPath(std::string full_path, std::string* path, std::string* filename, std::string* extension);
 private:
 	void CreateAssimpIO();
 

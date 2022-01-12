@@ -5,6 +5,8 @@
 #include "assimp/cimport.h"
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
+#include "assimp/anim.h"
+#include "assimp/mesh.h"
 #include "assimp/postProcess.h"
 
 #include "JsonParsing.h"

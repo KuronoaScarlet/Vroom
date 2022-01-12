@@ -2,10 +2,7 @@
 
 #include "glew/include/GL/glew.h"
 #include "Globals.h"
-#include <vector>
 
-#include <gl/GL.h>
-#include <gl/GLU.h>
 #include "Profiling.h"
 
 //PCube::PCube(float3 t, float3 r, float3 s) : Primitive()
@@ -552,105 +549,102 @@
 //	glBindVertexArray(0);
 //}
 
-MLine::MLine() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
-{
-	
-}
-
-MLine::MLine(float x, float y, float z, vec origin) : Primitive(), origin(origin.x, origin.y, origin.z), destination(x, y, z)
-{
-	
-}
-
-void MLine::Render() const
-{
-
-
-	glLineWidth(2.0f);
-
-	glColor3f(color.r, color.g, color.b);
-	glBegin(GL_LINES);
-
-	glVertex3f(origin.x, origin.y, origin.z);
-	glVertex3f(destination.x, destination.y, destination.z);
-
-	glEnd();
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	glLineWidth(1.0f);
-}
-
-MSphere::MSphere() : MSphere(0.05f, 6, 12, { 0,0,0 })
-{
-}
-
-MSphere::MSphere(float radius, int rings, int sectors, vec pos) : Primitive(), radius(radius)
-{
-	//TEMP
-	vec initialPos = pos;
-
-	float x, y, z, xz;                              // vertex position
-
-	float sectorStep = 2 * pi / sectors;
-	float stackStep = pi / rings;
-	float sectorAngle, stackAngle;
-
-	for (int i = 0; i <= rings; ++i)
-	{
-		stackAngle = pi / 2 - i * stackStep;        // starting from pi/2 to -pi/2
-		xz = radius * cosf(stackAngle);             // r * cos(u)
-		y = initialPos.y + radius * sinf(stackAngle);              // r * sin(u)
-
-		// add (sectorCount+1) vertices per stack
-		// the first and last vertices have same position and normal, but different tex coods
-		for (int j = 0; j <= sectors; ++j)
-		{
-			sectorAngle = j * sectorStep;
-
-			// vertex position (x, y, z)
-			z = initialPos.z + xz * cosf(sectorAngle);             // r * cos(u) * cos(v)
-			x = initialPos.x + xz * sinf(sectorAngle);             // r * cos(u) * sin(v)
-			shape.push_back(x);
-			shape.push_back(y);
-			shape.push_back(z);
-		}
-	}
-
-	int k1, k2;
-	for (int i = 0; i < rings; ++i)
-	{
-		k1 = i * (sectors + 1);     // beginning of current stack
-		k2 = k1 + sectors + 1;      // beginning of next stack
-
-		for (int j = 0; j < sectors; ++j, ++k1, ++k2)
-		{
-			// 2 triangles per sector excluding 1st and last stacks
-			if (i != 0)
-			{
-				indices.push_back(k1);
-				indices.push_back(k2);
-				indices.push_back(k1 + 1);
-			}
-
-			if (i != (rings - 1))
-			{
-				indices.push_back(k1 + 1);
-				indices.push_back(k2);
-				indices.push_back(k2 + 1);
-			}
-		}
-	}
-
-	glGenBuffers(1, (GLuint*)&(my_id));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices.size(), &indices[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
+//PSphere::PSphere(float radius, unsigned int rings, unsigned int sectors) : Primitive() 
+//{
+//	float const R = 1. / (float)(rings - 1);
+//	float const S = 1. / (float)(sectors - 1);
+//	unsigned int r, s;
+//
+//	vertices.resize(rings * sectors * 3);
+//	normals.resize(rings * sectors * 3);
+//	texCoords.resize(rings * sectors * 3);
+//
+//	std::vector<GLfloat>::iterator v = vertices.begin();
+//	std::vector<GLfloat>::iterator n = normals.begin();
+//	std::vector<GLfloat>::iterator t = texCoords.begin();
+//	for (r = 0; r < rings; r++)
+//	{
+//		for (s = 0; s < sectors; s++)
+//		{
+//			float const y = sin(-M_PI_2 + M_PI * r * R);
+//			float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
+//			float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+//
+//			*t++ = s * S;
+//			*t++ = r * R;
+//
+//			*v++ = x * radius;
+//			*v++ = y * radius;
+//			*v++ = z * radius;
+//
+//			*n++ = x;
+//			*n++ = y;
+//			*n++ = z;
+//		}
+//	}
+//
+//	indices.resize(rings * sectors * 4);
+//	std::vector<GLushort>::iterator i = indices.begin();
+//	for (r = 0; r < rings; r++)
+//	{
+//		for (s = 0; s < sectors; s++)
+//		{
+//			*i++ = r * sectors + s;
+//			*i++ = r * sectors + (s + 1);
+//			*i++ = (r + 1) * sectors + (s + 1);
+//			*i++ = (r + 1) * sectors + s;
+//		}
+//	}
+//
+//	glGenVertexArrays(1, &vao);
+//	glBindVertexArray(vao);
+//
+//	vertex = new VertexBuffer(vertices.data(), vertices.size() * sizeof(GLfloat));
+//	index = new IndexBuffer(indices.data(), indices.size());
+//
+//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, 0);
+//	glEnableVertexAttribArray(0);
+//
+//
+//	//indexBuffer = 0;
+//	//glGenBuffers(1, &indexBuffer);
+//
+//	//glBindBuffer(GL_VERTEX_ARRAY, indexBuffer);
+//	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indices.size(), indices.data(), GL_STATIC_DRAW);
+//	//glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+//	//glNormalPointer(GL_FLOAT, 0, &normals[0]);
+//	//glTexCoordPointer(2, GL_FLOAT, 0, &texCoords[0]);
+//}
+//
+//PSphere::~PSphere()
+//{
+//	//glDeleteBuffers(1, &indexBuffer);
+//}
+//
+//void PSphere::Draw()
+//{
+//	/*glEnableClientState(GL_VERTEX_ARRAY);
+//	glEnableClientState(GL_NORMAL_ARRAY);
+//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//
+//	glBindVertexArray(vao);
+//	index->Bind();
+//	glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, indices.data());
+//	index->Unbind();
+//
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//	glDisableClientState(GL_NORMAL_ARRAY);
+//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);*/
+//
+//	glBindVertexArray(vao);
+//	glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, NULL);
+//	glBindVertexArray(0);
+//}
 
 PGrid::PGrid(float w, float h) : width(w), height(h), Primitive()
 {
 	CreateGrid();
-	transformG = { 0.0f, 0.0f, 0.0f };
+	transform = { 0.0f, 0.0f, 0.0f };
 	vertex = new VertexBuffer(vertices.data(), sizeof(float3) * vertices.size());
 }
 
@@ -695,32 +689,6 @@ void PGrid::CreateGrid()
 		line = { (width / 2), 0, (-width / 2) + (i) };
 		vertices.push_back(line);
 	}	
-}
-
-void Primitive::SetPos(float x, float y, float z)
-{
-	transform.Set(float4x4::FromTRS({ x,y,z }, Quat::identity, float3::one));
-}
-
-void Primitive::Render() const
-{
-
-	glColor3f(color.r, color.g, color.b);
-
-	glPushMatrix();
-	glMultMatrixf((float*)transform.Transposed().v);
-
-	//Draw shape
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_id);
-	glVertexPointer(3, GL_FLOAT, 0, &shape[0]);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glPopMatrix();
 }
 
 void Primitive::DrawAxis()

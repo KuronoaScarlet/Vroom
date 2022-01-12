@@ -1,38 +1,28 @@
-#ifndef __BONE_H__
-#define __BONE_H__
+#pragma once
 
 #include "Resource.h"
 #include "MathGeoLib/src/MathGeoLib.h"
 
-struct Weight
-{
-	unsigned int vertexID;
+struct Weight {
+	unsigned int vertexId;
 	float weight;
 };
 
-class ComponentMesh;
-
-class Bone : public Resource
+class Bone :public Resource
 {
 public:
-	Bone() {}
-	Bone(unsigned int uid, std::string& assets, std::string& library);
-	Bone(unsigned int uid, ResourceType type);
-	~Bone();
-
-	void Load() override;
-	void UnLoad() override;
+	// Constructor / Destructor
+	// Métodos
 
 public:
-	unsigned int numWeights;
-
-	float4x4 Offset;
-	float* pos;
-	float* rot;
-	float* scale;
 
 	Weight* weights;
-	uint boneMeshUID;
-};
+	unsigned int numWeights;
 
-#endif
+	unsigned int boneMeshUId;
+
+	float4x4 offset;
+	float* position;
+	float* rotation;
+	float* scale;
+};

@@ -7,13 +7,13 @@
 #include "Globals.h"
 #include "MeshImporter.h"
 #include "TextureImporter.h"
+#include "AnimationImporter.h"
 
 #include "Model.h"
+#include "Animation.h"
 #include "ResourceManager.h"
 #include "Resource.h"
-#include "Animation.h"
-#include "AnimationImporter.h"
-#include "Bone.h"
+
 #include <stack>
 
 #include "Profiling.h"
@@ -74,6 +74,7 @@ void ModelImporter::ImportModel(std::string& path)
 	else
 	{
 		Assimp::Importer import;
+
 		const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcessPreset_TargetRealtime_MaxQuality);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
@@ -94,7 +95,9 @@ void ModelImporter::ImportModel(std::string& path)
 
 		std::shared_ptr<Model> model = std::static_pointer_cast<Model>(ResourceManager::GetInstance()->GetResource(uid));
 		std::vector<uint> uids;
+
 		ProcessNode(scene->mRootNode, scene, child, array, path, uids);
+		AnimationImporter::ImportAnimations(path, scene, json, uids);
 
 		model->SetMeshes(uids);
 		SaveModel(p, json);
@@ -142,6 +145,7 @@ void ModelImporter::ProcessNode(aiNode* node, const aiScene* scene, JsonParsing&
 		JsonParsing jsonValue = JsonParsing();
 		
 		jsonValue.SetNewJsonString(jsonValue.ValueToObject(jsonValue.GetRootValue()), "Name", node->mName.C_Str());
+
 		aiVector3D pos;
 		aiQuaternion quat;
 		aiVector3D sca;
@@ -153,21 +157,13 @@ void ModelImporter::ProcessNode(aiNode* node, const aiScene* scene, JsonParsing&
 		jsonValue.SetNewJson3Number(jsonValue, "Position", position);
 		jsonValue.SetNewJson4Number(jsonValue, "Rotation", quaternion);
 		jsonValue.SetNewJson3Number(jsonValue, "Scale", scale);
-		std::string path2 = "Output/Library/Animations/184118576.tesseractAnimation";
-		std::string path3 = "Output/Library/Animations/Bones/";
+
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			MeshImporter::ImportMesh(mesh, scene, jsonValue, path, uids);
-			AnimationImporter::AnimationImport(scene->mAnimations[i], uids[i], path2);
-			if (mesh->HasBones())
-			{
-				AnimationImporter::BonesImport(mesh->mBones[i], uids[i], path3);
-				DEBUG_LOG("aaaaaa%s", mesh->mBones[i]);
-			}
-			
 		}
-		
+
 		std::string name = "Childs" + std::string(node->mName.C_Str());
 		JSON_Array* array = jsonValue.SetNewJsonArray(jsonValue.GetRootValue(), name.c_str());
 		// Repeat the process until there's no more children
@@ -281,16 +277,6 @@ void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObje
 				path = path.substr(path.find_last_of("_") + 1, path.length());
 				material->SetTexture(ResourceManager::GetInstance()->LoadResource(std::stoll(path)));
 				break;
-			}
-			case ComponentType::BONE:
-			{
-				Bone* bone = (Bone*)newGo->CreateComponent(ComponentType::BONE);
-				std::string path = "Output/Library/Animations/Bones/";
-			}
-			case ComponentType::ANIMATION:
-			{
-				Animation* bone = (Animation*)newGo->CreateComponent(ComponentType::ANIMATION);
-				std::string path = "Output/Library/Animations/184118576.tesseractAnimation";
 			}
 			}
 		}

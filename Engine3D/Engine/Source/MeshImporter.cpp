@@ -94,7 +94,6 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 	std::vector<float3> norms;
 	std::vector<unsigned int> indices;
 	std::vector<float2> texCoords;
-	std::vector<Bone> bones;
 
 	int numVertices = mesh->mNumVertices;
 	int numFaces = mesh->mNumFaces;
@@ -102,54 +101,6 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 	vertices.reserve(numVertices);
 	indices.reserve(numFaces * 3);
 	texCoords.reserve(numVertices);
-	
-
-	if (mesh->HasBones())
-	{
-		for (unsigned int i = 0; i < mesh->mNumBones; i++)
-		{
-			aiBone* bone = mesh->mBones[i];
-			Bone* newBone = new Bone();
-			newBone->numWeights = bone->mNumWeights;
-
-			aiVector3D translation;
-			aiVector3D scaling;
-			aiQuaternion rotation;
-
-			bone->mOffsetMatrix.Decompose(scaling, rotation, translation);
-
-			newBone->scale = new float[3];
-			newBone->rot = new float[4];
-			newBone->pos = new float[3];
-
-			newBone->scale[0] = scaling.x;
-			newBone->scale[1] = scaling.y;
-			newBone->scale[2] = scaling.z;
-
-			newBone->rot[1] = rotation.y;
-			newBone->rot[2] = rotation.z;
-			newBone->rot[3] = rotation.w;
-			newBone->rot[0] = rotation.x;
-
-			newBone->pos[0] = translation.x;
-			newBone->pos[1] = translation.y;
-			newBone->pos[2] = translation.z;
-
-			if (bone->mNumWeights > 0)
-			{
-				newBone->weights = new Weight[newBone->numWeights];
-
-				for (int i = 0; i < newBone->numWeights; i++)
-				{
-					newBone->weights[i].vertexID = bone->mWeights[i].mVertexId;
-					newBone->weights[i].weight = bone->mWeights[i].mWeight;
-				}
-			}
-
-			bones.push_back(*newBone);
-			RELEASE(newBone);
-		}
-	}
 
 	for (unsigned int i = 0; i < numVertices; ++i)
 	{

@@ -259,20 +259,14 @@
       <Filter>Sources\Tools</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Engine\Source\AnimationComponent.h">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Animation.h">
+    <ClInclude Include="Engine\Source\Bone.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\AnimationImporter.h">
       <Filter>Sources\Resources\Importers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\Bone.h">
+    <ClInclude Include="Engine\Source\Animation.h">
       <Filter>Sources\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\BoneComponent.h">
-      <Filter>Sources\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -441,20 +435,11 @@
     <ClCompile Include="Engine\Source\Model.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\AnimationComponent.cpp">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\Animation.cpp">
-      <Filter>Sources\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Source\AnimationImporter.cpp">
       <Filter>Sources\Resources\Importers</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\Bone.cpp">
+    <ClCompile Include="Engine\Source\Animation.cpp">
       <Filter>Sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Source\BoneComponent.cpp">
-      <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

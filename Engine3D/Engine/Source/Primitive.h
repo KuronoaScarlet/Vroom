@@ -1,7 +1,6 @@
 #pragma once
 
 #include "MathGeoLib/src/MathGeoLib.h"
-#include "Color.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
@@ -18,24 +17,16 @@ public:
 
 	virtual void Draw() {}
 	//inline GLuint GetIndexBuffer() { return indexBuffer; }
-	void			SetPos(float x, float y, float z);
-	void			Render() const;
 
 	void DrawAxis();
 
-	Color color;
 protected:
-	float4x4 transform;
-	float3 transformG;
+	float3 transform;
 	float3 rotate;
 	float3 scale;
 
 	VertexBuffer* vertex;
 	IndexBuffer* index;
-
-	std::vector<float> shape;
-	std::vector<unsigned int> indices;
-	unsigned int my_id = 0;
 
 	unsigned int vao;
 
@@ -114,24 +105,21 @@ private:
 
 };
 
-class MSphere : public Primitive
+class PSphere : public Primitive
 {
 public:
-	MSphere();
-	MSphere(float radius, int rings, int sectors, vec pos);
-public:
-	float radius;
-};
+	PSphere(float radius, unsigned int rings, unsigned int sectors);
 
-class MLine : public Primitive
-{
-public:
-	MLine();
-	MLine(float x, float y, float z, vec origin);
-	void Render() const;
-public:
-	vec origin;
-	vec destination;
+	~PSphere();
+
+	void Draw() override;
+
+private:
+	std::vector<GLushort> indices;
+	std::vector<GLfloat> vertices;
+	std::vector<GLfloat> normals;
+	std::vector<GLfloat> texCoords;
+
 };
 
 class PGrid : public Primitive

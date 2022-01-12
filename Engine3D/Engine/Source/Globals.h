@@ -32,8 +32,8 @@ void Log(const char file[], int line, const char* format, ...);
 #define TEXTURES_FOLDER "Library/Textures/"
 #define MATERIALS_FOLDER "Library/Materials/"
 #define SCENES_FOLDER "Assets/Scenes/"
-#define ANIMATIONS_FOLDER "Library/Animations/"
-#define BONES_FOLDER "Library/Animations/Bones/"
+#define ANIMATIONS_FOLDER "Library/Models/Animations/"
+
 
 // Deletes an array of buffers
 #define RELEASE_ARRAY( x )\

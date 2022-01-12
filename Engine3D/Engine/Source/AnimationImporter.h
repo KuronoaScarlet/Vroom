@@ -1,20 +1,19 @@
-#ifndef __ANIMATIONIMPORTER_H__
-#define __ANIMATIONIMPORTER_H__
+#pragma once
+
+#include <string>
 
 #include "assimp/anim.h"
 #include "assimp/mesh.h"
-
-struct aiAnimation;
-struct aiBone;
+#include "assimp/scene.h"
+#include "Animation.h"
 
 class JsonParsing;
-class Animation;
-struct ModelParameters;
 
 namespace AnimationImporter
 {
-	bool AnimationImport(aiAnimation* animation, unsigned int uid, std::string& newpath);
-	bool BonesImport(aiBone* bone, uint UID, std::string& newpath);
+	void ImportAnimations(std::string& path, const aiScene* scene, JsonParsing& json, std::vector<uint>& uids);
+	void ImportAnimation(std::string& path, const aiAnimation* animation, JsonParsing& json, std::vector<uint>& uids);
+	void CreateMetaAnimation(std::string& library, std::string& assets, uint uid);
+	void SaveAnimation(std::string& name, float ticks, float ticksPerSecond, int numBones, BoneTransform* boneTransformations);
+	//void LoadAnimation(float ticks, float ticksPerSecond, int numBones, BoneTransform* boneTransformations, std::string& path);
 }
-
-#endif

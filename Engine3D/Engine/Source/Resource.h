@@ -12,14 +12,11 @@ enum class ResourceType
 	MODEL,
 	SCENE,
 	ANIMATION,
-	BONE,
-	ANIMATIONGRAPH
 };
 
 class Resource
 {
 public:
-	Resource() {}
 	Resource(uint id, ResourceType t, std::string& assets, std::string& library) : uid(id), type(t), assetsPath(assets), libraryPath(library){}
 
 	~Resource() {}

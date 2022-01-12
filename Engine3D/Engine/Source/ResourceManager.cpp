@@ -6,13 +6,13 @@
 #include "TextureImporter.h"
 #include "MeshImporter.h"
 #include "ModelImporter.h"
+#include "AnimationImporter.h"
 
 #include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
 #include "Texture.h"
 #include "Mesh.h"
 #include "Model.h"
-#include "Bone.h"
 #include "Animation.h"
 
 #include <stack>
@@ -93,11 +93,8 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 		library = MODELS_FOLDER + std::string("model_") + std::to_string(uid) + ".vrmodel";
 		resource = std::make_shared<Model>(uid, assets, library);
 		break;
-	case ResourceType::BONE:
-		library = ANIMATIONS_FOLDER + std::string("bone_") + std::to_string(uid) + ".vrbone";
-		resource = std::make_shared<Bone>(uid, assets, library);
 	case ResourceType::ANIMATION:
-		library = ANIMATIONS_FOLDER + std::string("animation_") + std::to_string(uid) + ".vranimation";
+		library = ANIMATIONS_FOLDER + std::string("anim_") + std::to_string(uid) + ".vranim";
 		resource = std::make_shared<Animation>(uid, assets, library);
 		break;
 	}
@@ -208,8 +205,6 @@ void ResourceManager::ImportResourcesFromLibrary()
 					if (files[i].find(".vrmodel") != std::string::npos) CreateResourceCreated(ResourceType::MODEL, uid, assets, dir + files[i]);
 					else if (files[i].find(".vrtexture") != std::string::npos) CreateResourceCreated(ResourceType::TEXTURE, uid, assets, dir + files[i]);
 					else if (files[i].find(".vrmesh") != std::string::npos) CreateResourceCreated(ResourceType::MESH, uid, assets, dir + files[i]);
-					else if (files[i].find(".vrbone") != std::string::npos) CreateResourceCreated(ResourceType::BONE, uid, assets, dir + files[i]);
-					else if (files[i].find(".vranimation") != std::string::npos) CreateResourceCreated(ResourceType::ANIMATION, uid, assets, dir + files[i]);
 
 					RELEASE_ARRAY(buffer);
 				}
@@ -248,9 +243,6 @@ void ResourceManager::ImportAllResources()
 				break;
 			case ResourceType::TEXTURE:
 				TextureImporter::ImportTexture(*it);
-				break;
-			case ResourceType::BONE:
-				//BoneImporter::ImportBone(*it);
 				break;
 			}
 		}

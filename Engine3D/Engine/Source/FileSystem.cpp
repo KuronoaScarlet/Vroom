@@ -453,3 +453,32 @@ void FileSystem::CreateAssimpIO()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 }
+
+void FileSystem::SplitPath(std::string full_path, std::string* path, std::string* filename, std::string* extension)
+{
+	NormalizePath(full_path);
+	uint pos_slash = full_path.find_last_of('/');
+	uint pos_dot = full_path.find_last_of('.');
+
+	if (path != nullptr)
+	{
+		if (pos_slash < full_path.length())
+			*path = full_path.substr(0, pos_slash + 1);
+		else
+			path->clear();
+	}
+	if (filename != nullptr)
+	{
+		if (pos_slash < full_path.length())
+			*filename = full_path.substr(pos_slash + 1, pos_dot - pos_slash - 1);
+		else
+			*filename = full_path.substr(0, pos_dot);
+	}
+	if (extension != nullptr)
+	{
+		if (pos_dot < full_path.length())
+			*extension = full_path.substr(pos_dot + 1);
+		else
+			extension->clear();
+	}
+}

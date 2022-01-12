@@ -124,11 +124,6 @@ void GameObject::DrawEditor()
 			CreateComponent(ComponentType::MATERIAL);
 			newComponent = false;
 		}
-		if (ImGui::Selectable("Animation Component"))
-		{
-			CreateComponent(ComponentType::ANIMATION);
-			newComponent = false;
-		}
 		else if (!ImGui::IsAnyItemHovered() && ((ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1])))
 		{
 			newComponent = false;
@@ -150,11 +145,6 @@ void GameObject::DrawEditor()
 			if (ImGui::Button("Material Component"))
 			{
 				CreateComponent(ComponentType::MATERIAL);
-				newComponent = false;
-			}
-			if (ImGui::Button("Animation Component"))
-			{
-				CreateComponent(ComponentType::ANIMATION);
 				newComponent = false;
 			}
 			else if (!ImGui::IsAnyItemHovered() && ((ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1])))
@@ -235,9 +225,6 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::CAMERA:
 		component = new CameraComponent(this, GetComponent<TransformComponent>());
 		app->scene->SetMainCamera((CameraComponent*)component);
-		break;
-	case ComponentType::ANIMATION:
-		component = new AnimationComponent(this);
 		break;
 	case ComponentType::MATERIAL:
 		component = new MaterialComponent(this);

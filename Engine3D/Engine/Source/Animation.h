@@ -1,15 +1,11 @@
-#ifndef __ANIMATION_H__
-#define __ANIMATION_H__
+#pragma once
 
 #include "Resource.h"
 #include "MathGeoLib/src/MathGeoLib.h"
-#include "assimp/anim.h"
-
-struct ModelParameters;
 
 struct BoneTransform
 {
-	//~BoneTransform();
+	~BoneTransform();
 
 	//bool CalcCurrentIndex(float time, bool test);
 	//void CalcTransfrom(float time, bool interpolation);
@@ -18,7 +14,7 @@ struct BoneTransform
 	//void SmoothBlending(const float4x4& blendtrans, float time);
 	//void FrozenBlending(const BoneTransform& bone, float time, float blendTime);
 
-	std::string NodeName = "";
+	std::string nodeName = "";
 
 	float4x4 lastTransform = float4x4::identity;
 	int currentPosIndex = -1;
@@ -32,47 +28,28 @@ struct BoneTransform
 	int numScaleKeys = 0;
 	int numRotKeys = 0;
 
-	float* PosKeysValues = nullptr;
-	double* PosKeysTimes = nullptr;
+	float* posKeysValues = nullptr;
+	double* posKeysTimes = nullptr;
 
-	float* ScaleKeysValues = nullptr;
-	double* ScaleKeysTimes = nullptr;
+	float* scaleKeysValues = nullptr;
+	double* scaleKeysTimes = nullptr;
 
-	float* RotKeysValues = nullptr;
-	double* RotKeysTimes = nullptr;
+	float* rotKeysValues = nullptr;
+	double* rotKeysTimes = nullptr;
 };
 
 class Animation : public Resource
 {
 public:
-
-	Animation(unsigned int  uid, std::string& assets, std::string& library);
-	Animation(unsigned int  uid, ResourceType type);
+	Animation(uint uid, std::string& assets, std::string& library);
 	~Animation();
-
-	//void Load() override;
-	//void UnLoad() override;
-
-	//void ResetFrames();
-	//float GetDuration() const;
-
-	inline const char* GetPath() const { return path.c_str(); }
-
-
-
-	//void Reimport(ModelParameters& data);
+	// Métodos
 
 public:
-
 	float ticks = 0.0f;
-	float ticksXsecond = 0.0f;
+	float ticksPerSecond = 0.0f;
 
 	int numBones = 0;
 
-	BoneTransform* boneTransformations = nullptr;
-
-private:
-	std::string path;
+	BoneTransform* boneTranformations = nullptr;
 };
-
-#endif // !__RESOURCEANIMATION_H__
