@@ -14,6 +14,7 @@ struct ModelParameters;
 namespace AnimationImporter
 {
 	bool AnimationImport(aiAnimation* animation, unsigned int uid, std::string& newpath);
+	bool BonesImport(aiBone* bone, uint UID, std::string& newpath);
 }
 
 #endif

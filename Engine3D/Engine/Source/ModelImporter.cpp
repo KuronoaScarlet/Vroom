@@ -13,7 +13,7 @@
 #include "Resource.h"
 #include "Animation.h"
 #include "AnimationImporter.h"
-
+#include "Bone.h"
 #include <stack>
 
 #include "Profiling.h"
@@ -154,11 +154,18 @@ void ModelImporter::ProcessNode(aiNode* node, const aiScene* scene, JsonParsing&
 		jsonValue.SetNewJson4Number(jsonValue, "Rotation", quaternion);
 		jsonValue.SetNewJson3Number(jsonValue, "Scale", scale);
 		std::string path2 = "Output/Library/Animations/184118576.tesseractAnimation";
+		std::string path3 = "Output/Library/Animations/Bones/";
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			MeshImporter::ImportMesh(mesh, scene, jsonValue, path, uids);
 			AnimationImporter::AnimationImport(scene->mAnimations[i], uids[i], path2);
+			if (mesh->HasBones())
+			{
+				AnimationImporter::BonesImport(mesh->mBones[i], uids[i], path3);
+				DEBUG_LOG("aaaaaa%s", mesh->mBones[i]);
+			}
+			
 		}
 		
 		std::string name = "Childs" + std::string(node->mName.C_Str());
@@ -274,6 +281,16 @@ void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObje
 				path = path.substr(path.find_last_of("_") + 1, path.length());
 				material->SetTexture(ResourceManager::GetInstance()->LoadResource(std::stoll(path)));
 				break;
+			}
+			case ComponentType::BONE:
+			{
+				Bone* bone = (Bone*)newGo->CreateComponent(ComponentType::BONE);
+				std::string path = "Output/Library/Animations/Bones/";
+			}
+			case ComponentType::ANIMATION:
+			{
+				Animation* bone = (Animation*)newGo->CreateComponent(ComponentType::ANIMATION);
+				std::string path = "Output/Library/Animations/184118576.tesseractAnimation";
 			}
 			}
 		}

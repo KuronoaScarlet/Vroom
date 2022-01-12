@@ -13,6 +13,7 @@ enum class ComponentType
 	MATERIAL,
 	CAMERA,
 	ANIMATION,
+	BONE,
 };
 
 class Component

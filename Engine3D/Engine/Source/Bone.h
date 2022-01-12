@@ -17,6 +17,7 @@ class Bone : public Resource
 public:
 	Bone() {}
 	Bone(unsigned int uid, std::string& assets, std::string& library);
+	Bone(unsigned int uid, ResourceType type);
 	~Bone();
 
 	void Load() override;

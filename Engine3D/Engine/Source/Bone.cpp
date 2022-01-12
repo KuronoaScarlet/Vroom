@@ -9,6 +9,12 @@ Bone::Bone(unsigned int uid, std::string& assets, std::string& library) : Resour
 	std::string mPath = ANIMATIONS_FOLDER + std::string("bone_") + std::to_string(uid) + ".meta";
 }
 
+Bone::Bone(unsigned int uid, ResourceType type)
+{
+	
+}
+
+
 Bone::~Bone()
 {
 
