@@ -21,7 +21,7 @@ public:
 public:
 	bool Update(float dt) override { return true; };
 	void ActivateBonesDebug(GameObject* go, bool isActive);
-	void AssignResource(uint id, bool blend = false, bool blendLoop = true);
+	void AssignResource(unsigned int id, bool blend = false, bool blendLoop = true);
 	void OnEditor() override;
 
 	bool OnLoad(JsonParsing& node) override;
