@@ -97,7 +97,7 @@ void ModelImporter::ImportModel(std::string& path)
 		std::vector<uint> uids;
 
 		ProcessNode(scene->mRootNode, scene, child, array, path, uids);
-		AnimationImporter::ImportAnimations(path, scene, json, uids);
+		if(scene->HasAnimations())	AnimationImporter::ImportAnimations(path, scene, json, uids);
 
 		model->SetMeshes(uids);
 		SaveModel(p, json);

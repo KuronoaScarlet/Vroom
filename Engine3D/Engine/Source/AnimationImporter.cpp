@@ -33,11 +33,11 @@ void AnimationImporter::ImportAnimation(std::string& path, const aiAnimation* an
 			boneTransformations[i].posKeysTimes = new double[boneTransformations[i].numPosKeys];
 			for (int j = 0; j < boneTransformations[i].numPosKeys; j++)
 			{
-				int Jvalue = j * 3;
+				int value = j * 3;
 				boneTransformations[i].posKeysTimes[j] = animation->mChannels[i]->mPositionKeys[j].mTime;
-				boneTransformations[i].posKeysValues[Jvalue] = animation->mChannels[i]->mPositionKeys[j].mValue.x;
-				boneTransformations[i].posKeysValues[Jvalue + 1] = animation->mChannels[i]->mPositionKeys[j].mValue.y;
-				boneTransformations[i].posKeysValues[Jvalue + 2] = animation->mChannels[i]->mPositionKeys[j].mValue.z;
+				boneTransformations[i].posKeysValues[value] = animation->mChannels[i]->mPositionKeys[j].mValue.x;
+				boneTransformations[i].posKeysValues[value + 1] = animation->mChannels[i]->mPositionKeys[j].mValue.y;
+				boneTransformations[i].posKeysValues[value + 2] = animation->mChannels[i]->mPositionKeys[j].mValue.z;
 			}
 
 			boneTransformations[i].numScaleKeys = animation->mChannels[i]->mNumScalingKeys;
@@ -45,11 +45,11 @@ void AnimationImporter::ImportAnimation(std::string& path, const aiAnimation* an
 			boneTransformations[i].scaleKeysTimes = new double[boneTransformations[i].numScaleKeys];
 			for (int j = 0; j < boneTransformations[i].numScaleKeys; j++)
 			{
-				int Jvalue = j * 3;
+				int value = j * 3;
 				boneTransformations[i].scaleKeysTimes[j] = animation->mChannels[i]->mScalingKeys[j].mTime;
-				boneTransformations[i].scaleKeysValues[Jvalue] = animation->mChannels[i]->mScalingKeys[j].mValue.x;
-				boneTransformations[i].scaleKeysValues[Jvalue + 1] = animation->mChannels[i]->mScalingKeys[j].mValue.y;
-				boneTransformations[i].scaleKeysValues[Jvalue + 2] = animation->mChannels[i]->mScalingKeys[j].mValue.z;
+				boneTransformations[i].scaleKeysValues[value] = animation->mChannels[i]->mScalingKeys[j].mValue.x;
+				boneTransformations[i].scaleKeysValues[value + 1] = animation->mChannels[i]->mScalingKeys[j].mValue.y;
+				boneTransformations[i].scaleKeysValues[value + 2] = animation->mChannels[i]->mScalingKeys[j].mValue.z;
 			}
 
 			boneTransformations[i].numRotKeys = animation->mChannels[i]->mNumRotationKeys;
@@ -57,12 +57,12 @@ void AnimationImporter::ImportAnimation(std::string& path, const aiAnimation* an
 			boneTransformations[i].rotKeysTimes = new double[boneTransformations[i].numRotKeys];
 			for (int j = 0; j < boneTransformations[i].numRotKeys; j++)
 			{
-				int Jvalue = j * 4;
+				int value = j * 4;
 				boneTransformations[i].rotKeysTimes[j] = animation->mChannels[i]->mRotationKeys[j].mTime;
-				boneTransformations[i].rotKeysValues[Jvalue] = animation->mChannels[i]->mRotationKeys[j].mValue.x;
-				boneTransformations[i].rotKeysValues[Jvalue + 1] = animation->mChannels[i]->mRotationKeys[j].mValue.y;
-				boneTransformations[i].rotKeysValues[Jvalue + 2] = animation->mChannels[i]->mRotationKeys[j].mValue.z;
-				boneTransformations[i].rotKeysValues[Jvalue + 3] = animation->mChannels[i]->mRotationKeys[j].mValue.w;
+				boneTransformations[i].rotKeysValues[value] = animation->mChannels[i]->mRotationKeys[j].mValue.x;
+				boneTransformations[i].rotKeysValues[value + 1] = animation->mChannels[i]->mRotationKeys[j].mValue.y;
+				boneTransformations[i].rotKeysValues[value + 2] = animation->mChannels[i]->mRotationKeys[j].mValue.z;
+				boneTransformations[i].rotKeysValues[value + 3] = animation->mChannels[i]->mRotationKeys[j].mValue.w;
 			}
 		}
 	}
