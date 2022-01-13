@@ -75,6 +75,7 @@ void AnimationImporter::ImportAnimation(std::string& path, const aiAnimation* an
 	assetsPath.insert(assetsPath.find_last_of("."), name.c_str());
 
 	uint uid = ResourceManager::GetInstance()->CreateResource(ResourceType::ANIMATION, assetsPath, animName);
+
 	uids.push_back(uid);
 
 	SaveAnimation(animName, ticks, ticksPerSecond, numBones, boneTransformations);
@@ -166,6 +167,86 @@ void AnimationImporter::SaveAnimation(std::string& name, float ticks, float tick
 
 	if (app->fs->Save(name.c_str(), buffer, size) > 0)
 		DEBUG_LOG("Animation %s saved succesfully", name.c_str());
+
+	RELEASE_ARRAY(buffer);
+}
+
+void AnimationImporter::LoadAnimation(const char* path, float& ticks, float& ticksPerSecond, int& numBones, BoneTransform* boneTransformations)
+{
+
+	char* buffer = nullptr;
+	app->fs->Load(path, &buffer);
+	char* cursor = buffer;
+
+	uint ranges[3];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+	cursor += bytes;
+
+	ticks = ranges[0];
+	ticksPerSecond = ranges[1];
+	numBones = ranges[2];
+
+	if (numBones > 0)
+	{
+		boneTransformations = new BoneTransform[numBones];
+
+		//Loading Bones
+		for (int i = 0; i < numBones; i++)
+		{
+			//Loading Ranges
+			uint boneRanges[4];
+			uint bytes = sizeof(boneRanges);
+			memcpy(boneRanges, cursor, bytes);
+			cursor += bytes;
+
+			boneTransformations[i].numPosKeys = boneRanges[0];
+			boneTransformations[i].numScaleKeys = boneRanges[1];
+			boneTransformations[i].numRotKeys = boneRanges[2];
+
+			//Loading Name
+			bytes = boneRanges[3];
+			char* auxName = new char[bytes];
+			memcpy(auxName, cursor, bytes);
+			boneTransformations[i].nodeName = auxName;
+			boneTransformations[i].nodeName = boneTransformations[i].nodeName.substr(0, bytes);
+			RELEASE_ARRAY(auxName);
+			cursor += bytes;
+
+			//Loading Pos Time
+			bytes = boneTransformations[i].numPosKeys * sizeof(double);
+			boneTransformations[i].posKeysTimes = new double[boneTransformations[i].numPosKeys];
+			memcpy(boneTransformations[i].posKeysTimes, cursor, bytes);
+			cursor += bytes;
+			//Loading Pos Values
+			bytes = boneTransformations[i].numPosKeys * sizeof(float) * 3;
+			boneTransformations[i].posKeysValues = new float[boneTransformations[i].numPosKeys * 3];
+			memcpy(boneTransformations[i].posKeysValues, cursor, bytes);
+			cursor += bytes;
+
+			//Loading Scale Time
+			bytes = boneTransformations[i].numScaleKeys * sizeof(double);
+			boneTransformations[i].scaleKeysTimes = new double[boneTransformations[i].numScaleKeys];
+			memcpy(boneTransformations[i].scaleKeysTimes, cursor, bytes);
+			cursor += bytes;
+			//Loading Scale Values
+			bytes = boneTransformations[i].numScaleKeys * sizeof(float) * 3;
+			boneTransformations[i].scaleKeysValues = new float[boneTransformations[i].numScaleKeys * 3];
+			memcpy(boneTransformations[i].scaleKeysValues, cursor, bytes);
+			cursor += bytes;
+
+			//Loading Rotation Time
+			bytes = boneTransformations[i].numRotKeys * sizeof(double);
+			boneTransformations[i].rotKeysTimes = new double[boneTransformations[i].numRotKeys];
+			memcpy(boneTransformations[i].rotKeysTimes, cursor, bytes);
+			cursor += bytes;
+			//Loading Rotation Values
+			bytes = boneTransformations[i].numRotKeys * sizeof(float) * 4;
+			boneTransformations[i].rotKeysValues = new float[boneTransformations[i].numRotKeys * 4];
+			memcpy(boneTransformations[i].rotKeysValues, cursor, bytes);
+			cursor += bytes;
+		}
+	}
 
 	RELEASE_ARRAY(buffer);
 }

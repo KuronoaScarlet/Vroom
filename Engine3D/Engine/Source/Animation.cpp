@@ -12,7 +12,7 @@
 Animation::Animation(uint uid, std::string& assets, std::string& library) : Resource(uid, ResourceType::ANIMATION, assets, library)
 {
 	std::string metaPath = ANIMATIONS_FOLDER + std::string("anim_") + std::to_string(uid) + ".meta";
-	AnimationImporter::CreateMetaAnimation(metaPath, assets, uid);
+	AnimationImporter::CreateMetaAnimation(metaPath, assetsPath, uid);
 	name = assets;
 	app->fs->GetFilenameWithoutExtension(name);
 	name = name.substr(name.find_first_of("__") + 2, name.length());
@@ -21,6 +21,25 @@ Animation::Animation(uint uid, std::string& assets, std::string& library) : Reso
 Animation::~Animation()
 {
 	RELEASE_ARRAY(boneTranformations);
+}
+
+void Animation::Load()
+{
+	if (id == 0)
+	{
+		AnimationImporter::LoadAnimation(libraryPath.c_str(), ticks, ticksPerSecond, numBones, boneTranformations);
+	}
+}
+
+void Animation::UnLoad()
+{
+	if (id != 0)
+	{
+		id = 0;
+		ticks = 0;
+		ticksPerSecond = 0;
+		RELEASE_ARRAY(boneTranformations);
+	}
 }
 
 BoneTransform::~BoneTransform()

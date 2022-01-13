@@ -38,14 +38,24 @@ struct BoneTransform
 	double* rotKeysTimes = nullptr;
 };
 
+
 class Animation : public Resource
 {
 public:
 	Animation(uint uid, std::string& assets, std::string& library);
 	~Animation();
-	// Métodos
+	
+	void Load() override;
+	void UnLoad() override;
+
+	inline const float& GetTicks() const { return ticks; }
+	inline const float& GetTicksPerSecond() const { return ticksPerSecond; }
+	inline const float& GetDuration() const { return ticks / ticksPerSecond; }
 
 public:
+
+	unsigned int id = 0;
+
 	float ticks = 0.0f;
 	float ticksPerSecond = 0.0f;
 
