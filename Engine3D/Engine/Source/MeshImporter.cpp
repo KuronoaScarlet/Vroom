@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Component.h"
 #include "TextureImporter.h"
+#include "AnimationImporter.h"
 #include "Mesh.h"
 #include "Model.h"
 #include "MathGeoLib/src/Algorithm/Random/LCG.h"
@@ -21,6 +22,9 @@ void MeshImporter::ReImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPa
 	std::vector<float3> norms;
 	std::vector<unsigned int> indices;
 	std::vector<float2> texCoords;
+
+	unsigned int numBones = mesh->mNumBones;
+	std::vector<unsigned int> bonesUid;
 
 	int numVertices = mesh->mNumVertices;
 	int numFaces = mesh->mNumFaces;
@@ -65,7 +69,14 @@ void MeshImporter::ReImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPa
 		}
 	}
 
-	SaveMesh(library, vertices, indices, norms, texCoords);
+	for (unsigned int i = 0; i < numBones; i++)
+	{
+		AnimationImporter::ReImportBones(path, mesh->mBones[i], json, library, bonesUid);
+	}
+
+	DEBUG_LOG("%i = %i", bonesUid.size(), numBones);
+
+	SaveMesh(library, vertices, indices, norms, texCoords, bonesUid);
 
 	JSON_Array* array = json.SetNewJsonArray(json.GetRootValue(), "Components");
 	JsonParsing parse = JsonParsing();
@@ -95,12 +106,16 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 	std::vector<unsigned int> indices;
 	std::vector<float2> texCoords;
 
+	unsigned int numBones = mesh->mNumBones;
+	std::vector<unsigned int> bonesUid;
+
 	int numVertices = mesh->mNumVertices;
 	int numFaces = mesh->mNumFaces;
 
 	vertices.reserve(numVertices);
 	indices.reserve(numFaces * 3);
 	texCoords.reserve(numVertices);
+	bonesUid.reserve(numBones);
 
 	for (unsigned int i = 0; i < numVertices; ++i)
 	{
@@ -138,6 +153,17 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 		}
 	}
 
+	for (unsigned int i = 0; i < numBones; i++)
+	{
+		AnimationImporter::ImportBones(path, mesh->mBones[i], json, uids, bonesUid);
+	}
+	if (numBones == 0)
+	{
+		bonesUid.push_back((unsigned int)1);
+	}
+
+	DEBUG_LOG("%i = %i", bonesUid.size(), numBones);
+
 	std::string meshName;
 	std::string assetsPath(path);
 	std::string name("__");
@@ -148,7 +174,7 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 	uint uid = ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, assetsPath, meshName);
 	uids.push_back(uid);
 	
-	SaveMesh(meshName, vertices, indices, norms, texCoords);
+	SaveMesh(meshName, vertices, indices, norms, texCoords, bonesUid);
 
 	JSON_Array* array = json.SetNewJsonArray(json.GetRootValue(), "Components");
 	JsonParsing parse = JsonParsing();
@@ -169,11 +195,11 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 	}
 }
 
-void MeshImporter::SaveMesh(std::string& name, std::vector<float3>& vertices, std::vector<unsigned int>& indices, std::vector<float3>& normals, std::vector<float2>& texCoords)
+void MeshImporter::SaveMesh(std::string& name, std::vector<float3>& vertices, std::vector<unsigned int>& indices, std::vector<float3>& normals, std::vector<float2>& texCoords, std::vector<unsigned int>& bonesUid)
 {
-	unsigned int header[4] = { vertices.size(), indices.size(), normals.size(), texCoords.size() };
+	unsigned int header[5] = { vertices.size(), indices.size(), normals.size(), texCoords.size(), bonesUid.size() };
 
-	uint size = sizeof(header) + sizeof(float3) * vertices.size() + sizeof(unsigned int) * indices.size() + sizeof(float3) * normals.size() + sizeof(float2) * texCoords.size();
+	uint size = sizeof(header) + sizeof(float3) * vertices.size() + sizeof(unsigned int) * indices.size() + sizeof(float3) * normals.size() + sizeof(float2) * texCoords.size() + sizeof(unsigned int) * bonesUid.size();
 
 	char* buffer = new char[size];
 	char* cursor = buffer;
@@ -198,23 +224,27 @@ void MeshImporter::SaveMesh(std::string& name, std::vector<float3>& vertices, st
 	memcpy(cursor, texCoords.data(), bytes);
 	cursor += bytes;
 
+	bytes = sizeof(unsigned int) * bonesUid.size();
+	memcpy(cursor, bonesUid.data(), bytes);
+
+
 	if (app->fs->Save(name.c_str(), buffer, size) > 0)
 		DEBUG_LOG("Mesh %s saved succesfully", name.c_str());
 
 	RELEASE_ARRAY(buffer);
 }
 
-void MeshImporter::LoadMesh(std::vector<float3>& vertices, std::vector<unsigned int>& indices, std::vector<float3>& normals, std::vector<float2>& texCoords, std::string& path)
+void MeshImporter::LoadMesh(std::vector<float3>& vertices, std::vector<unsigned int>& indices, std::vector<float3>& normals, std::vector<float2>& texCoords, std::vector<unsigned int>& bonesUid, std::string& path)
 {
 	char* buffer = nullptr;
 
 	if (app->fs->Load(path.c_str(), &buffer) > 0)
 	{
 		char* cursor = buffer;
-		unsigned int* header = new unsigned int[4];
+		unsigned int* header = new unsigned int[5];
 
 		// Loading header information
-		uint bytes = sizeof(header) * sizeof(unsigned int);
+		unsigned int bytes = (sizeof(header) * sizeof(unsigned int)) + sizeof(unsigned int);
 		memcpy(header, buffer, bytes);
 		cursor += bytes;
 
@@ -223,6 +253,7 @@ void MeshImporter::LoadMesh(std::vector<float3>& vertices, std::vector<unsigned 
 		indices.resize(header[1]);
 		normals.resize(header[2]);
 		texCoords.resize(header[3]);
+		bonesUid.resize(header[4]);
 
 		// Loading vertices
 		bytes = sizeof(float3) * vertices.size();
@@ -242,6 +273,12 @@ void MeshImporter::LoadMesh(std::vector<float3>& vertices, std::vector<unsigned 
 		// Loading texture coordinates
 		bytes = sizeof(float2) * texCoords.size();
 		memcpy(texCoords.data(), cursor, bytes);
+		cursor += bytes;
+		
+
+		// Loading bones UiD's
+		bytes = sizeof(unsigned int) * bonesUid.size();
+		memcpy(bonesUid.data(), cursor, bytes);
 
 		RELEASE_ARRAY(header);
 	}

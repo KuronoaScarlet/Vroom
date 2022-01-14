@@ -12,7 +12,8 @@ enum class ComponentType
 	MESH_RENDERER,
 	MATERIAL,
 	CAMERA,
-	ANIMATION
+	ANIMATION,
+	BONE
 };
 
 class Component

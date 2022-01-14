@@ -12,6 +12,7 @@ enum class ResourceType
 	MODEL,
 	SCENE,
 	ANIMATION,
+	BONE
 };
 
 class Resource

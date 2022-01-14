@@ -11,8 +11,11 @@ struct Weight {
 class Bone :public Resource
 {
 public:
-	// Constructor / Destructor
-	// Métodos
+	Bone(uint uid, std::string& assets, std::string& library);
+	~Bone();
+
+	//void Load() override;
+	//void UnLoad() override;
 
 public:
 

@@ -97,6 +97,10 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 		library = ANIMATIONS_FOLDER + std::string("anim_") + std::to_string(uid) + ".vranim";
 		resource = std::make_shared<Animation>(uid, assets, library);
 		break;
+	case ResourceType::BONE:
+		library = BONES_FOLDER + std::string("bone_") + std::to_string(uid) + ".vrbone";
+		resource = std::make_shared<Bone>(uid, assets, library);
+		break;
 	}
 
 	if (resource != nullptr) map[uid] = resource;

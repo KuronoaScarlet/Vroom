@@ -278,6 +278,15 @@ void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObje
 				material->SetTexture(ResourceManager::GetInstance()->LoadResource(std::stoll(path)));
 				break;
 			}
+			case ComponentType::ANIMATION:
+			{
+				AnimationComponent* animation = (AnimationComponent*)newGo->CreateComponent(ComponentType::ANIMATION);
+				std::string path = component.GetJsonString("Animation Path");
+				app->fs->GetFilenameWithoutExtension(path);
+				path = path.substr(path.find_last_of("_") + 1, path.length());
+				animation->SetAnimation(ResourceManager::GetInstance()->LoadResource(std::stoll(path)));
+				break;
+			}
 			}
 		}
 

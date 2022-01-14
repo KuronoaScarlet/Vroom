@@ -24,6 +24,7 @@ Mesh::~Mesh()
 	indices.clear();
 	normals.clear();
 	texCoords.clear();
+	bonesUid.clear();
 
 	RELEASE(vbo);
 	RELEASE(ebo);
@@ -34,7 +35,9 @@ void Mesh::Load()
 {
 	if (vertices.empty())
 	{
-		MeshImporter::LoadMesh(vertices, indices, normals, texCoords, libraryPath);
+		MeshImporter::LoadMesh(vertices, indices, normals, texCoords, bonesUid, libraryPath);
+
+		numBones = bonesUid.size();
 
 		vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
 		ebo = new IndexBuffer(indices.data(), indices.size());
@@ -142,5 +145,5 @@ void Mesh::Reimport(ModelParameters& data)
 		texCoords.clear();
 		normals.clear();
 	}
-	MeshImporter::LoadMesh(vertices, indices, normals, texCoords, libraryPath);
+	MeshImporter::LoadMesh(vertices, indices, normals, texCoords, bonesUid, libraryPath);
 }

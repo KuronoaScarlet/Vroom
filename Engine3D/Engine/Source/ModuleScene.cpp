@@ -397,11 +397,12 @@ void ModuleScene::ImportPrimitives()
 	std::vector<unsigned int> indices;
 	std::vector<float3> normals;
 	std::vector<float2> texCoords;
+	std::vector<unsigned int> bonesUid;
 
 	RCube::CreateCube(vertices, indices, texCoords);
 	std::string library;
 	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Cube.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords, bonesUid);
 
 	vertices.clear();
 	indices.clear();
@@ -411,7 +412,7 @@ void ModuleScene::ImportPrimitives()
 
 	RPyramide::CreatePyramide(vertices, indices, texCoords);
 	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Pyramide.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords, bonesUid);
 
 	vertices.clear();
 	indices.clear();
@@ -421,7 +422,7 @@ void ModuleScene::ImportPrimitives()
 
 	RSphere::CreateSphere(vertices, normals, indices, texCoords);
 	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Sphere.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords, bonesUid);
 
 	vertices.clear();
 	indices.clear();
@@ -431,12 +432,13 @@ void ModuleScene::ImportPrimitives()
 
 	RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
 	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Cylinder.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords, bonesUid);
 
 	vertices.clear();
 	indices.clear();
 	normals.clear();
 	texCoords.clear();
+	bonesUid.clear();
 }
 
 //void ModuleScene::AddToQuadtree(GameObject* go)

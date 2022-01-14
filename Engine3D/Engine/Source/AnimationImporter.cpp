@@ -250,3 +250,174 @@ void AnimationImporter::LoadAnimation(const char* path, float& ticks, float& tic
 
 	RELEASE_ARRAY(buffer);
 }
+
+
+// Bones
+void AnimationImporter::ReImportBones(std::string& path, aiBone* bone, JsonParsing& json, std::string& library, std::vector<unsigned int>& bonesUid)
+{
+	unsigned int numWeights;
+
+	float* pos;
+	float* rot;
+	float* scale;
+
+	aiVector3D translation;
+	aiVector3D scaling;
+	aiQuaternion rotation;
+
+	numWeights = bone->mNumWeights;
+	Weight* weights = new Weight[numWeights];
+
+	bone->mOffsetMatrix.Decompose(scaling, rotation, translation);
+
+	pos = new float[3];
+	pos[0] = translation.x;
+	pos[1] = translation.y;
+	pos[2] = translation.z;
+
+	rot = new float[4];
+	rot[1] = rotation.y;
+	rot[2] = rotation.z;
+	rot[3] = rotation.w;
+	rot[0] = rotation.x;
+
+	scale = new float[3];
+	scale[0] = scaling.x;
+	scale[1] = scaling.y;
+	scale[2] = scaling.z;
+
+	if (bone->mNumWeights > 0)
+	{
+		for (int i = 0; i < numWeights; i++)
+		{
+			weights->vertexId = bone->mWeights[i].mVertexId;
+			weights->weight = bone->mWeights[i].mWeight;
+		}
+	}
+
+	std::string boneName;
+	std::string assetsPath(path);
+	std::string name("__");
+	name += bone->mName.C_Str();
+
+	SaveBone(boneName, numWeights, pos, rot, scale, weights);
+
+	JSON_Array* array = json.SetNewJsonArray(json.GetRootValue(), "Components");
+	JsonParsing parse = JsonParsing();
+	parse.SetNewJsonNumber(parse.ValueToObject(parse.GetRootValue()), "Type", (int)ComponentType::BONE);
+	parse.SetNewJsonString(parse.ValueToObject(parse.GetRootValue()), "Bone Path", boneName.c_str());
+
+	json.SetValueToArray(array, parse.GetRootValue());
+}
+
+void AnimationImporter::ImportBones(std::string& path, aiBone* bone, JsonParsing& json, std::vector<uint>& uids, std::vector<unsigned int>& bonesUid)
+{
+	unsigned int numWeights;
+
+	float* pos;
+	float* rot;
+	float* scale;
+
+	aiVector3D translation;
+	aiVector3D scaling;
+	aiQuaternion rotation;
+
+	numWeights = bone->mNumWeights;
+	Weight* weights = new Weight[numWeights];
+
+	bone->mOffsetMatrix.Decompose(scaling, rotation, translation);
+
+	pos = new float[3];
+	pos[0] = translation.x;
+	pos[1] = translation.y;
+	pos[2] = translation.z;
+
+	rot = new float[4];
+	rot[1] = rotation.y;
+	rot[2] = rotation.z;
+	rot[3] = rotation.w;
+	rot[0] = rotation.x;
+
+	scale = new float[3];
+	scale[0] = scaling.x;
+	scale[1] = scaling.y;
+	scale[2] = scaling.z;
+
+	if (bone->mNumWeights > 0)
+	{
+		for (int i = 0; i < numWeights; i++)
+		{
+			weights->vertexId = bone->mWeights[i].mVertexId;
+			weights->weight = bone->mWeights[i].mWeight;
+		}
+	}
+
+	std::string boneName;
+	std::string assetsPath(path);
+	std::string name("__");
+	name += bone->mName.C_Str();
+
+	assetsPath.insert(assetsPath.find_last_of("."), name.c_str());
+
+	uint uid = ResourceManager::GetInstance()->CreateResource(ResourceType::BONE, assetsPath, boneName);
+
+	uids.push_back(uid);
+	bonesUid.push_back(uid);
+
+	SaveBone(boneName, numWeights, pos, rot, scale, weights);
+
+	JSON_Array* array = json.SetNewJsonArray(json.GetRootValue(), "Components");
+	JsonParsing parse = JsonParsing();
+	parse.SetNewJsonNumber(parse.ValueToObject(parse.GetRootValue()), "Type", (int)ComponentType::BONE);
+	parse.SetNewJsonString(parse.ValueToObject(parse.GetRootValue()), "Bone Path", boneName.c_str());
+
+	json.SetValueToArray(array, parse.GetRootValue());
+}
+
+void AnimationImporter::SaveBone(std::string& name,unsigned int numWeights, float* pos, float* rot, float* scale, Weight* weights)
+{
+	uint header = numWeights;
+	uint size = sizeof(header);
+
+	size += sizeof(float) * 3;
+	size += sizeof(float) * 4;
+	size += sizeof(float) * 3;
+
+	size += sizeof(uint) * numWeights;
+	size += sizeof(float) * numWeights;
+
+	char* buffer = new char[size];
+	char* cursor = buffer;
+
+	uint bytes = sizeof(header);
+	memcpy(cursor, &header, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float) * 3;
+	memcpy(cursor, pos, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float) * 4;
+	memcpy(cursor, rot, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float) * 3;
+	memcpy(cursor, scale, bytes);
+	cursor += bytes;
+
+	for (int i = 0; i < numWeights; i++)
+	{
+		bytes = sizeof(uint);
+		memcpy(cursor, &weights[i].vertexId, bytes);
+		cursor += bytes;
+
+		bytes = sizeof(float);
+		memcpy(cursor, &weights[i].weight, bytes);
+		cursor += bytes;
+	}
+
+	if (app->fs->Save(name.c_str(), buffer, size) > 0)
+		DEBUG_LOG("Bone %s saved succesfully", name.c_str());
+
+	RELEASE_ARRAY(buffer);
+}

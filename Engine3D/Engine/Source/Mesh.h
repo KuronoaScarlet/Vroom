@@ -31,6 +31,7 @@ public:
 	inline const std::vector<float3>& GetVerticesVector() const { return vertices; }
 	inline const int& GetIndicesSize() const { return indices.size(); }
 	inline const std::vector<unsigned int>& GetIndicesVector() const { return indices; }
+	inline const int& GetBonesCount() const { return numBones; }
 
 	void Reimport(ModelParameters& data);
 private:
@@ -38,6 +39,8 @@ private:
 	std::vector<unsigned int> indices;
 	std::vector<float3> normals;
 	std::vector<float2> texCoords;
+	unsigned int numBones;
+	std::vector<unsigned int> bonesUid;
 
 	VertexBuffer* vbo;
 	IndexBuffer* ebo;

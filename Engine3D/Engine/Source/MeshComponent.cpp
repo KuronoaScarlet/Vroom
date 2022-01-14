@@ -111,6 +111,9 @@ void MeshComponent::OnEditor()
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", mesh ? mesh.use_count() : 0);
 		ImGui::Separator();
+		ImGui::Text("Bones Count: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", mesh ? mesh->GetBonesCount() : 0);
 	}
 
 	if (showMeshMenu)
