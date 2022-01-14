@@ -374,6 +374,21 @@ void AnimationImporter::ImportBones(std::string& path, aiBone* bone, JsonParsing
 	json.SetValueToArray(array, parse.GetRootValue());
 }
 
+void AnimationImporter::CreateMetaBones(std::string& library, std::string& assets, uint uid)
+{
+	JsonParsing metaFile;
+
+	metaFile.SetNewJsonString(metaFile.ValueToObject(metaFile.GetRootValue()), "Assets Path", assets.c_str());
+	metaFile.SetNewJsonNumber(metaFile.ValueToObject(metaFile.GetRootValue()), "Uuid", uid);
+
+	char* buffer = nullptr;
+	size_t size = metaFile.Save(&buffer);
+
+	app->fs->Save(library.c_str(), buffer, size);
+
+	RELEASE_ARRAY(buffer);
+}
+
 void AnimationImporter::SaveBone(std::string& name,unsigned int numWeights, float* pos, float* rot, float* scale, Weight* weights)
 {
 	uint header = numWeights;

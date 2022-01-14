@@ -12,7 +12,7 @@
 Bone::Bone(uint uid, std::string& assets, std::string& library) : Resource(uid, ResourceType::BONE, assets, library)
 {
 	std::string metaPath = BONES_FOLDER + std::string("bone_") + std::to_string(uid) + ".meta";
-	AnimationImporter::CreateMetaAnimation(metaPath, assetsPath, uid);
+	AnimationImporter::CreateMetaBones(metaPath, assetsPath, uid);
 	name = assets;
 	app->fs->GetFilenameWithoutExtension(name);
 	name = name.substr(name.find_first_of("__") + 2, name.length());
