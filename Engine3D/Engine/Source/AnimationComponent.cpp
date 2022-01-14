@@ -47,6 +47,24 @@ void AnimationComponent::OnEditor()
 			ImGui::Text("Duration: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.0f", anim->GetDuration());
+			if (ImGui::CollapsingHeader("Pressing 1, blend animation1"))
+			{
+				ImGui::Text("Select animation1: ");
+				ImGui::SameLine();
+				if (ImGui::Button(anim ? anim->GetName().c_str() : ""))
+				{
+					showAnimMenu = true;
+				}
+			}
+			if (ImGui::CollapsingHeader("Pressing 2, blend animation2"))
+			{
+				ImGui::Text("Select animation2: ");
+				ImGui::SameLine();
+				if (ImGui::Button(anim ? anim->GetName().c_str() : ""))
+				{
+					showAnimMenu = true;
+				}
+			}		
 		}
 		else
 		{
