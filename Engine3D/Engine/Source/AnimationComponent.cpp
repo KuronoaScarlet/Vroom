@@ -97,7 +97,7 @@ void AnimationComponent::OnEditor()
 		}
 
 		std::vector<std::string> files;
-		app->fs->DiscoverFiles("Library/Models/Animations", files);
+		app->fs->DiscoverFiles("Library/Animations", files);
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
 		{
 			if ((*it).find(".vranim") != std::string::npos)

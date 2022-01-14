@@ -122,6 +122,12 @@ void ResourceManager::CreateResourceCreated(ResourceType type, uint uid, std::st
 	case ResourceType::MODEL:
 		resource = std::make_shared<Model>(uid, assets, library);
 		break;
+	case ResourceType::ANIMATION:
+		resource = std::make_shared<Animation>(uid, assets, library);
+		break;
+	case ResourceType::BONE:
+		resource = std::make_shared<Bone>(uid, assets, library);
+		break;
 	default:
 		break;
 	}
@@ -209,6 +215,8 @@ void ResourceManager::ImportResourcesFromLibrary()
 					if (files[i].find(".vrmodel") != std::string::npos) CreateResourceCreated(ResourceType::MODEL, uid, assets, dir + files[i]);
 					else if (files[i].find(".vrtexture") != std::string::npos) CreateResourceCreated(ResourceType::TEXTURE, uid, assets, dir + files[i]);
 					else if (files[i].find(".vrmesh") != std::string::npos) CreateResourceCreated(ResourceType::MESH, uid, assets, dir + files[i]);
+					else if (files[i].find(".vranim") != std::string::npos) CreateResourceCreated(ResourceType::ANIMATION, uid, assets, dir + files[i]);
+					else if (files[i].find(".vrbone") != std::string::npos) CreateResourceCreated(ResourceType::BONE, uid, assets, dir + files[i]);
 
 					RELEASE_ARRAY(buffer);
 				}
