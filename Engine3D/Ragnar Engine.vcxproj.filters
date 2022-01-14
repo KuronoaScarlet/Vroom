@@ -271,6 +271,9 @@
     <ClInclude Include="Engine\Source\AnimationComponent.h">
       <Filter>Sources\GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Source\BoneComponent.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Source\ModuleCamera3D.cpp">
@@ -445,6 +448,12 @@
       <Filter>Sources\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\AnimationComponent.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Bone.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\BoneComponent.cpp">
       <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
