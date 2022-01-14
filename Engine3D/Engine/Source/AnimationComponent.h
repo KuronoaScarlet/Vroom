@@ -10,6 +10,7 @@ class AnimationComponent : public Component
 {
 public: 
 	AnimationComponent(GameObject* own);
+	AnimationComponent(AnimationComponent* animation);
 	~AnimationComponent();
 
 	void OnEditor() override;

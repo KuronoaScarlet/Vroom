@@ -272,6 +272,9 @@ void GameObject::CopyComponent(Component* component)
 	case ComponentType::MESH_RENDERER:
 		c = new MeshComponent(dynamic_cast<MeshComponent*>(component), GetComponent<TransformComponent>());
 		break;
+	case ComponentType::ANIMATION:
+		c = new AnimationComponent(dynamic_cast<AnimationComponent*>(component));
+		break;
 	case ComponentType::MATERIAL:
 		c = new MaterialComponent(dynamic_cast<MaterialComponent*>(component));
 		MeshComponent* m = GetComponent<MeshComponent>();

@@ -16,9 +16,14 @@ AnimationComponent::AnimationComponent(GameObject* own) : anim(nullptr), showAni
 	active = true;
 }
 
+AnimationComponent::AnimationComponent(AnimationComponent* animation) : showAnimMenu(false)
+{
+	anim = animation->anim;
+}
+
 AnimationComponent::~AnimationComponent()
 {
-
+	if (anim.use_count() - 1 == 1) anim->UnLoad();
 }
 
 void AnimationComponent::OnEditor()
