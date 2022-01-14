@@ -55,4 +55,6 @@ public:
 	std::map<uint, uint> blendBones;
 
 	std::shared_ptr<Animation> anim;
+	std::shared_ptr<Animation> anim1;
+	std::shared_ptr<Animation> anim2;
 };

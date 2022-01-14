@@ -56,7 +56,7 @@ void AnimationComponent::OnEditor()
 			{
 				ImGui::Text("Select animation1: ");
 				ImGui::SameLine();
-				if (ImGui::Button(anim ? anim->GetName().c_str() : ""))
+				if (ImGui::Button(anim1 ? anim1->GetName().c_str() : "No Animation"))
 				{
 					showAnimMenu = true;
 				}
@@ -65,7 +65,7 @@ void AnimationComponent::OnEditor()
 			{
 				ImGui::Text("Select animation2: ");
 				ImGui::SameLine();
-				if (ImGui::Button(anim ? anim->GetName().c_str() : ""))
+				if (ImGui::Button(anim2 ? anim2->GetName().c_str() : "No Animation"))
 				{
 					showAnimMenu = true;
 				}
