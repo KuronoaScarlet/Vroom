@@ -46,7 +46,7 @@ void AnimationComponent::OnEditor()
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.0f", anim->GetTicksPerSecond());
 			ImGui::Text("Duration: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.0f", anim->GetDuration());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.0f s", anim->GetDuration());
 			if (ImGui::CollapsingHeader("Pressing 1, blend animation1"))
 			{
 				ImGui::Text("Select animation1: ");
