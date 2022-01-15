@@ -25,7 +25,45 @@ Bone::~Bone()
 
 void Bone::Load()
 {
+	//Get the buffer
+	char* buffer = nullptr;
+	app->fs->Load(libraryPath.c_str(), &buffer);
+	char* cursor = buffer;
 
-	AnimationImporter::LoadBone(libraryPath.c_str(), position, rotation, scale, numWeights, offset, weights);
+	uint bytes = sizeof(uint);
+	memcpy(&numWeights, cursor, bytes);
+	cursor += bytes;
 
+	bytes = sizeof(float) * 3;
+	position = new float[3];
+	memcpy(position, cursor, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float) * 4;
+	rotation = new float[4];
+	memcpy(rotation, cursor, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float) * 3;
+	scale = new float[3];
+	memcpy(scale, cursor, bytes);
+	cursor += bytes;
+
+	offset = float4x4::FromTRS({ position[0],position[1],position[2] }, { rotation[0],rotation[1],rotation[2],rotation[3] }, { scale[0],scale[1],scale[2] });
+
+	if (numWeights > 0)
+	{
+		weights = new Weight[numWeights];
+
+		for (int i = 0; i < numWeights; i++)
+		{
+			bytes = sizeof(uint);
+			memcpy(&weights[i].vertexId, cursor, bytes);
+			cursor += bytes;
+
+			bytes = sizeof(float);
+			memcpy(&weights[i].weight, cursor, bytes);
+			cursor += bytes;
+		}
+	}
 }

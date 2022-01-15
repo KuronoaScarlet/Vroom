@@ -52,9 +52,12 @@ void AnimationComponent::OnEditor()
 			ImGui::Text("Duration: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%.0f s", anim->GetDuration());
+			ImGui::Text("Bones Attached: ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d bones", anim->numBones);
 			if (ImGui::CollapsingHeader("Pressing 1, blend animation1"))
 			{
-				ImGui::Text("Select animation1: ");
+				ImGui::Text("Select animation 1: ");
 				ImGui::SameLine();
 				if (ImGui::Button(anim1 ? anim1->GetName().c_str() : "No Animation"))
 				{
@@ -63,7 +66,7 @@ void AnimationComponent::OnEditor()
 			}
 			if (ImGui::CollapsingHeader("Pressing 2, blend animation2"))
 			{
-				ImGui::Text("Select animation2: ");
+				ImGui::Text("Select animation 2: ");
 				ImGui::SameLine();
 				if (ImGui::Button(anim2 ? anim2->GetName().c_str() : "No Animation"))
 				{

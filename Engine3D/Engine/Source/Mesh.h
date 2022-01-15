@@ -3,6 +3,7 @@
 #include "Resource.h"
 
 #include <vector>
+#include <memory>
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/float2.h"
 
@@ -34,13 +35,17 @@ public:
 	inline const int& GetBonesCount() const { return numBones; }
 
 	void Reimport(ModelParameters& data);
+	void Skinning();
 private:
 	std::vector<float3> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<float3> normals;
 	std::vector<float2> texCoords;
+
+	// Bones
 	unsigned int numBones;
 	std::vector<unsigned int> bonesUid;
+	std::vector<float3> bVertices;
 
 	VertexBuffer* vbo;
 	IndexBuffer* ebo;

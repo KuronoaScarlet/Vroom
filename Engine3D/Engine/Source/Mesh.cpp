@@ -4,6 +4,9 @@
 #include "MeshImporter.h"
 #include "Application.h"
 #include "FileSystem.h"
+#include "ResourceManager.h"
+#include "Bone.h"
+#include "AnimationImporter.h"
 
 #include "glew/include/GL/glew.h"
 
@@ -39,7 +42,16 @@ void Mesh::Load()
 
 		numBones = bonesUid.size();
 
-		vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
+		if (numBones > 1)
+		{
+			Skinning();
+			vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
+		}
+		else
+		{
+			vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
+		}
+
 		ebo = new IndexBuffer(indices.data(), indices.size());
 
 		glGenBuffers(1, &tbo);
@@ -146,4 +158,27 @@ void Mesh::Reimport(ModelParameters& data)
 		normals.clear();
 	}
 	MeshImporter::LoadMesh(vertices, indices, normals, texCoords, bonesUid, libraryPath);
+}
+
+void Mesh::Skinning()
+{
+	for (int i = 0; i < bonesUid.size(); i++)
+	{
+		std::shared_ptr<Resource> r = ResourceManager::GetInstance()->GetResource(bonesUid.at(i));
+		r->Load();
+		std::shared_ptr<Bone> bone = std::static_pointer_cast<Bone>(r);
+		float4x4 bTransform = bone->GetOffset();
+		for (int j = 0; j < bone->GetNumWeights(); j++)
+		{
+			uint vIndex = bone->weights[j].vertexId;
+			if (vIndex >= vertices.size())
+				continue;
+			float3 startVertex(vertices.at(vIndex));
+			float3 movementWeight = bTransform.TransformPos(startVertex);
+
+			vertices.at(vIndex).x += movementWeight.x * bone->weights[j].weight;
+			vertices.at(vIndex).y += movementWeight.y * bone->weights[j].weight;
+			vertices.at(vIndex).z += movementWeight.z * bone->weights[j].weight;
+		}
+	}
 }

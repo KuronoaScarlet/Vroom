@@ -2,9 +2,7 @@
 
 #include "Component.h"
 #include "MathGeoLib/src/MathGeoLib.h"
-
-class MSphere;
-class MLine;
+#include "Primitive.h"
 
 class BoneComponent : public Component
 {
