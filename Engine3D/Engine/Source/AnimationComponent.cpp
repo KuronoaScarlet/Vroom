@@ -3,6 +3,7 @@
 #include "FileSystem.h"
 #include "ResourceManager.h"
 #include "Animation.h"
+#include "GameObject.h"
 
 AnimationComponent::AnimationComponent(GameObject* own) : anim(nullptr), showAnimMenu(false)
 {
@@ -57,6 +58,14 @@ void AnimationComponent::OnEditor()
 			ImGui::Text("Bones Attached: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d bones", anim->numBones);
+			if(ImGui::Checkbox("Draw Bones", &debugDraw))
+			{
+				for (int i = 0; i < owner->GetChilds().size(); i++)
+				{
+					owner->GetChilds().at(i)->GetComponent<BoneComponent>()->SetDebugDraw();
+				}
+			}
+			
 			if (ImGui::CollapsingHeader("Pressing 1, blend animation1"))
 			{
 				ImGui::Text("Select animation 1: ");

@@ -13,13 +13,16 @@ public:
 	BoneComponent(BoneComponent* bone);
 	~BoneComponent();
 
-	bool DrawDebug();
+	bool Update(float dt) override;
+	void DebugDraw();
 	void OnEditor() override;
 
-	void OnLoad(JSON_Value* component);
-	void OnSave(JSON_Value* component) const;
+	bool OnLoad(JsonParsing& node);
+	bool OnSave(JsonParsing& node, JSON_Array* array) const;
 
 	void SetBone(std::shared_ptr<Resource> b);
+
+	void SetDebugDraw();
 
 public:
 

@@ -36,7 +36,7 @@ bool ModuleScene::Start()
 	ResourceManager::GetInstance()->ImportResourcesFromLibrary();
 	ResourceManager::GetInstance()->ImportAllResources();
 	ImportPrimitives();
-	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
+	LoadScene("Assets/Scenes/AnimatedDummyScene.knekro");
 
 	return true;
 }
