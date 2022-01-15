@@ -56,7 +56,9 @@ We are students of the UPC - CITM university developing a Video Game Engine code
  - Delete to delete a GameObject.
 
 **Students of 3rd year at CITM degree on Videogames Design and Development**
-(Image) [https://media.discordapp.net/attachments/643469707030298641/931942058795597884/Sin_titulo-1.png]
+
+
+(Image)[https://media.discordapp.net/attachments/643469707030298641/931942058795597884/Sin_titulo-1.png]
 ## License
 MIT License
 
