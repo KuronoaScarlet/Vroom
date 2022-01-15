@@ -42,16 +42,7 @@ void Mesh::Load()
 
 		numBones = bonesUid.size();
 
-		if (numBones > 1)
-		{
-			Skinning();
-			vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
-		}
-		else
-		{
-			vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
-		}
-
+		vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
 		ebo = new IndexBuffer(indices.data(), indices.size());
 
 		glGenBuffers(1, &tbo);

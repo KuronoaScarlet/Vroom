@@ -45,7 +45,6 @@ private:
 	// Bones
 	unsigned int numBones;
 	std::vector<unsigned int> bonesUid;
-	std::vector<float3> bVertices;
 
 	VertexBuffer* vbo;
 	IndexBuffer* ebo;
