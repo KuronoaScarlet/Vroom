@@ -239,6 +239,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::ANIMATION:
 		component = new AnimationComponent(this);
 		break;
+	case ComponentType::BONE:
+		component = new BoneComponent(this);
+		break;
 	case ComponentType::MATERIAL:
 		component = new MaterialComponent(this);
 		MeshComponent* m = GetComponent<MeshComponent>();

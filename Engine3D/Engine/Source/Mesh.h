@@ -33,6 +33,7 @@ public:
 	inline const int& GetIndicesSize() const { return indices.size(); }
 	inline const std::vector<unsigned int>& GetIndicesVector() const { return indices; }
 	inline const int& GetBonesCount() const { return numBones; }
+	inline const std::vector<unsigned int>& GetBonesUidList() { return bonesUid; }
 
 	void Reimport(ModelParameters& data);
 	void Skinning();

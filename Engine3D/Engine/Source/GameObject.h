@@ -9,6 +9,7 @@
 #include "MaterialComponent.h"
 #include "CameraComponent.h"
 #include "AnimationComponent.h"
+#include "BoneComponent.h"
 
 #include "MathGeoLib/src/MathGeoLib.h"
 

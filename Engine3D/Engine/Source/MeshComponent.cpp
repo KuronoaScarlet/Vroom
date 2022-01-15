@@ -193,4 +193,21 @@ void MeshComponent::SetMesh(std::shared_ptr<Resource> m)
 
 		owner->SetAABB(localBoundingBox);
 	}
+
+	int numBones = mesh->GetBonesCount();
+
+	if (numBones > 1)
+	{
+		for (int i = 0; i < mesh->GetBonesUidList().size(); i++)
+		{
+			GameObject* bone = app->scene->CreateGameObject(owner);
+			bone->CreateComponent(ComponentType::BONE);
+			std::string name = "Bone";
+			bone->SetName(name.c_str());
+
+			std::shared_ptr<Resource> rBone = ResourceManager::GetInstance()->GetResource(mesh->GetBonesUidList().at(i));
+			rBone->Load();
+			bone->GetComponent<BoneComponent>()->SetBone(rBone);
+		}
+	}
 }
