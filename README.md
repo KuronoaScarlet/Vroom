@@ -58,7 +58,7 @@ We are students of the UPC - CITM university developing a Video Game Engine code
 **Students of 3rd year at CITM degree on Videogames Design and Development**
 
 
- - (Image)[https://github.com/KuronoaScarlet/Vroom/blob/main/Engine3D/Output/Docks/team_photo.png]
+(https://github.com/KuronoaScarlet/Vroom/blob/main/Engine3D/Output/Docks/team_photo.png)
 ## License
 MIT License
 
