@@ -22,3 +22,10 @@ Bone::~Bone()
 {
 	RELEASE_ARRAY(weights);
 }
+
+void Bone::Load()
+{
+
+	AnimationImporter::LoadBone(libraryPath.c_str(), position, rotation, scale, numWeights, offset, weights);
+
+}

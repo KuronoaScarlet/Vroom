@@ -14,7 +14,7 @@ public:
 	Bone(uint uid, std::string& assets, std::string& library);
 	~Bone();
 
-	//void Load() override;
+	void Load() override;
 	//void UnLoad() override;
 
 public:
