@@ -6,7 +6,6 @@
 We asked the owners of the project to make a fork and work with their code from the second release as a base.
 ## Description
 We are students of the UPC - CITM university developing a Video Game Engine coded mainly in Cpp, with the help of different libraries to help us. Our goal is to end the engine with a High-Level system, which will be a Skeletal Animation system.
-***////Next generation engine coded in cpp for videogames.////***
 ## Developers
  - Isaac Digón - [https://github.com/isaac553876299]
  - Isaac Colomer - [https://github.com/IsaaColomer]
