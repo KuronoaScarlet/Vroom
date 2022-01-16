@@ -102,5 +102,11 @@ bool BoneComponent::OnSave(JsonParsing& node, JSON_Array* array)
 void BoneComponent::SetBone(std::shared_ptr<Resource> b)
 {
 	bone = std::static_pointer_cast<Bone>(b);
-	owner->GetComponent<TransformComponent>()->SetTransform(owner->GetParent()->GetComponent<TransformComponent>()->GetGlobalTransform().Inverted() * bone->GetOffset());
+
+	float3 pos = float3(bone->position[0], bone->position[1], bone->position[2]);
+	Quat rot = Quat(bone->rotation[0], bone->rotation[1], bone->rotation[2], bone->rotation[3]);
+	float3 sc = float3(bone->scale[0], bone->scale[1], bone->scale[2]);
+
+	float4x4 tMatrix = float4x4::FromTRS(pos, rot, sc);
+	owner->GetComponent<TransformComponent>()->SetTransform(tMatrix);
 }
