@@ -13,8 +13,6 @@ AnimationComponent::AnimationComponent(GameObject* own) : anim(nullptr), showAni
 	attackBlendTime = 0.1f;
 	walkBlendTime = 0.1f;
 
-
-
 	smoothT = true;
 	active = true;
 }

@@ -10,15 +10,15 @@ class BoneComponent : public Component
 {
 public:
 	BoneComponent(GameObject* own);
-	BoneComponent(BoneComponent* bone);
+	BoneComponent(BoneComponent* cBone);
 	~BoneComponent();
 
 	bool Update(float dt) override;
 	void DebugDraw();
 	void OnEditor() override;
 
-	bool OnLoad(JsonParsing& node);
-	bool OnSave(JsonParsing& node, JSON_Array* array) const;
+	bool OnLoad(JsonParsing& node) override;
+	bool OnSave(JsonParsing& node, JSON_Array* array) override;
 
 	void SetBone(std::shared_ptr<Resource> b);
 

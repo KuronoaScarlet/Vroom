@@ -8,17 +8,20 @@
 
 #include "Component.h"
 
-BoneComponent::BoneComponent(GameObject* own)
+BoneComponent::BoneComponent(GameObject* own) : bone(nullptr)
 {
+	type = ComponentType::BONE;
+	owner = own;
+
 	sphere = new PSphere();
 	sphere->color = { 1.0,0.0,0.0,1.0 };
 	line = new PLine();
 	line->color = { 1.0,0.0,0.0,1.0 };
 }
 
-BoneComponent::BoneComponent(BoneComponent* bone)
+BoneComponent::BoneComponent(BoneComponent* cBone)
 {
-
+	bone = cBone->bone;
 }
 
 BoneComponent::~BoneComponent()
@@ -83,7 +86,7 @@ bool BoneComponent::OnLoad(JsonParsing& node)
 	return true;
 }
 
-bool BoneComponent::OnSave(JsonParsing& node, JSON_Array* array) const
+bool BoneComponent::OnSave(JsonParsing& node, JSON_Array* array)
 {
 	JsonParsing file = JsonParsing();
 
