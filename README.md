@@ -61,14 +61,14 @@ We are currently in the skinning development phase, however, the base of the pro
 ![How the hierarchy is shown.](https://github.com/KuronoaScarlet/Vroom/blob/main/Docs/hierarchy_photo.png)
 
 #### Embed video in order to show what it's done.
-![Video](https://www.youtube.com/watch?v=e-ap8JjFNQo&ab_channel=IsaacColomer)
+
+https://user-images.githubusercontent.com/60975028/149666431-32c1fc30-9fcf-44c1-b7f2-500f91cf5aa7.mp4
 
 #### Students of 3rd year at CITM degree on Videogames Design and Development
 ![Team photo](https://github.com/KuronoaScarlet/Vroom/blob/main/Docs/team_photo.png)
 
 ## License
 MIT License
-
 Copyright (c) [2021] [Vroom Engine]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
