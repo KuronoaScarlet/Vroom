@@ -1,6 +1,9 @@
+
+
 # Vroom Engine
 ## First commit forked from [solidajenjo/Engine3D](https://github.com/solidajenjo/Engine3D)
 ## Source code forked from [RagnarEngine](https://github.com/UriKurae/Ragnar-Engine)
+We asked the owners of the project to make a fork and work with their code from the second release as a base.
 ## Description
 We are students of the UPC - CITM university developing a Video Game Engine coded mainly in Cpp, with the help of different libraries to help us. Our goal is to end the engine with a High-Level system, which will be a Skeletal Animation system.
 ***////Next generation engine coded in cpp for videogames.////***
@@ -8,28 +11,6 @@ We are students of the UPC - CITM university developing a Video Game Engine code
  - Isaac Digón - [https://github.com/isaac553876299]
  - Isaac Colomer - [https://github.com/IsaaColomer]
  - Ignasi Pardo - [https://github.com/KuronoaScarlet]
- ## Member Tasks
- - Animation Component.
- - General QA.
- - Bug fixing.
- - Display and Debug information.
- - Interpolate between bone keys.
-
- ### Ignasi Pardo Carbó
- - Write the animation resource on binary format.
- - Handle animation playing through animation component.
- - Support blending between different animations.
-
- ### Isaac Digón Donaire
-
- - Add bone information.
- - Managing all bone data.
- - OpenGL buffers.
-
- ### Isaac Colomer Casas
- - WebPage
- - Render of the animated Mesh
- - Apply the transforms with the animation delta
 
 ## Features
  - Automatically load 'Street Environment'.
@@ -45,8 +26,8 @@ We are students of the UPC - CITM university developing a Video Game Engine code
  - Mesh: select or drop any imported mesh.
  -  Camera is a component with settings that can be modified.
  -  GameObjects can be picked from the world using mouse.
- ## Controls
 
+ ## Controls
  - Camera moves with WASD + right click (mouse).
  - Pressing F focusses camera on selected object.
  - Holding SHIFT doubles movement speed.
@@ -55,10 +36,36 @@ We are students of the UPC - CITM university developing a Video Game Engine code
  - Left click to select a GameObject in the scene.
  - Delete to delete a GameObject.
 
-**Students of 3rd year at CITM degree on Videogames Design and Development**
+ ## Main Core Sub-systems
+- Free navigation through the different scenes you create. Contains a camera that allows you to view the scene from the "Game" perspective.
+- It contains a hierarchy of GameObjects by which you can navigate through all the objects present in the scene. From the corresponding editors you can add different types of components (Transform, Mesh, Material, Animation or Bone).
+In addition, you can add, remove or change the parents of GameObjects directly via Drag&Drop.
+- It has a scene serialization through json files. Also saving and loading of resources through a custom file format and .meta files.
+- Optimization of the frustum culling of static GameObjects using a QuadTree.
 
+## Skeletal Animation System
+The system we have been proposed to implement is still under development.
 
-![Image](https://github.com/KuronoaScarlet/Vroom/blob/main/Docs/team_photo.png)
+The import of animations and bones is done with the Assimp library, from fbx files.
+
+When the import of the animations is done, the necessary resources and relevant files are created in the Library folder so that they can be selected from the Animation Component editors. 
+Bones, on the other hand, are imported when the mesh is imported, since they are part of it. 
+As with the animations, the necessary resources and relevant files are created in the Library folder, and through the Mesh Component, it generates all the necessary GameObjects to save the loaded bones there. 
+
+We are currently in the skinning development phase, however, the base of the project, the importers and the saving of information are correctly done and work 100%.
+
+#### How the editor and the component works. 
+![How the editor and the component works](https://gyazo.com/8b0b738b9f11745d2aa684929e803ddf.gif)
+
+#### How the hierarchy is shown.
+![How the hierarchy is shown.](https://github.com/KuronoaScarlet/Vroom/blob/main/Docs/hierarchy_photo.png)
+
+#### Embed video in order to show what it's done.
+<a href="{https://www.youtube.com/watch?v=dQw4w9WgXcQ}" title="Link Title"><img src="{https://i.ytimg.com/an_webp/dQw4w9WgXcQ/mqdefault_6s.webp?du=3000&sqp=CLiekI8G&rs=AOn4CLCvHuVfBjPVbuvTTo5fLxfUxjRPNA}" alt="Alternate Text" /></a>
+
+#### Students of 3rd year at CITM degree on Videogames Design and Development
+![Team photo](https://github.com/KuronoaScarlet/Vroom/blob/main/Docs/team_photo.png)
+
 ## License
 MIT License
 
