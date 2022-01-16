@@ -6,6 +6,7 @@
 #include "MathGeoLib/src/MathGeoLib.h"
 
 #include <vector>
+#include <map>
 
 typedef unsigned int GLuint;
 typedef unsigned char GLubyte;
@@ -22,6 +23,7 @@ public:
 	MeshComponent(MeshComponent* meshComponent, TransformComponent* trans);
 	~MeshComponent();
 
+	bool Update(float dt) override;
 	void Draw() override;
 	void DrawOutline() override;
 	void OnEditor() override;
@@ -30,6 +32,8 @@ public:
 	bool OnSave(JsonParsing& node, JSON_Array* array) override;
 
 	void SetMesh(std::shared_ptr<Resource> m);
+
+	void Skinning();
 
 	inline void SetTransform(TransformComponent* trans) { transform = trans; }
 	inline void SetMaterial(MaterialComponent* mat) { material = mat; }
@@ -47,6 +51,8 @@ private:
 	bool verticesNormals;
 
 	std::shared_ptr<Mesh> mesh;
+	std::vector<GameObject*> boneList;
+	std::map<unsigned int, float4x4> skinningMatrix;
 
 	AABB localBoundingBox;
 

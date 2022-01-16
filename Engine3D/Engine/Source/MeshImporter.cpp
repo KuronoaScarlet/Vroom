@@ -157,10 +157,6 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 	{
 		AnimationImporter::ImportBones(path, mesh->mBones[i], json, uids, bonesUid);
 	}
-	if (numBones == 0)
-	{
-		bonesUid.push_back((unsigned int)1);
-	}
 
 	DEBUG_LOG("%i = %i", bonesUid.size(), numBones);
 

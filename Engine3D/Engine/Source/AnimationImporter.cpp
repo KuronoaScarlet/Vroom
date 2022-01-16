@@ -266,7 +266,7 @@ void AnimationImporter::ReImportBones(std::string& path, aiBone* bone, JsonParsi
 	aiQuaternion rotation;
 
 	numWeights = bone->mNumWeights;
-	Weight* weights = new Weight[numWeights];
+	std::vector<Weight> weights;
 
 	bone->mOffsetMatrix.Decompose(scaling, rotation, translation);
 
@@ -290,8 +290,7 @@ void AnimationImporter::ReImportBones(std::string& path, aiBone* bone, JsonParsi
 	{
 		for (int i = 0; i < numWeights; i++)
 		{
-			weights->vertexId = bone->mWeights[i].mVertexId;
-			weights->weight = bone->mWeights[i].mWeight;
+			weights.emplace_back(Weight(bone->mWeights[i].mVertexId, bone->mWeights[i].mWeight));
 		}
 	}
 
@@ -323,7 +322,7 @@ void AnimationImporter::ImportBones(std::string& path, aiBone* bone, JsonParsing
 	aiQuaternion rotation;
 
 	numWeights = bone->mNumWeights;
-	Weight* weights = new Weight[numWeights];
+	std::vector<Weight> weights;
 
 	bone->mOffsetMatrix.Decompose(scaling, rotation, translation);
 
@@ -347,8 +346,7 @@ void AnimationImporter::ImportBones(std::string& path, aiBone* bone, JsonParsing
 	{
 		for (int i = 0; i < numWeights; i++)
 		{
-			weights->vertexId = bone->mWeights[i].mVertexId;
-			weights->weight = bone->mWeights[i].mWeight;
+			weights.emplace_back(Weight(bone->mWeights[i].mVertexId, bone->mWeights[i].mWeight));
 		}
 	}
 
@@ -389,7 +387,7 @@ void AnimationImporter::CreateMetaBones(std::string& library, std::string& asset
 	RELEASE_ARRAY(buffer);
 }
 
-void AnimationImporter::SaveBone(std::string& name,unsigned int numWeights, float* pos, float* rot, float* scale, Weight* weights)
+void AnimationImporter::SaveBone(std::string& name,unsigned int numWeights, float* pos, float* rot, float* scale, std::vector<Weight>& weights)
 {
 	uint header = numWeights;
 	uint size = sizeof(header);

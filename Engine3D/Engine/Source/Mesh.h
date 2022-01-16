@@ -36,8 +36,7 @@ public:
 	inline const std::vector<unsigned int>& GetBonesUidList() { return bonesUid; }
 
 	void Reimport(ModelParameters& data);
-	void Skinning();
-private:
+
 	std::vector<float3> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<float3> normals;
@@ -46,10 +45,15 @@ private:
 	// Bones
 	unsigned int numBones;
 	std::vector<unsigned int> bonesUid;
+	
+	// Skinned Vertices
+	std::vector<float3> skinnedVertices;
 
 	VertexBuffer* vbo;
 	IndexBuffer* ebo;
 	unsigned int tbo;
+
+private:
 
 	std::string path;
 };

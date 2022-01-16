@@ -20,7 +20,7 @@ Bone::Bone(uint uid, std::string& assets, std::string& library) : Resource(uid, 
 
 Bone::~Bone()
 {
-	RELEASE_ARRAY(weights);
+	
 }
 
 void Bone::Load()
@@ -53,17 +53,20 @@ void Bone::Load()
 
 	if (numWeights > 0)
 	{
-		weights = new Weight[numWeights];
+		uint v;
+		float w;
 
 		for (int i = 0; i < numWeights; i++)
 		{
 			bytes = sizeof(uint);
-			memcpy(&weights[i].vertexId, cursor, bytes);
+			memcpy(&v, cursor, bytes);
 			cursor += bytes;
 
 			bytes = sizeof(float);
-			memcpy(&weights[i].weight, cursor, bytes);
+			memcpy(&w, cursor, bytes);
 			cursor += bytes;
 		}
+
+		weights.emplace_back(Weight(v, w));
 	}
 }

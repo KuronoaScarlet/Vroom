@@ -43,6 +43,13 @@ MeshComponent::~MeshComponent()
 	if (mesh.use_count() - 1 == 1) mesh->UnLoad();
 }
 
+bool MeshComponent::Update(float dt)
+{
+	if (mesh->GetBonesUidList().size() > 0) Skinning();
+
+	return true;
+}
+
 void MeshComponent::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -196,7 +203,7 @@ void MeshComponent::SetMesh(std::shared_ptr<Resource> m)
 
 	int numBones = mesh->GetBonesCount();
 
-	if (numBones > 1)
+	if (numBones > 0)
 	{
 		for (int i = 0; i < mesh->GetBonesUidList().size(); i++)
 		{
@@ -207,6 +214,40 @@ void MeshComponent::SetMesh(std::shared_ptr<Resource> m)
 			rBone->Load();
 			bone->GetComponent<BoneComponent>()->SetBone(rBone);
 			bone->SetName(rBone->GetName().c_str());
+			boneList.push_back(bone);
 		}
 	}
+}
+
+void MeshComponent::Skinning()
+{
+	// Skinning Matrix
+	for (int i = 0; i < boneList.size(); i++)
+	{
+		float4x4 delta = boneList.at(i)->GetComponent<TransformComponent>()->GetGlobalTransform();
+		delta = owner->GetComponent<TransformComponent>()->GetGlobalTransform().Inverted() * delta;
+		delta = delta * boneList.at(i)->GetComponent<BoneComponent>()->bone->GetOffset();
+		skinningMatrix.insert(std::make_pair(mesh->GetBonesUidList().at(i), delta));
+	}
+
+	mesh->skinnedVertices.resize(mesh->vertices.size());
+
+	memcpy(&mesh->skinnedVertices[0], &mesh->vertices[0], sizeof(float3) * mesh->vertices.size());
+
+	for (int i = 0; i < boneList.size(); i++)
+	{
+		int it = boneList.at(i)->GetComponent<BoneComponent>()->bone->weights.size();
+		for (int j = 0; j < it; j++)
+		{
+			Weight w = boneList.at(i)->GetComponent<BoneComponent>()->bone->weights.at(j);
+			float3 original = mesh->vertices[w.vertexId];
+			float3 newVertex = skinningMatrix[boneList.at(i)->GetComponent<BoneComponent>()->bone->GetUID()].TransformPos(original);
+			mesh->skinnedVertices[w.vertexId].x = newVertex.x * w.weight;
+			mesh->skinnedVertices[w.vertexId].y = newVertex.y * w.weight;
+			mesh->skinnedVertices[w.vertexId].z = newVertex.z * w.weight;
+		}
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo->buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * mesh->vertices.size(), &mesh->skinnedVertices[0], GL_DYNAMIC_DRAW);
 }

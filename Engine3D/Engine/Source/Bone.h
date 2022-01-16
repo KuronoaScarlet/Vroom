@@ -4,6 +4,9 @@
 #include "MathGeoLib/src/MathGeoLib.h"
 
 struct Weight {
+public:
+	Weight(unsigned int v, float w) : vertexId(v), weight(w) {}
+
 	unsigned int vertexId;
 	float weight;
 };
@@ -17,7 +20,7 @@ public:
 	void Load() override;
 	//void UnLoad() override;
 
-	inline const Weight* GetWeight() const { return weights; }
+	inline const std::vector<Weight> GetWeight() const { return weights; }
 	inline const int& GetNumWeights() const { return numWeights; }
 	inline const float4x4& GetOffset() const { return offset; }
 	inline const float* GetPosition() const { return position; }
@@ -26,7 +29,7 @@ public:
 
 public:
 
-	Weight* weights;
+	std::vector<Weight> weights;
 	unsigned int numWeights;
 
 	unsigned int boneMeshUId;
