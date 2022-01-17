@@ -26,7 +26,7 @@ We are students of the UPC - CITM university developing a Video Game Engine code
  -  Camera is a component with settings that can be modified.
  -  GameObjects can be picked from the world using mouse.
 
- ## Controls
+## Controls
  - Camera moves with WASD + right click (mouse).
  - Pressing F focusses camera on selected object.
  - Holding SHIFT doubles movement speed.
@@ -35,7 +35,7 @@ We are students of the UPC - CITM university developing a Video Game Engine code
  - Left click to select a GameObject in the scene.
  - Delete to delete a GameObject.
 
- ## Main Core Sub-systems
+## Main Core Sub-systems
 - Free navigation through the different scenes you create. Contains a camera that allows you to view the scene from the "Game" perspective.
 - It contains a hierarchy of GameObjects by which you can navigate through all the objects present in the scene. From the corresponding editors you can add different types of components (Transform, Mesh, Material, Animation or Bone).
 In addition, you can add, remove or change the parents of GameObjects directly via Drag&Drop.
