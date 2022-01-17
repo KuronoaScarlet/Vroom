@@ -64,7 +64,7 @@ We are currently in the skinning development phase, however, the base of the pro
 <img src="Docs/video.mp4">
 
 #### Students of 3rd year at CITM degree on Videogames Design and Development
-![Team photo](https://github.com/KuronoaScarlet/Vroom/blob/main/Docs/team_photo.png)
+<img src="Docs/team_photo.png">
 
 ## License
 MIT License
