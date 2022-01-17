@@ -1,5 +1,3 @@
-
-
 # Vroom Engine
 ## First commit forked from [solidajenjo/Engine3D](https://github.com/solidajenjo/Engine3D)
 ## Source code forked from [RagnarEngine](https://github.com/UriKurae/Ragnar-Engine)
