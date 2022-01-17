@@ -66,8 +66,7 @@ We are currently in the skinning development phase, however, the base of the pro
 #### Students of 3rd year at CITM degree on Videogames Design and Development
 ![Team Photo](https://gyazo.com/bd163cda7cca742bcfd74c51ae4d28ab.png)
 
-## Download last Version!
-https://github.com/KuronoaScarlet/Vroom/releases/tag/v1.0
+## [Download last Version!](https://github.com/KuronoaScarlet/Vroom/releases/tag/v1.0)
 
 ## License
 MIT License
