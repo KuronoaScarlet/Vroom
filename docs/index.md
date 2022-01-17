@@ -57,14 +57,14 @@ We are currently in the skinning development phase, however, the base of the pro
 ![How the editor and the component works](https://gyazo.com/8b0b738b9f11745d2aa684929e803ddf.gif)
 
 #### How the hierarchy is shown.
-<img src="Docs/hierarchy_photo.png">
+<img src="docs/hierarchy_photo.png">
 
 #### Embed video in order to show what it's done.
 
 [![Video]](https://www.youtube.com/watch?v=e-ap8JjFNQo&ab_channel=IsaacColomer)
 
 #### Students of 3rd year at CITM degree on Videogames Design and Development
-<img src="Docs/team_photo.png">
+<img src="docs/team_photo.png">
 
 ## License
 MIT License
