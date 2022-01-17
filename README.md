@@ -61,7 +61,7 @@ We are currently in the skinning development phase, however, the base of the pro
 
 #### Embed video in order to show what it's done.
 
-https://user-images.githubusercontent.com/60975028/149666431-32c1fc30-9fcf-44c1-b7f2-500f91cf5aa7.mp4
+<img src="Docs/video.mp4">
 
 #### Students of 3rd year at CITM degree on Videogames Design and Development
 ![Team photo](https://github.com/KuronoaScarlet/Vroom/blob/main/Docs/team_photo.png)
