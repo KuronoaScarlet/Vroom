@@ -57,7 +57,7 @@ We are currently in the skinning development phase, however, the base of the pro
 ![How the editor and the component works](https://gyazo.com/8b0b738b9f11745d2aa684929e803ddf.gif)
 
 #### How the hierarchy is shown.
-<img src="Docs/hierarchy_photo.jpeg">
+<img src="Docs/hierarchy_photo.png">
 
 #### Embed video in order to show what it's done.
 
