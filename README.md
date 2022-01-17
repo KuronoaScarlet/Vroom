@@ -61,7 +61,7 @@ We are currently in the skinning development phase, however, the base of the pro
 
 #### Embed video in order to show what it's done.
 
-<img src="Docs/video.mp4">
+[![(Video)](https://www.youtube.com/watch?v=e-ap8JjFNQo&ab_channel=IsaacColomer)
 
 #### Students of 3rd year at CITM degree on Videogames Design and Development
 <img src="Docs/team_photo.png">
